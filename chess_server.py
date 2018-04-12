@@ -11,6 +11,7 @@ class Server:
         self.listener = socket.socket()
         self.listener.setblocking(False)
         self.listener.bind(self.host)
+        self.listener.listen(10)
         self.selector = selectors.DefaultSelector()
         self.selector.register(self.listener, selectors.EVENT_READ, self.accept)
 
@@ -21,7 +22,7 @@ class Server:
         while True:
             events = self.selector.select()
             for key, events in events:
-                print(key, events)
+                key.data(key.fileobj)
 
     def __del__(self):
         self.selector.close()
@@ -33,6 +34,8 @@ def main():
     parse.add_argument("--ip", default=ip_list.pop(), help="ipv4")
     args = parse.parse_args()
     print("Listen from", args.ip)
+    server = Server(args.ip, 1337)
+    server.run()
 
 if __name__ == "__main__":
     main()
