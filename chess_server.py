@@ -10,6 +10,9 @@ class Player:
         self.conn = conn
         self.addr = addr
 
+    def __del__(self):
+        self.conn.close()
+
 class Server:
     def __init__(self, ip, port):
         self.host = (ip, port)
@@ -23,10 +26,20 @@ class Server:
 
     def accept(self, socket):
        conn, addr = socket.accept()
+       print("Accept", addr)
        self.players[addr] = Player(conn, addr)
+       self.selector.register(conn, selectors.EVENT_READ, self.read)
 
     def read(self, conn):
-        data = conn.read(1024)
+        data = conn.recv(1024)
+        addr = conn.getpeername()
+        print("read", data, addr)
+        if data:
+            print(data, "from", addr)
+        else:
+            print("Close", addr)
+            self.selector.unregister(conn)
+            del self.players[addr]
 
     def run(self):
         while True:
