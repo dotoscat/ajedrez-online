@@ -35,11 +35,11 @@ class Server:
     def read(self, conn):
         data = conn.recv(1024)
         addr = conn.getpeername()
-        print("read", data, addr)
         if data:
             print(data, "from", addr)
+            conn.sendall(data)
         else:
-            print("Close", addr)
+            logging.info("Close {}".format(addr))
             self.selector.unregister(conn)
             del self.players[addr]
 
