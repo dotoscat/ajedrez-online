@@ -5,6 +5,11 @@ import selectors
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+class Player:
+    def __init__(self, conn, addr):
+        self.conn = conn
+        self.addr = addr
+
 class Server:
     def __init__(self, ip, port):
         self.host = (ip, port)
@@ -14,9 +19,14 @@ class Server:
         self.listener.listen(10)
         self.selector = selectors.DefaultSelector()
         self.selector.register(self.listener, selectors.EVENT_READ, self.accept)
+        self.players = {}
 
     def accept(self, socket):
-        pass
+       conn, addr = socket.accept()
+       self.players[addr] = Player(conn, addr)
+
+    def read(self, conn):
+        data = conn.read(1024)
 
     def run(self):
         while True:
