@@ -2,7 +2,9 @@ import signal
 import socket
 import argparse
 import selectors
+import logging
 
+logging.basicConfig(format="%(pathname)s:%(module)s:%(levelname)s:%(message)s", level=logging.DEBUG)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class Player:
@@ -26,7 +28,7 @@ class Server:
 
     def accept(self, socket):
        conn, addr = socket.accept()
-       print("Accept", addr)
+       logging.debug("Accept {}".format(addr))
        self.players[addr] = Player(conn, addr)
        self.selector.register(conn, selectors.EVENT_READ, self.read)
 
@@ -56,7 +58,7 @@ def main():
     parse = argparse.ArgumentParser()
     parse.add_argument("--ip", default=ip_list.pop(), help="ipv4")
     args = parse.parse_args()
-    print("Listen from", args.ip)
+    logging.info("Listen from {}".format(args.ip))
     server = Server(args.ip, 1337)
     server.run()
 
