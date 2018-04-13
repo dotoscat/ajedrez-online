@@ -13,10 +13,8 @@ class Client:
     def __init__(self, ip, port):
         self.selectors = selectors.DefaultSelector()
         self.conn = socket.socket()
+        self.host = (ip, port)
         self.playing = False
-        err = self.conn.connect_ex((ip, port))
-        if err:
-            raise RuntimeError(os.strerror(err))
         self.selectors.register(self.conn, selectors.EVENT_READ, self.read)
 
     def read(self, conn):
@@ -27,6 +25,11 @@ class Client:
         self.selectors.close()
 
     def run(self):
+        try:
+            self.conn.connect(self.host)
+        except ConnectionRefusedError:
+            print("Host {} does not exist.".format(self.host))
+            return
         while True:
             if not self.playing:
                 print("Esperando jugador...")
