@@ -33,13 +33,18 @@ class Server:
        self.selector.register(conn, selectors.EVENT_READ, self.read)
 
     def read(self, conn):
-        data = conn.recv(1024)
-        addr = conn.getpeername()
-        if data:
-            print(data, "from", addr)
-            conn.sendall(data)
-        else:
-            logging.info("Close {}".format(addr))
+        try:
+            addr = conn.getpeername()
+            data = conn.recv(1024)
+            if data:
+                print(data, "from", addr)
+                conn.sendall(data)
+            else:
+                logging.info("Close {}".format(addr))
+                self.selector.unregister(conn)
+                del self.players[addr]
+        except ConnectionResetError:
+            logging.info("Close badly {}".format(addr))
             self.selector.unregister(conn)
             del self.players[addr]
 
