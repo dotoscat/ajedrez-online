@@ -41,3 +41,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     logging.debug("Client connects to {}:{}".format(args.ip, args.port))
+    client = Client(args.ip, args.port)
+    client.run()
