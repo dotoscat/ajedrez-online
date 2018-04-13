@@ -17,9 +17,22 @@ class Client:
         err = self.conn.connect_ex((ip, port))
         if err:
             raise RuntimeError(os.strerror(err))
+        self.selectors.register(self.conn, selectors.EVENT_READ, self.read)
+
+    def read(self, conn):
+        data = conn.recv(1024)
+        logging.info("from server: {}".format(data))
 
     def __del__(self):
         self.selectors.close()
+
+    def run(self):
+        while True:
+            if not self.playing:
+                print("Esperando jugador...")
+            events = self.selectors.select()
+            for key, events in events:
+                key.data(key.fileobj)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
