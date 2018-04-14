@@ -1,8 +1,10 @@
 import struct
 
 STARTGAME = 1
+REJECTED = 2
 
-startgame = struct.Struct("!Bb")
+command = struct.Struct("!B")
+startgame = struct.Struct("!BB")
 
-def get_command(data):
-    return data[:1]
+def get_command(buffer):
+    return command.unpack_from(buffer)
