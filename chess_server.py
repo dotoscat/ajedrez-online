@@ -20,6 +20,11 @@ class Player:
     def __del__(self):
         self.conn.close()
 
+    def assign_color(self, color):
+        self.color = color
+        data = protocol.startgame.pack(protocol.STARTGAME, color)
+        self.conn.sendall(data)
+
 class Game:
     def __init__(self, white:Player=None, black:Player=None):
         self.white = white
@@ -49,9 +54,11 @@ class Server:
         addrs = [addr for addr in self.players]
         white = random.choice(addrs)
         self.players[white].color = Player.WHITE
+        self.players[white].assign_color(Player.WHITE)
         addrs.remove(white)
         black = addrs.pop()
-        self.players[black].color = Player.BLACK
+        self.players[black].assign_color(Player.BLACK)
+        self.game = Game(white=white, black=black)
 
     def read(self, conn):
         try:
