@@ -40,13 +40,14 @@ class Server:
                 print(data, "from", addr)
                 conn.sendall(data)
             else:
-                logging.info("Close {}".format(addr))
-                self.selector.unregister(conn)
-                del self.players[addr]
+                self.remove_player(addr, conn)
         except ConnectionResetError:
-            logging.info("Close badly {}".format(addr))
-            self.selector.unregister(conn)
-            del self.players[addr]
+            self.remove_player(addr, conn)
+
+    def remove_player(self, addr, conn):
+        logging.info("Close {}".format(addr))
+        self.selector.unregister(conn)
+        del self.players[addr]
 
     def run(self):
         while True:
