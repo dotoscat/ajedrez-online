@@ -3,17 +3,27 @@ import socket
 import argparse
 import selectors
 import logging
+import random
+from chessasir import protocol
 
 logging.basicConfig(format="%(pathname)s:%(module)s:%(levelname)s:%(message)s", level=logging.DEBUG)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class Player:
+    WHITE = 1
+    BLACK = 0
     def __init__(self, conn, addr):
         self.conn = conn
         self.addr = addr
+        self.color = None
 
     def __del__(self):
         self.conn.close()
+
+class Game:
+    def __init__(self, white:Player=None, black:Player=None):
+        self.white = white
+        self.black = black
 
 class Server:
     def __init__(self, ip, port):
@@ -25,12 +35,23 @@ class Server:
         self.selector = selectors.DefaultSelector()
         self.selector.register(self.listener, selectors.EVENT_READ, self.accept)
         self.players = {}
+        self.game = None
 
     def accept(self, socket):
        conn, addr = socket.accept()
        logging.debug("Accept {}".format(addr))
        self.players[addr] = Player(conn, addr)
        self.selector.register(conn, selectors.EVENT_READ, self.read)
+       if len(self.players) == 2:
+           self.start_game()
+
+    def start_game(self):
+        addrs = [addr for addr in self.players]
+        white = random.choice(addrs)
+        self.players[white].color = Player.WHITE
+        addrs.remove(white)
+        black = addrs.pop()
+        self.players[black].color = Player.BLACK
 
     def read(self, conn):
         try:
