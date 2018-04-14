@@ -67,11 +67,18 @@ class Server:
             data = conn.recv(1024)
             if data:
                 print(data, "from", addr)
-                
+                command = protocol.get_command(data)
+                if command == protocol.MOVE:
+                    self.move(data)
             else:
                 self.remove_player(addr, conn)
         except ConnectionResetError:
             self.remove_player(addr, conn)
+
+    def move(self, data):
+        command, color, uci = protocol.move.unpack(data)
+        uci = uci.decode().rstrip('\x00')
+        logging.debug("move {} {}".format(color, uci))
 
     def remove_player(self, addr, conn):
         logging.info("Close {}".format(addr))
