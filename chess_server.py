@@ -30,6 +30,7 @@ class Game:
         self.white = white
         self.black = black
         self.board = chess.Board()
+        self.current = white
 
 class Server:
     def __init__(self, ip, port):
@@ -66,7 +67,7 @@ class Server:
             data = conn.recv(1024)
             if data:
                 print(data, "from", addr)
-                conn.sendall(data)
+                
             else:
                 self.remove_player(addr, conn)
         except ConnectionResetError:

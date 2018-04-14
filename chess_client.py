@@ -67,7 +67,7 @@ class Client:
     def do_turn(self, move, value):
         print("move", move)
         self.board.push(move)
-        data = protocol.move.pack(protocol.MOVE, value.encode())
+        data = protocol.move.pack(protocol.MOVE, self.color, value.encode())
         self.conn.sendall(data)
         self.turn = False
 
