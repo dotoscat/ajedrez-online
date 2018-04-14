@@ -57,6 +57,7 @@ class Client:
                 print(self.board)
                 move, value = self.input()
                 self.do_turn(move, value)                
+                continue
             else:
                 print(self.board)
                 print("Waiting for your rival move...")
