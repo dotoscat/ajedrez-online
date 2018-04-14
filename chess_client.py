@@ -53,9 +53,11 @@ class Client:
             if not self.playing:
                 print("Waiting a player to join...")
             elif self.turn:
-                move = self.input()
+                move, value = self.input()
                 print("move", move)
-                #send move to server
+                data = protocol.move.pack(protocol.MOVE, value)
+                self.conn.sendall(data)
+                self.turn = False
             else:
                 print("Waiting for your rival move...")
             events = self.selectors.select()
@@ -67,7 +69,7 @@ class Client:
             value = input("(uci)> ")
             try:
                 move = chess.Move.from_uci(value)
-                return move
+                return move, value
             except:
                 print("Introduce a valid move.")
 

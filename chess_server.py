@@ -4,6 +4,7 @@ import argparse
 import selectors
 import logging
 import random
+import chess
 from chessasir import protocol
 import chessasir
 
@@ -28,6 +29,7 @@ class Game:
     def __init__(self, white:Player=None, black:Player=None):
         self.white = white
         self.black = black
+        self.board = chess.Board()
 
 class Server:
     def __init__(self, ip, port):
