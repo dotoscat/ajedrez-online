@@ -56,7 +56,7 @@ class Client:
             elif self.turn:
                 print(self.board)
                 move, value = self.input()
-                self.turn(move, value)                
+                self.do_turn(move, value)                
             else:
                 print(self.board)
                 print("Waiting for your rival move...")
@@ -67,7 +67,7 @@ class Client:
     def do_turn(self, move, value):
         print("move", move)
         self.board.push(move)
-        data = protocol.move.pack(protocol.MOVE, value)
+        data = protocol.move.pack(protocol.MOVE, value.encode())
         self.conn.sendall(data)
         self.turn = False
 
