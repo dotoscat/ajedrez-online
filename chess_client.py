@@ -20,6 +20,7 @@ class Client:
         self.playing = False
         self.color = None
         self.turn = False
+        self.board = chess.Board()
         self.selectors.register(self.conn, selectors.EVENT_READ, self.read)
 
     def read(self, conn):
@@ -53,16 +54,22 @@ class Client:
             if not self.playing:
                 print("Waiting a player to join...")
             elif self.turn:
+                print(self.board)
                 move, value = self.input()
-                print("move", move)
-                data = protocol.move.pack(protocol.MOVE, value)
-                self.conn.sendall(data)
-                self.turn = False
+                self.turn(move, value)                
             else:
+                print(self.board)
                 print("Waiting for your rival move...")
             events = self.selectors.select()
             for key, events in events:
                 key.data(key.fileobj)
+
+    def do_turn(self, move, value):
+        print("move", move)
+        self.board.push(move)
+        data = protocol.move.pack(protocol.MOVE, value)
+        self.conn.sendall(data)
+        self.turn = False
 
     def input(self):
         while True:
