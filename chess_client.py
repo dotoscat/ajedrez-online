@@ -5,6 +5,7 @@ import signal
 import socket
 import errno
 import os
+from chessasir import protocol
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 logging.basicConfig(format="%(module)s:%(levelname)s:%(message)s", level=logging.DEBUG)
@@ -15,11 +16,18 @@ class Client:
         self.conn = socket.socket()
         self.host = (ip, port)
         self.playing = False
+        self.color = None
         self.selectors.register(self.conn, selectors.EVENT_READ, self.read)
 
     def read(self, conn):
         data = conn.recv(1024)
         logging.info("from server: {}".format(data))
+        command = protocol.get_command(data)
+        if command == protocol.STARTGAME:
+            self.start_game(data)
+
+    def start_game(self, data):
+        command, color = protocol.startgame.unpack(data)
 
     def __del__(self):
         self.selectors.close()

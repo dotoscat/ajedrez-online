@@ -5,13 +5,12 @@ import selectors
 import logging
 import random
 from chessasir import protocol
+import chessasir
 
 logging.basicConfig(format="%(pathname)s:%(module)s:%(levelname)s:%(message)s", level=logging.DEBUG)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class Player:
-    WHITE = 1
-    BLACK = 0
     def __init__(self, conn, addr):
         self.conn = conn
         self.addr = addr
@@ -53,11 +52,10 @@ class Server:
     def start_game(self):
         addrs = [addr for addr in self.players]
         white = random.choice(addrs)
-        self.players[white].color = Player.WHITE
-        self.players[white].assign_color(Player.WHITE)
+        self.players[white].assign_color(chessasir.WHITE)
         addrs.remove(white)
         black = addrs.pop()
-        self.players[black].assign_color(Player.BLACK)
+        self.players[black].assign_color(chessasir.BLACK)
         self.game = Game(white=white, black=black)
 
     def read(self, conn):
