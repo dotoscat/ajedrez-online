@@ -32,6 +32,12 @@ class Game:
         self.board = chess.Board()
         self.current = white
 
+    def do_move(self, color, move):
+        if self.current.color != color:
+            return False
+        self.board.push_uci(move)
+        return True
+
 class Server:
     def __init__(self, ip, port):
         self.host = (ip, port)
@@ -59,7 +65,7 @@ class Server:
         addrs.remove(white)
         black = addrs.pop()
         self.players[black].assign_color(chessasir.BLACK)
-        self.game = Game(white=white, black=black)
+        self.game = Game(white=self.players[white], black=self.players[black])
 
     def read(self, conn):
         try:
@@ -77,8 +83,10 @@ class Server:
 
     def move(self, data):
         command, color, uci = protocol.move.unpack(data)
-        uci = uci.decode().rstrip('\x00')
+        move = uci.decode().rstrip('\x00')
         logging.debug("move {} {}".format(color, uci))
+        if self.game.do_move(color, move):
+            print("Send move to rival")
 
     def remove_player(self, addr, conn):
         logging.info("Close {}".format(addr))
