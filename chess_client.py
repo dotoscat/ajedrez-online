@@ -5,6 +5,7 @@ import signal
 import socket
 import errno
 import os
+import chess
 from chessasir import protocol
 import chessasir
 
@@ -25,7 +26,6 @@ class Client:
         data = conn.recv(1024)
         logging.info("from server: {}".format(data))
         command = protocol.get_command(data)
-        print("commang", command)
         if command == protocol.STARTGAME:
             self.start_game(data)
 
@@ -53,12 +53,23 @@ class Client:
             if not self.playing:
                 print("Waiting a player to join...")
             elif self.turn:
-                print("Enter your input")
+                move = self.input()
+                print("move", move)
+                #send move to server
             else:
-                print("Waiting for your rival's move...")
+                print("Waiting for your rival move...")
             events = self.selectors.select()
             for key, events in events:
                 key.data(key.fileobj)
+
+    def input(self):
+        while True:
+            value = input("(uci)> ")
+            try:
+                move = chess.Move.from_uci(value)
+                return move
+            except:
+                print("Introduce a valid move.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
