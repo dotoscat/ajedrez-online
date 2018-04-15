@@ -25,6 +25,9 @@ class Player:
         data = protocol.startgame.pack(protocol.STARTGAME, color)
         self.conn.sendall(data)
 
+    def send_data(self, data):
+        self.conn.sendall(data)
+
 class Game:
     def __init__(self, white:Player=None, black:Player=None):
         self.white = white
@@ -36,7 +39,14 @@ class Game:
         if self.current.color != color:
             return False
         self.board.push_uci(move)
+        if self.current == self.white:
+            self.current = self.black
+        else:
+            self.current = self.white
         return True
+
+    def send_move_to_current(self, data):
+        self.current.send_data(data)
 
 class Server:
     def __init__(self, ip, port):
@@ -87,6 +97,7 @@ class Server:
         logging.debug("move {} {}".format(color, uci))
         if self.game.do_move(color, move):
             print("Send move to rival")
+            self.game.send_move_to_current(data)
 
     def remove_player(self, addr, conn):
         logging.info("Close {}".format(addr))
