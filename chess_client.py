@@ -24,7 +24,11 @@ class Client:
         self.selectors.register(self.conn, selectors.EVENT_READ, self.read)
 
     def read(self, conn):
-        data = conn.recv(1024)
+        try:
+            data = conn.recv(1024)
+        except ConnectionResetError:
+            logging.info("The remote server has closed the connection.")
+            exit(1)
         logging.info("from server: {}".format(data))
         command = protocol.get_command(data)
         if command == protocol.STARTGAME:
