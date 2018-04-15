@@ -29,6 +29,16 @@ class Client:
         command = protocol.get_command(data)
         if command == protocol.STARTGAME:
             self.start_game(data)
+        elif command == protocol.MOVE:
+            self.move(data)
+
+    def move(self, data):
+        command, color, uci = protocol.move.unpack(data)
+        if color == self.color:
+            return
+        move = uci.decode().rstrip('\x00')
+        self.board.push_uci(move)
+        self.turn = True
 
     def start_game(self, data):
         command, color = protocol.startgame.unpack(data)
