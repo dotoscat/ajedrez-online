@@ -128,6 +128,7 @@ def main():
     logging.info("Listen from {}:{}".format(args.ip, args.port))
     app = web.Application()
     app.router.add_get("/", index)
+    app.router.add_static("/", "chess-client")
     web.run_app(app, host=args.ip, port=args.port)
     # server = Server(args.ip, args.port)
     # server.run()
