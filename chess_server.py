@@ -114,6 +114,10 @@ class Server:
     def __del__(self):
         self.selector.close()
 
+async def index(request):
+    html = open("chess-client/index.html").read()
+    return web.Response(text=html, content_type="text/html")
+
 def main():
     ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
 
@@ -123,6 +127,7 @@ def main():
     args = parse.parse_args()
     logging.info("Listen from {}:{}".format(args.ip, args.port))
     app = web.Application()
+    app.router.add_get("/", index)
     web.run_app(app, host=args.ip, port=args.port)
     # server = Server(args.ip, args.port)
     # server.run()
