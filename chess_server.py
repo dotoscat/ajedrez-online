@@ -5,6 +5,7 @@ import selectors
 import logging
 import random
 import chess
+from aiohttp import web
 from chessasir import protocol
 import chessasir
 
@@ -121,8 +122,10 @@ def main():
     parse.add_argument("--port", "-p", default=1337)
     args = parse.parse_args()
     logging.info("Listen from {}:{}".format(args.ip, args.port))
-    server = Server(args.ip, args.port)
-    server.run()
+    app = web.Application()
+    web.run_app(app, host=args.ip, port=args.port)
+    # server = Server(args.ip, args.port)
+    # server.run()
 
 if __name__ == "__main__":
     main()
