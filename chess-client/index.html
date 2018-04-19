@@ -4,10 +4,14 @@
 		<meta charset="utf8">
 		<title>Ajedrez online</title>
 		<link rel="stylesheet" type="text/css" href="chess.css">
+		<script src="chess.js"></script>
 	</head>
 	<body>
 		<h1>Ajedrez</h1>
 		<noscript>Please, enable JavaScript</noscript>
-		<canvas width="320" height="240"></canvas>
+		<canvas id="board" width="320" height="240"></canvas>
+		<script>
+			const board = new Board(document.getElementById("board"));
+		</script>
 	</body>
 </html>
