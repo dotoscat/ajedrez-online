@@ -117,10 +117,11 @@ def main():
     ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
 
     parse = argparse.ArgumentParser()
-    parse.add_argument("--ip", default=ip_list.pop(), help="ipv4")
+    parse.add_argument("--ip", "-i", default=ip_list.pop(), help="ipv4")
+    parse.add_argument("--port", "-p", default=1337)
     args = parse.parse_args()
-    logging.info("Listen from {}".format(args.ip))
-    server = Server(args.ip, 1337)
+    logging.info("Listen from {}:{}".format(args.ip, args.port))
+    server = Server(args.ip, args.port)
     server.run()
 
 if __name__ == "__main__":
