@@ -21,6 +21,8 @@ class Board {
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 32;
         this.drawarea = drawarea;
         this.tiles = new Array(8);
+        this.dragOrigin = null;
+        this.dragPiece = null;
         const files = "abcdefgh";
         for (let y = 0; y < 8; y += 1){
             this.tiles[y] = new Array(8);
@@ -31,6 +33,7 @@ class Board {
         drawarea.width = this.tileSize*8;
         drawarea.height = this.tileSize*8;
         drawarea.addEventListener("click", this.onClick.bind(this));
+        drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         this.drawarea.getContext("2d").font = "32px Verdana";
         // TODO: debug
         this.tiles[1][1].piece = Piece.WHITE_KING;
@@ -79,6 +82,13 @@ class Board {
         };
     }
 
+    getTilePos(x, y) {
+        return {
+            x: parseInt(x/this.tileSize),
+            y: parseInt(y/this.tileSize),
+        };
+    }
+
     onClick(evt) {
         const pos = this.getMousePos(evt); 
         const x = parseInt(pos.x/this.tileSize);
@@ -87,6 +97,15 @@ class Board {
         const tile = this.tiles[y][x];
         console.log("Hola mundo", tile.name);
         this.draw();
+    }
+
+    onMouseDown(evt){
+        const pos = this.getMousePos(evt);
+        const tilePos = this.getTilePos(pos.x, pos.y);
+        this.dragOrigin = tilePos;
+        const piece = this.tiles[tilePos.y][tilePos.x].piece;
+        this.dragPiece = piece;
+        console.log("on start drag", pos, tilePos, piece);
     }
 
 }
