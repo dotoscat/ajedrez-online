@@ -107,7 +107,7 @@ class Board {
         this.dragOrigin = tilePos;
         const piece = this.tiles[tilePos.y][tilePos.x].piece;
         this.dragPiece = piece;
-        this.tiles[tilePos.y][tilePos.x] = null;
+        this.tiles[tilePos.y][tilePos.x].piece = null;
         console.log("on start drag", pos, tilePos, piece);
     }
 
@@ -127,6 +127,7 @@ class Board {
             const tile = this.tiles[tilePos.y][tilePos.x];
             tile.piece = this.dragPiece;
             this.dragPiece = null;
+            this.draw();
         }
     }
 
