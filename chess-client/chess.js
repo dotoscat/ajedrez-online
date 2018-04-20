@@ -1,5 +1,14 @@
 'use strict';
 
+const Piece = {
+    WHITE_KING: {text: "\u2654"},
+    WHITE_QUEEN: {text: "\u2655"},
+    WHITE_ROOK: {text: "\u2656"},
+    WHITE_BISHOP: {text: "\u2657"},
+    WHITE_KNIGHT: {text: "\u2658"},
+    WHITE_PAWN: {text: "\u2659"},
+};
+
 class Board {
     constructor (drawarea, tileSize) {
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 32;
