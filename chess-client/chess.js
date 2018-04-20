@@ -34,6 +34,8 @@ class Board {
         drawarea.height = this.tileSize*8;
         drawarea.addEventListener("click", this.onClick.bind(this));
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
+        drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
+        drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
         this.drawarea.getContext("2d").font = "32px Verdana";
         // TODO: debug
         this.tiles[1][1].piece = Piece.WHITE_KING;
@@ -105,7 +107,27 @@ class Board {
         this.dragOrigin = tilePos;
         const piece = this.tiles[tilePos.y][tilePos.x].piece;
         this.dragPiece = piece;
+        this.tiles[tilePos.y][tilePos.x] = null;
         console.log("on start drag", pos, tilePos, piece);
+    }
+
+    onMouseMove(evt){
+        if (this.dragPiece === null)
+            return;
+        this.draw();
+        const pos = this.getMousePos(evt);
+        const ctx = this.drawarea.getContext("2d");
+        ctx.fillText(this.dragPiece.text, pos.x - this.tileSize/2., pos.y + this.tileSize/2.);
+    }
+
+    onMouseUp(evt) {
+        if (this.dragPiece !== null){
+            const pos = this.getMousePos(evt);
+            const tilePos = this.getTilePos(pos.x, pos.y);
+            const tile = this.tiles[tilePos.y][tilePos.x];
+            tile.piece = this.dragPiece;
+            this.dragPiece = null;
+        }
     }
 
 }
