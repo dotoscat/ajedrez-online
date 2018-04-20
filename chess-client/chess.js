@@ -9,10 +9,25 @@ const Piece = {
     WHITE_PAWN: {text: "\u2659"},
 };
 
+class Tile {
+    constructor(file, rank) {
+        this.name = file + rank;
+        this.piece = null;
+    }
+}
+
 class Board {
     constructor (drawarea, tileSize) {
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 32;
         this.drawarea = drawarea;
+        this.tiles = new Array(8);
+        const files = "abcdefgh";
+        for (const y = 0; y < 8; y += 1){
+            this.tiles[y] = new Array(8);
+            for (const x = 0; x < 8; x += 1) {
+                this.tiles[y][x] = new Tile(files[x], y+1);
+            }
+        }
         drawarea.width = this.tileSize*8;
         drawarea.height = this.tileSize*8;
         drawarea.addEventListener("click", this.onClick.bind(this));
