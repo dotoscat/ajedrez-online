@@ -31,12 +31,20 @@ class Board {
         drawarea.width = this.tileSize*8;
         drawarea.height = this.tileSize*8;
         drawarea.addEventListener("click", this.onClick.bind(this));
+        this.drawarea.getContext("2d").font = "32px Verdana";
+        // TODO: debug
+        this.tiles[1][1].piece = Piece.WHITE_KING;
+        this.draw();
+    }
+
+    draw(){
         this.drawBackground();
+        this.drawPieces();
     }
 
     drawBackground() {
         const ctx = this.drawarea.getContext("2d");
-        const colors = ["white", "black"];
+        const colors = ["purple", "green"];
         const tileSize = this.tileSize;
         for (let y = 0; y < 8; y += 1){
             for (let x = 0; x < 8; x += 1){
@@ -46,6 +54,20 @@ class Board {
                 colors.reverse();
             }
             colors.reverse();
+        }
+    }
+
+    drawPieces() {
+        const tileSize = this.tileSize;
+        const ctx = this.drawarea.getContext("2d");
+        ctx.fillStyle = "white";
+        for (let y = 0; y < 8; y += 1){
+            for(let x = 0; x < 8; x += 1){
+                const tile = this.tiles[y][x];
+                if (tile.piece === null)
+                    continue;
+                ctx.fillText(tile.piece.text, x*tileSize, y*tileSize);
+            }
         }
     }
 
@@ -64,7 +86,7 @@ class Board {
         const y = 7-parseInt(pos.y/this.tileSize);
         const tile = this.tiles[y][x];
         console.log("Hola mundo", tile.name);
-        this.drawBackground();
+        this.draw();
     }
 
 }
