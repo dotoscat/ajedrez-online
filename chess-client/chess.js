@@ -22,9 +22,9 @@ class Board {
         this.drawarea = drawarea;
         this.tiles = new Array(8);
         const files = "abcdefgh";
-        for (const y = 0; y < 8; y += 1){
+        for (let y = 0; y < 8; y += 1){
             this.tiles[y] = new Array(8);
-            for (const x = 0; x < 8; x += 1) {
+            for (let x = 0; x < 8; x += 1) {
                 this.tiles[y][x] = new Tile(files[x], y+1);
             }
         }
@@ -60,8 +60,10 @@ class Board {
     onClick(evt) {
         const pos = this.getMousePos(evt); 
         const x = parseInt(pos.x/this.tileSize);
-        const y = parseInt(pos.y/this.tileSize);
-        console.log("Hola mundo", x, y);
+        // Invert the position since the origin is top left
+        const y = 7-parseInt(pos.y/this.tileSize);
+        const tile = this.tiles[y][x];
+        console.log("Hola mundo", tile.name);
         this.drawBackground();
     }
 
