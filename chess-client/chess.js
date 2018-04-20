@@ -18,6 +18,21 @@ class Board {
         drawarea.addEventListener("click", this.onClick.bind(this));
     }
 
+    drawBackground() {
+        const ctx = this.drawarea.getContext("2d");
+        const colors = ["white", "black"];
+        const tileSize = this.tileSize;
+        for (let y = 0; y < 8; y += 1){
+            for (let x = 0; x < 8; x += 1){
+                const color = colors[0];
+                ctx.fillStyle = color;
+                ctx.fillRect(x*tileSize, y*tileSize, tileSize, tileSize);
+                colors.reverse();
+            }
+            colors.reverse();
+        }
+    }
+
     getMousePos(evt) {
         const rect = this.drawarea.getBoundingClientRect();
         return {
