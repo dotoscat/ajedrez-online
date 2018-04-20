@@ -16,6 +16,7 @@ class Board {
         drawarea.width = this.tileSize*8;
         drawarea.height = this.tileSize*8;
         drawarea.addEventListener("click", this.onClick.bind(this));
+        this.drawBackground();
     }
 
     drawBackground() {
@@ -46,6 +47,7 @@ class Board {
         const x = parseInt(pos.x/this.tileSize);
         const y = parseInt(pos.y/this.tileSize);
         console.log("Hola mundo", x, y);
+        this.drawBackground();
     }
 
 }
