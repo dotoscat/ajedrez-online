@@ -6,14 +6,7 @@ class Board {
         this.drawarea = drawarea;
         drawarea.width = this.tileSize*8;
         drawarea.height = this.tileSize*8;
-        /*
-        drawarea.addEventListener("click", (evt) => {
-            const pos = this.getMousePos(evt);
-            const x = this.tileSize/pos.x;
-            const y = this.tileSize/pos.y;
-            console.log("click", this.getMousePos(evt), this.tileSize, x, y);
-        });
-        */
+        drawarea.addEventListener("click", this.onClick.bind(this));
     }
 
     getMousePos(evt) {
@@ -24,8 +17,11 @@ class Board {
         };
     }
 
-    saludo(evt) {
-        console.log("Hola mundo", this);
+    onClick(evt) {
+        const pos = this.getMousePos(evt); 
+        const x = parseInt(pos.x/this.tileSize);
+        const y = parseInt(pos.y/this.tileSize);
+        console.log("Hola mundo", x, y);
     }
 
 }
