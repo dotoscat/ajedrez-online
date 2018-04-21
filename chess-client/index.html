@@ -11,7 +11,9 @@
 		<noscript>Please, enable JavaScript</noscript>
 		<canvas class="center" id="board"></canvas>
 		<script>
+			const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 			const board = new Board(document.getElementById("board"));
+			board.setFromFEN(startingPosition);
 		</script>
 	</body>
 </html>

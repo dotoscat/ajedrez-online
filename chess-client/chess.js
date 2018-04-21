@@ -7,7 +7,7 @@ const WhitePiece = {
     BISHOP: {text: "\u2657"},
     KNIGHT: {text: "\u2658"},
     PAWN: {text: "\u2659"},
-}
+};
 
 const BlackPiece = {
     KING: {text: "\u265A"},
@@ -16,7 +16,17 @@ const BlackPiece = {
     BISHOP: {text: "\u265D"},
     KNIGHT: {text: "\u265E"},
     PAWN: {text: "\u265F"},
-};;
+};
+
+const FENConversion = {
+    'K': WhitePiece.KING,
+    'Q': WhitePiece.QUEEN,
+    'R': WhitePiece.ROOK,
+    'B': WhitePiece.BISHOP,
+    'N': WhitePiece.KNIGHT,
+    'P': WhitePiece.PAWN,
+
+};
 
 class Tile {
     constructor(file, rank) {
@@ -49,6 +59,21 @@ class Board {
         // TODO: debug
         this.tiles[1][1].piece = WhitePiece.KING;
         this.draw();
+    }
+
+    setFromFEN(data){
+        const positions = data.split(' ')[0];
+        const ranks = positions.split('/');
+        for (let y = 0; y < ranks.length; y += 1){
+            const rank = ranks[y];
+            for (let x = 0, r = 0; r < rank.length && x < 8; r += 1) {
+                const value = rank[r];
+                const number = Number(value);
+                if (Number.isNaN(number)) {
+
+                }
+            }
+        }
     }
 
     draw(){
