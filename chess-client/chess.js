@@ -27,7 +27,7 @@ class Tile {
 
 class Board {
     constructor (drawarea, tileSize) {
-        this.tileSize = typeof tileSize !== "undefined" ? tileSize : 32;
+        this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
         this.drawarea = drawarea;
         this.tiles = new Array(8);
         this.dragOrigin = null;
@@ -45,7 +45,7 @@ class Board {
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
-        this.drawarea.getContext("2d").font = "32px Verdana";
+        this.drawarea.getContext("2d").font = this.tileSize + "px Verdana";
         // TODO: debug
         this.tiles[1][1].piece = WhitePiece.KING;
         this.draw();
@@ -58,7 +58,7 @@ class Board {
 
     drawBackground() {
         const ctx = this.drawarea.getContext("2d");
-        const colors = ["purple", "green"];
+        const colors = ["white", "darkgrey"];
         const tileSize = this.tileSize;
         for (let y = 0; y < 8; y += 1){
             for (let x = 0; x < 8; x += 1){
@@ -75,7 +75,7 @@ class Board {
         const tileSize = this.tileSize;
         const height = this.drawarea.height;
         const ctx = this.drawarea.getContext("2d");
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         for (let y = 0; y < 8; y += 1){
             for(let x = 0; x < 8; x += 1){
                 const tile = this.tiles[y][x];
