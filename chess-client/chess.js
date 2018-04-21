@@ -71,14 +71,18 @@ class Board {
         const ranks = positions.split('/');
         for (let y = 0; y < ranks.length; y += 1){
             const rank = ranks[y];
-            for (let x = 0, r = 0; r < rank.length && x < 8; r += 1) {
+            for (let x = 0, r = 0; r < rank.length; r += 1) {
                 const value = rank[r];
                 const number = Number(value);
                 if (Number.isNaN(number)) {
-
+                    this.tiles[y][x].piece = FENConversion[value];
+                    x += 1;
+                } else {
+                    x += number;
                 }
             }
         }
+        this.draw();
     }
 
     draw(){
