@@ -25,7 +25,12 @@ const FENConversion = {
     'B': WhitePiece.BISHOP,
     'N': WhitePiece.KNIGHT,
     'P': WhitePiece.PAWN,
-
+    'k': BlackPiece.KING,
+    'q': BlackPiece.QUEEN,
+    'r': BlackPiece.ROOK,
+    'b': BlackPiece.BISHOP,
+    'n': BlackPiece.KNIGHT,
+    'p': BlackPiece.PAWN,
 };
 
 class Tile {
