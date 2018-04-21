@@ -95,11 +95,9 @@ class Board {
 
     onClick(evt) {
         const pos = this.getMousePos(evt); 
-        const x = parseInt(pos.x/this.tileSize);
-        // Invert the position since the origin is top left
-        //const y = 7-parseInt(pos.y/this.tileSize);
-        //const tile = this.tiles[y][x];
-        console.log("Hola mundo", pos);
+        const tilePos = this.getTilePos(pos.x, pos.y);
+        const tile = this.tiles[tilePos.y][tilePos.x];
+        console.log("Hola mundo", pos, tile);
         this.draw();
     }
 
