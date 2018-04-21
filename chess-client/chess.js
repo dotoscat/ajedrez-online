@@ -64,6 +64,7 @@ class Board {
 
     drawPieces() {
         const tileSize = this.tileSize;
+        const height = this.drawarea.height;
         const ctx = this.drawarea.getContext("2d");
         ctx.fillStyle = "white";
         for (let y = 0; y < 8; y += 1){
@@ -71,16 +72,17 @@ class Board {
                 const tile = this.tiles[y][x];
                 if (tile.piece === null)
                     continue;
-                ctx.fillText(tile.piece.text, x*tileSize, y*tileSize+tileSize);
+                ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize);
             }
         }
     }
 
     getMousePos(evt) {
         const rect = this.drawarea.getBoundingClientRect();
+        //invert y coordinates
         return {
             x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
+            y: this.drawarea.height - (evt.clientY - rect.top)
         };
     }
 
@@ -95,13 +97,14 @@ class Board {
         const pos = this.getMousePos(evt); 
         const x = parseInt(pos.x/this.tileSize);
         // Invert the position since the origin is top left
-        const y = 7-parseInt(pos.y/this.tileSize);
-        const tile = this.tiles[y][x];
-        console.log("Hola mundo", tile.name);
+        //const y = 7-parseInt(pos.y/this.tileSize);
+        //const tile = this.tiles[y][x];
+        console.log("Hola mundo", pos);
         this.draw();
     }
 
     onMouseDown(evt){
+        return; // TODO: remove
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         this.dragOrigin = tilePos;
