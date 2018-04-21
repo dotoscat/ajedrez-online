@@ -1,13 +1,22 @@
 'use strict';
 
-const Piece = {
-    WHITE_KING: {text: "\u2654"},
-    WHITE_QUEEN: {text: "\u2655"},
-    WHITE_ROOK: {text: "\u2656"},
-    WHITE_BISHOP: {text: "\u2657"},
-    WHITE_KNIGHT: {text: "\u2658"},
-    WHITE_PAWN: {text: "\u2659"},
-};
+const WhitePiece = {
+    KING: {text: "\u2654"},
+    QUEEN: {text: "\u2655"},
+    ROOK: {text: "\u2656"},
+    BISHOP: {text: "\u2657"},
+    KNIGHT: {text: "\u2658"},
+    PAWN: {text: "\u2659"},
+}
+
+const BlackPiece = {
+    KING: {text: "\u265A"},
+    QUEEN: {text: "\u265B"},
+    ROOK: {text: "\u265C"},
+    BISHOP: {text: "\u265D"},
+    KNIGHT: {text: "\u265E"},
+    PAWN: {text: "\u265F"},
+};;
 
 class Tile {
     constructor(file, rank) {
@@ -38,7 +47,7 @@ class Board {
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
         this.drawarea.getContext("2d").font = "32px Verdana";
         // TODO: debug
-        this.tiles[1][1].piece = Piece.WHITE_KING;
+        this.tiles[1][1].piece = WhitePiece.KING;
         this.draw();
     }
 
