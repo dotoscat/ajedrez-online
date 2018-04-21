@@ -85,6 +85,14 @@ class Board {
             y: this.drawarea.height - (evt.clientY - rect.top)
         };
     }
+    
+    getMousePosTopLeft(evt) {
+        const rect = this.drawarea.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
 
     getTilePos(x, y) {
         return {
@@ -102,7 +110,6 @@ class Board {
     }
 
     onMouseDown(evt){
-        return; // TODO: remove
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         this.dragOrigin = tilePos;
@@ -116,7 +123,7 @@ class Board {
         if (this.dragPiece === null)
             return;
         this.draw();
-        const pos = this.getMousePos(evt);
+        const pos = this.getMousePosTopLeft(evt);
         const ctx = this.drawarea.getContext("2d");
         ctx.fillText(this.dragPiece.text, pos.x - this.tileSize/2., pos.y + this.tileSize/2.);
     }
