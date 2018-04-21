@@ -68,14 +68,15 @@ class Board {
 
     setFromFEN(data){
         const positions = data.split(' ')[0];
-        const ranks = positions.split('/');
+        const ranks = positions.split('/').reverse();
         for (let y = 0; y < ranks.length; y += 1){
             const rank = ranks[y];
             for (let x = 0, r = 0; r < rank.length; r += 1) {
                 const value = rank[r];
                 const number = Number(value);
                 if (Number.isNaN(number)) {
-                    this.tiles[y][x].piece = FENConversion[value];
+                    const piece = FENConversion[value];
+                    this.tiles[y][x].piece = piece;
                     x += 1;
                 } else {
                     x += number;
