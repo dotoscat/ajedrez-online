@@ -15,22 +15,40 @@
 
 'use strict';
 
+const PieceMoves = {
+    PAWN: {
+        jump: false,
+        moves: [
+            [0, 1],
+            [0, 2]
+        ]
+    },
+    ROOK: {
+        moves: [
+            [8, 8],
+            [-8, 8],
+            [8, -8],
+            [-8, -8]
+        ]
+    },
+}
+
 const WhitePiece = {
     KING: {text: "\u2654"},
     QUEEN: {text: "\u2655"},
-    ROOK: {text: "\u2656"},
+    ROOK: {text: "\u2656", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u2657"},
     KNIGHT: {text: "\u2658"},
-    PAWN: {text: "\u2659"},
+    PAWN: {text: "\u2659", moves: PieceMoves.PAWN},
 };
 
 const BlackPiece = {
     KING: {text: "\u265A"},
     QUEEN: {text: "\u265B"},
-    ROOK: {text: "\u265C"},
+    ROOK: {text: "\u265C", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u265D"},
     KNIGHT: {text: "\u265E"},
-    PAWN: {text: "\u265F"},
+    PAWN: {text: "\u265F", moves: PieceMoves.PAWN},
 };
 
 const FENConversion = {
