@@ -21,6 +21,8 @@ import logging
 import random
 import chess
 from aiohttp import web
+import aiohttp_jinja2
+import jinja2
 from chessasir import protocol
 import chessasir
 
@@ -129,9 +131,6 @@ class Server:
     def __del__(self):
         self.selector.close()
 
-async def index(request):
-    html = open("chess-client/index.html").read()
-    return web.Response(text=html, content_type="text/html")
 
 def main():
     ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
@@ -142,6 +141,15 @@ def main():
     args = parse.parse_args()
     logging.info("Listen from {}:{}".format(args.ip, args.port))
     app = web.Application()
+    aiohttp_jinja2.setup(app,
+        loader=jinja2.FileSystemLoader('chess-client'))
+
+    async def index(request):
+        html = open("chess-client/index.html").read()
+        response = aiohttp_jinja2.render_template('index.html', request, {"host": args.ip})
+        return response
+        # return web.Response(text=html, content_type="text/html")
+   
     app.router.add_get("/", index)
     app.router.add_static("/", "chess-client")
     web.run_app(app, host=args.ip, port=args.port)
