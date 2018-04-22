@@ -175,6 +175,21 @@ class Board {
         }
     }
 
+    drawValidMoves(){
+        if (this.validMoves === null){
+            return;
+        }
+        const ctx = this.drawarea.getContext("2d");
+        const tileSize = this.tileSize;
+        const height = this.drawarea.height;
+        ctx.save();
+        for (let move of this.validMoves){
+            ctx.strokeRect(move[0]*tileSize, move[1]*tileSize, tileSize, tileSize);
+        }
+        ctx.restore();
+    }
+
+
     getMousePos(evt) {
         const rect = this.drawarea.getBoundingClientRect();
         //invert y coordinates
