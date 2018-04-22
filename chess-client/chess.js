@@ -143,6 +143,7 @@ class Board {
     draw(){
         this.drawBackground();
         this.drawPieces();
+        this.drawValidMoves();
     }
 
     drawBackground() {
@@ -183,8 +184,9 @@ class Board {
         const tileSize = this.tileSize;
         const height = this.drawarea.height;
         ctx.save();
+        ctx.strokeStyle = "green";
         for (let move of this.validMoves){
-            ctx.strokeRect(move[0]*tileSize, move[1]*tileSize, tileSize, tileSize);
+            ctx.strokeRect(move[0]*tileSize, (height-move[1]*tileSize)-tileSize, tileSize, tileSize);
         }
         ctx.restore();
     }
@@ -245,15 +247,18 @@ class Board {
     }
 
     onMouseUp(evt) {
+        const pos = this.getMousePos(evt);
+        const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null){
-            const pos = this.getMousePos(evt);
-            const tilePos = this.getTilePos(pos.x, pos.y);
             const tile = this.tiles[tilePos.y][tilePos.x];
             tile.piece = this.dragPiece;
             this.dragPiece = null;
-            this.draw();
+            this.validMoves = null;
+        }else{
+            this.getValidMovesOf(tilePos.x, tilePos.y);
         }
         this.dragOrigin = null;
+        this.draw();
     }
 
 }
