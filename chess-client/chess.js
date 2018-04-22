@@ -16,11 +16,16 @@
 'use strict';
 
 const PieceMoves = {
-    PAWN: {
-        jump: false,
+    WHITE_PAWN: {
         moves: [
             [0, 1],
             [0, 2]
+        ]
+    },
+    BLACK_PAWN: {
+        moves: [
+            [0, -1],
+            [0, -2]
         ]
     },
     ROOK: {
@@ -39,7 +44,7 @@ const WhitePiece = {
     ROOK: {text: "\u2656", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u2657"},
     KNIGHT: {text: "\u2658"},
-    PAWN: {text: "\u2659", moves: PieceMoves.PAWN},
+    PAWN: {text: "\u2659", moves: PieceMoves.WHITE_PAWN},
 };
 
 const BlackPiece = {
@@ -48,7 +53,7 @@ const BlackPiece = {
     ROOK: {text: "\u265C", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u265D"},
     KNIGHT: {text: "\u265E"},
-    PAWN: {text: "\u265F", moves: PieceMoves.PAWN},
+    PAWN: {text: "\u265F", moves: PieceMoves.BLACK_PAWN},
 };
 
 const FENConversion = {
@@ -80,6 +85,7 @@ class Board {
         this.tiles = new Array(8);
         this.dragOrigin = null;
         this.dragPiece = null;
+        this.validMoves = null;
         const files = "abcdefgh";
         for (let y = 0; y < 8; y += 1){
             this.tiles[y] = new Array(8);
@@ -97,6 +103,25 @@ class Board {
         // TODO: debug
         this.tiles[1][1].piece = WhitePiece.KING;
         this.draw();
+    }
+
+    getValidMovesOf(x, y){
+        const piece = this.tiles[y][x].piece;
+        if (piece === null){
+            this.validMoves = null;
+            return null;
+        }
+        if (!pieces.moves){
+            this.validMoves = null;
+            return null;
+        }
+        const validMoves = piece.moves.moves.map((move) => {
+            const newX = x + move[x];
+            const newY = y + move[y];
+            return 0 <= newX < 8 && 0 <= newY < 8 ? [newX, newY] : null;
+        });
+        this.validMoves = validMoves;
+        return validMoves;
     }
 
     setFromFEN(data){
