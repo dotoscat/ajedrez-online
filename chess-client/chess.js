@@ -108,7 +108,6 @@ class Board {
     getValidMovesOf(x, y){
         const piece = this.tiles[y][x].piece;
         if (piece === null || !piece.moves){
-            this.validMoves = null;
             return null;
         }
         const validMoves = piece.moves.moves.map((move) => {
@@ -116,7 +115,6 @@ class Board {
             const newY = y + move[1];
             return 0 <= newX < 8 && 0 <= newY < 8 ? [newX, newY] : null;
         });
-        this.validMoves = validMoves;
         return validMoves;
     }
 
@@ -228,6 +226,8 @@ class Board {
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         this.dragOrigin = tilePos;
+        this.validMoves = this.getValidMovesOf(tilePos.x, tilePos.y);
+        this.draw();
     }
 
     onMouseMove(evt){
@@ -254,8 +254,6 @@ class Board {
             tile.piece = this.dragPiece;
             this.dragPiece = null;
             this.validMoves = null;
-        }else{
-            this.getValidMovesOf(tilePos.x, tilePos.y);
         }
         this.dragOrigin = null;
         this.draw();
