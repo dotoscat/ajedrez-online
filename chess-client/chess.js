@@ -209,15 +209,15 @@ class Board {
     }
 
     onMouseUp(evt) {
-        if (this.dragOrigin !== null){
+        if (this.dragPiece !== null){
             const pos = this.getMousePos(evt);
             const tilePos = this.getTilePos(pos.x, pos.y);
             const tile = this.tiles[tilePos.y][tilePos.x];
             tile.piece = this.dragPiece;
             this.dragPiece = null;
-            this.dragOrigin = null;
             this.draw();
         }
+        this.dragOrigin = null;
     }
 
 }
