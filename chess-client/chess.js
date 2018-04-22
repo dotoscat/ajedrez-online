@@ -111,13 +111,13 @@ class Board {
             this.validMoves = null;
             return null;
         }
-        if (!pieces.moves){
+        if (!piece.moves){
             this.validMoves = null;
             return null;
         }
         const validMoves = piece.moves.moves.map((move) => {
-            const newX = x + move[x];
-            const newY = y + move[y];
+            const newX = x + move[0];
+            const newY = y + move[1];
             return 0 <= newX < 8 && 0 <= newY < 8 ? [newX, newY] : null;
         });
         this.validMoves = validMoves;
