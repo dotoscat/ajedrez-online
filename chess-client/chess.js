@@ -107,11 +107,7 @@ class Board {
 
     getValidMovesOf(x, y){
         const piece = this.tiles[y][x].piece;
-        if (piece === null){
-            this.validMoves = null;
-            return null;
-        }
-        if (!piece.moves){
+        if (piece === null || !piece.moves){
             this.validMoves = null;
             return null;
         }
