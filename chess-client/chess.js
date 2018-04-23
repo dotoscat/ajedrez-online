@@ -113,7 +113,7 @@ class Board {
         const validMoves = piece.moves.moves.map((move) => {
             const newX = x + move[0];
             const newY = y + move[1];
-            return 0 <= newX < 8 && 0 <= newY < 8 ? [newX, newY] : null;
+            return (0 <= newX && newX < 8 && 0 <= newY && newY < 8) ? [newX, newY] : null;
         });
         return validMoves;
     }
@@ -184,6 +184,9 @@ class Board {
         ctx.save();
         ctx.strokeStyle = "green";
         for (let move of this.validMoves){
+            if (move === null){
+                continue;
+            }
             ctx.strokeRect(move[0]*tileSize, (height-move[1]*tileSize)-tileSize, tileSize, tileSize);
         }
         ctx.restore();
