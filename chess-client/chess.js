@@ -17,18 +17,29 @@
 
 const PieceMoves = {
     WHITE_PAWN: {
+        type: 'pawn',
         moves: [
             [0, 1],
             [0, 2]
+        ],
+        attacks: [
+            [1, 0],
+            [0, 1]
         ]
     },
     BLACK_PAWN: {
+        type: 'pawn',
         moves: [
             [0, -1],
             [0, -2]
+        ],
+        attacks: [
+            [-1, 0],
+            [0, -1]
         ]
     },
     ROOK: {
+        type: 'range',
         moves: [
             [8, 8],
             [-8, 8],
@@ -36,6 +47,19 @@ const PieceMoves = {
             [-8, -8]
         ]
     },
+    KNIGHT: {
+        type: 'knight',
+        moves: [
+            [1, 2],
+            [-1, 2],
+            [-1, -2],
+            [1, -2],
+            [2, 1],
+            [-2, 1],
+            [-2, -1],
+            [2, -1],
+        ]
+    }
 }
 
 const WhitePiece = {
