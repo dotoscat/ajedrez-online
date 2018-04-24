@@ -24,7 +24,7 @@ const PieceMoves = {
         ],
         attacks: [
             [1, 0],
-            [0, 1]
+            [-1, 0]
         ]
     },
     BLACK_PAWN: {
@@ -34,8 +34,8 @@ const PieceMoves = {
             [0, -2]
         ],
         attacks: [
-            [-1, 0],
-            [0, -1]
+            [1, 0],
+            [-1, 0]
         ]
     },
     ROOK: {
@@ -67,7 +67,7 @@ const WhitePiece = {
     QUEEN: {text: "\u2655"},
     ROOK: {text: "\u2656", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u2657"},
-    KNIGHT: {text: "\u2658"},
+    KNIGHT: {text: "\u2658", moves: PieceMoves.KNIGHT},
     PAWN: {text: "\u2659", moves: PieceMoves.WHITE_PAWN},
 };
 
@@ -76,7 +76,7 @@ const BlackPiece = {
     QUEEN: {text: "\u265B"},
     ROOK: {text: "\u265C", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u265D"},
-    KNIGHT: {text: "\u265E"},
+    KNIGHT: {text: "\u265E", moves: PieceMoves.KNIGHT},
     PAWN: {text: "\u265F", moves: PieceMoves.BLACK_PAWN},
 };
 
@@ -100,6 +100,23 @@ class Tile {
         this.name = file + rank;
         this.piece = null;
     }
+}
+
+function pawnMoves(x, y, piece, tiles) {
+    const validMoves = [];
+    for (let move of piece.moves.moves){
+        const newX = x + move[0];
+        const newY = y + move[1];
+        console.log(newX, newY, move);
+        if (!(newY >= 0 && newY < tiles.length
+            && newX >= 0 && newX < tiles[newY].length)){
+            continue;
+        }
+        if (tiles[newY][newX].piece === null){
+            validMoves.push([newX, newY]);
+        }
+    }
+    return validMoves;
 }
 
 class Board {
@@ -134,11 +151,17 @@ class Board {
         if (piece === null || !piece.moves){
             return null;
         }
-        const validMoves = piece.moves.moves.map((move) => {
-            const newX = x + move[0];
-            const newY = y + move[1];
-            return (0 <= newX && newX < 8 && 0 <= newY && newY < 8) ? [newX, newY] : null;
-        });
+        let validMoves = null;
+        console.log("getValidMovesOf", x, y)
+        switch(piece.moves.type){
+            case 'pawn':
+                validMoves = pawnMoves(x, y, piece, this.tiles);
+            break;
+            case 'knight':
+            break;
+            case 'range':
+            break;
+        }
         return validMoves;
     }
 
