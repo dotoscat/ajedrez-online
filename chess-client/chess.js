@@ -23,8 +23,8 @@ const PieceMoves = {
             [0, 2]
         ],
         attacks: [
-            [1, 0],
-            [-1, 0]
+            [1, 1],
+            [-1, 1]
         ]
     },
     BLACK_PAWN: {
@@ -34,8 +34,8 @@ const PieceMoves = {
             [0, -2]
         ],
         attacks: [
-            [1, 0],
-            [-1, 0]
+            [1, -1],
+            [-1, -1]
         ]
     },
     ROOK: {
@@ -121,6 +121,7 @@ function pawnMoves(x, y, piece, tiles) {
     for (let attack of piece.moves.attacks){
         const newX = x + attack[0];
         const newY = y + attack[1];
+        console.log(attack, newX, newY);
         if (!(newY >= 0 && newY < tiles.length
             && newX >= 0 && newX < tiles[newY].length)){
             continue;
