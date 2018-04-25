@@ -138,6 +138,26 @@ function pawnMoves(x, y, piece, tiles) {
     return validMoves;
 }
 
+function knightMoves(x, y, piece, tiles){
+    const validMoves = [];
+    for(let move of piece.moves.moves){
+        const newX = x + move[0];
+        const newY = y + move[1];
+        if (!(newY >= 0 && newY < tiles.length
+            && newX >= 0 && newX < tiles[newY].length)){
+            continue;
+        }
+        const otherPiece = tiles[newY][newX].piece;
+        
+        if (otherPiece === null
+            || (Object.values(WhitePiece).includes(otherPiece)
+            !== Object.values(WhitePiece).includes(piece))){
+                validMoves.push([newX, newY]);
+        }
+    }
+    return validMoves;
+}
+
 class Board {
     constructor (drawarea, tileSize) {
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
@@ -177,6 +197,7 @@ class Board {
                 validMoves = pawnMoves(x, y, piece, this.tiles);
             break;
             case 'knight':
+                validMoves = knightMoves(x, y, piece, this.tiles);
             break;
             case 'range':
             break;
