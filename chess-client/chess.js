@@ -114,7 +114,25 @@ function pawnMoves(x, y, piece, tiles) {
         }
         if (tiles[newY][newX].piece === null){
             validMoves.push([newX, newY]);
+        }else{
+            break;
         }
+    }
+    for (let attack of piece.moves.attacks){
+        const newX = x + attack[0];
+        const newY = y + attack[1];
+        if (!(newY >= 0 && newY < tiles.length
+            && newX >= 0 && newX < tiles[newY].length)){
+            continue;
+        }
+        if (tiles[newY][newX].piece === null){
+            continue;
+        }
+        const otherPiece = tiles[newY][newX].piece;
+        if (Object.values(WhitePiece).includes(otherPiece)
+            !== Object.values(WhitePiece).includes(piece)){
+                validMoves.push([newX, newY]);
+            }
     }
     return validMoves;
 }
