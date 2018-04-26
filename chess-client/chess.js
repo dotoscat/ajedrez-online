@@ -192,8 +192,12 @@ function checkNextMove(x, y, direction, piece, tiles, validMoves, times){
         return validMoves;
     }
     const otherPiece = tiles[newY][newX].piece;
-    if (Object.values(WhitePiece).includes(piece)
-        === Object.values(WhitePiece).includes(otherPiece)){
+    const isPieceWhite = Object.values(WhitePiece).includes(piece);
+    const isOtherPieceWhite = Object.values(WhitePiece).includes(otherPiece);
+    if (otherPiece && isPieceWhite === isOtherPieceWhite){
+        return validMoves;
+    }else if (otherPiece && isPieceWhite !== isOtherPieceWhite){
+        validMoves.push([newX, newY]);
         return validMoves;
     }
     validMoves.push([newX, newY]);
