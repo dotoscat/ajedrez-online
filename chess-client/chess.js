@@ -339,12 +339,16 @@ class Board {
         const tileSize = this.tileSize;
         const height = this.drawarea.height;
         ctx.save();
-        ctx.strokeStyle = "green";
         for (let move of this.validMoves){
             if (move === null){
                 continue;
             }
-            ctx.strokeRect(move[0]*tileSize, (height-move[1]*tileSize)-tileSize, tileSize, tileSize);
+            if (this.tiles[move[1]][move[0]].piece === null){
+                ctx.fillStyle = '#00FF0077';
+            }else{
+                ctx.fillStyle = '#FF000077';
+            }
+            ctx.fillRect(move[0]*tileSize, (height-move[1]*tileSize)-tileSize, tileSize, tileSize);
         }
         ctx.restore();
     }
