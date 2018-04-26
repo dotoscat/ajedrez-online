@@ -230,6 +230,7 @@ class Board {
                 validMoves = knightMoves(x, y, piece, this.tiles);
             break;
             case 'range':
+                validMoves = rankMoves(x, y, piece, this.tiles);
             break;
         }
         return validMoves;
