@@ -40,12 +40,22 @@ const PieceMoves = {
     },
     ROOK: {
         type: 'range',
-        moves: [
-            [8, 8],
-            [-8, 8],
-            [8, -8],
-            [-8, -8]
+        directions: [ 
+            [1, 1],
+            [-1, 1],
+            [1, -1],
+            [-1, -1]
         ]
+    },
+    KING: {
+        type: 'range',
+        directions: [ 
+            [1, 1],
+            [-1, 1],
+            [1, -1],
+            [-1, -1]
+        ],
+        times: 1
     },
     KNIGHT: {
         type: 'knight',
@@ -154,6 +164,22 @@ function knightMoves(x, y, piece, tiles){
             !== Object.values(WhitePiece).includes(piece))){
                 validMoves.push([newX, newY]);
         }
+    }
+    return validMoves;
+}
+
+function checkNextMove(x, y, direction, piece, tiles, validMoves, times){
+    const newX = x + direction[0];
+    const newY = y + direction[1];
+    if (0 <= newY && newY < tiles.length && 0 <= newX && newX < tiles[newY].length){
+        return validMoves;
+    }
+}
+
+function rankMoves(x, y, piece, tiles){
+    const validMoves = [];
+    for(let direction of piece.moves.directions){
+        console.log("direction", direction);
     }
     return validMoves;
 }
