@@ -47,6 +47,15 @@ const PieceMoves = {
             [0, 1]
         ]
     },
+    BISHOP: {
+        type: 'range',
+        directions: [ 
+            [1, 1],
+            [-1, -1],
+            [1, -1],
+            [-1, 1]
+        ]
+    },
     KING: {
         type: 'range',
         directions: [ 
@@ -76,7 +85,7 @@ const WhitePiece = {
     KING: {text: "\u2654"},
     QUEEN: {text: "\u2655"},
     ROOK: {text: "\u2656", moves: PieceMoves.ROOK},
-    BISHOP: {text: "\u2657"},
+    BISHOP: {text: "\u2657", moves: PieceMoves.BISHOP},
     KNIGHT: {text: "\u2658", moves: PieceMoves.KNIGHT},
     PAWN: {text: "\u2659", moves: PieceMoves.WHITE_PAWN},
 };
@@ -85,7 +94,7 @@ const BlackPiece = {
     KING: {text: "\u265A"},
     QUEEN: {text: "\u265B"},
     ROOK: {text: "\u265C", moves: PieceMoves.ROOK},
-    BISHOP: {text: "\u265D"},
+    BISHOP: {text: "\u265D", moves: PieceMoves.BISHOP},
     KNIGHT: {text: "\u265E", moves: PieceMoves.KNIGHT},
     PAWN: {text: "\u265F", moves: PieceMoves.BLACK_PAWN},
 };
