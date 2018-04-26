@@ -41,10 +41,10 @@ const PieceMoves = {
     ROOK: {
         type: 'range',
         directions: [ 
-            [1, 1],
-            [-1, 1],
-            [1, -1],
-            [-1, -1]
+            [1, 0],
+            [-1, 0],
+            [0, -1],
+            [0, 1]
         ]
     },
     KING: {
@@ -171,14 +171,18 @@ function knightMoves(x, y, piece, tiles){
 function checkNextMove(x, y, direction, piece, tiles, validMoves, times){
     const newX = x + direction[0];
     const newY = y + direction[1];
-    if (0 <= newY && newY < tiles.length && 0 <= newX && newX < tiles[newY].length){
+    if (!(0 <= newY && newY < tiles.length && 0 <= newX && newX < tiles[newY].length)){
         return validMoves;
+    }else{
+        validMoves.push([newX, newY]);
+        return checkNextMove(newX, newY, direction, piece, tiles, validMoves, times);
     }
 }
 
 function rankMoves(x, y, piece, tiles){
     const validMoves = [];
     for(let direction of piece.moves.directions){
+        checkNextMove(x, y, direction, piece, tiles, validMoves);
         console.log("direction", direction);
     }
     return validMoves;
