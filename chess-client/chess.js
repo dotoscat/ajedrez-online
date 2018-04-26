@@ -207,7 +207,8 @@ function checkNextMove(x, y, direction, piece, tiles, validMoves, times){
 function rankMoves(x, y, piece, tiles){
     const validMoves = [];
     for(let direction of piece.moves.directions){
-        checkNextMove(x, y, direction, piece, tiles, validMoves);
+        const times = typeof piece.moves.times === "number" ? piece.moves.times : -1;
+        checkNextMove(x, y, direction, piece, tiles, validMoves, times);
         console.log("direction", direction);
     }
     return validMoves;
