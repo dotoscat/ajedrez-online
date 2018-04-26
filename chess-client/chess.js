@@ -326,7 +326,7 @@ class Board {
                 const tile = this.tiles[y][x];
                 if (tile.piece === null)
                     continue;
-                ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize);
+                ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize-tileSize/8.);
             }
         }
     }
