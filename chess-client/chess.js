@@ -62,7 +62,11 @@ const PieceMoves = {
             [1, 1],
             [-1, 1],
             [1, -1],
-            [-1, -1]
+            [-1, -1],
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1]
         ],
         times: 1
     },
@@ -82,7 +86,7 @@ const PieceMoves = {
 }
 
 const WhitePiece = {
-    KING: {text: "\u2654"},
+    KING: {text: "\u2654", moves: PieceMoves.KING},
     QUEEN: {text: "\u2655"},
     ROOK: {text: "\u2656", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u2657", moves: PieceMoves.BISHOP},
@@ -91,7 +95,7 @@ const WhitePiece = {
 };
 
 const BlackPiece = {
-    KING: {text: "\u265A"},
+    KING: {text: "\u265A", moves: PieceMoves.KING},
     QUEEN: {text: "\u265B"},
     ROOK: {text: "\u265C", moves: PieceMoves.ROOK},
     BISHOP: {text: "\u265D", moves: PieceMoves.BISHOP},
@@ -180,12 +184,20 @@ function knightMoves(x, y, piece, tiles){
 function checkNextMove(x, y, direction, piece, tiles, validMoves, times){
     const newX = x + direction[0];
     const newY = y + direction[1];
+    times = typeof times === "number" ? times : -1;
+    if (times === 0){
+        return validMoves;
+    }
     if (!(0 <= newY && newY < tiles.length && 0 <= newX && newX < tiles[newY].length)){
         return validMoves;
-    }else{
-        validMoves.push([newX, newY]);
-        return checkNextMove(newX, newY, direction, piece, tiles, validMoves, times);
     }
+    const otherPiece = tiles[newY][newX].piece;
+    if (Object.values(WhitePiece).includes(piece)
+        === Object.values(WhitePiece).includes(otherPiece)){
+        return validMoves;
+    }
+    validMoves.push([newX, newY]);
+    return checkNextMove(newX, newY, direction, piece, tiles, validMoves, times-1);
 }
 
 function rankMoves(x, y, piece, tiles){
