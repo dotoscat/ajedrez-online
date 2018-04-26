@@ -244,7 +244,6 @@ class Board {
         }
         drawarea.width = this.tileSize*8;
         drawarea.height = this.tileSize*8;
-        drawarea.addEventListener("click", this.onClick.bind(this));
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
@@ -376,14 +375,6 @@ class Board {
             x: parseInt(x/this.tileSize),
             y: parseInt(y/this.tileSize),
         };
-    }
-
-    onClick(evt) {
-        const pos = this.getMousePos(evt); 
-        const tilePos = this.getTilePos(pos.x, pos.y);
-        const tile = this.tiles[tilePos.y][tilePos.x];
-        console.log("Hola mundo", pos, tile);
-        this.draw();
     }
 
     onMouseDown(evt){
