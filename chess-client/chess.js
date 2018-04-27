@@ -231,6 +231,8 @@ class Board {
     constructor (drawarea, tileSize) {
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
         this.drawarea = drawarea;
+        this.boardWidth = this.tileSize*8;
+        this.boardHeight = this.tileSize*8;
         this.tiles = new Array(8);
         this.dragOrigin = null;
         this.dragPiece = null;
@@ -242,8 +244,8 @@ class Board {
                 this.tiles[y][x] = new Tile(files[x], y+1);
             }
         }
-        drawarea.width = this.tileSize*8;
-        drawarea.height = this.tileSize*8;
+        drawarea.width = this.tileSize*8+this.tileSize;
+        drawarea.height = this.tileSize*8+this.tileSize;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
@@ -317,7 +319,7 @@ class Board {
 
     drawPieces() {
         const tileSize = this.tileSize;
-        const height = this.drawarea.height;
+        const height = this.boardHeight;
         const ctx = this.drawarea.getContext("2d");
         ctx.fillStyle = "black";
         for (let y = 0; y < 8; y += 1){
@@ -336,7 +338,7 @@ class Board {
         }
         const ctx = this.drawarea.getContext("2d");
         const tileSize = this.tileSize;
-        const height = this.drawarea.height;
+        const height = this.boardHeight;
         ctx.save();
         for (let move of this.validMoves){
             if (move === null){
@@ -358,7 +360,7 @@ class Board {
         //invert y coordinates
         return {
             x: evt.clientX - rect.left,
-            y: this.drawarea.height - (evt.clientY - rect.top)
+            y: this.boardHeight - (evt.clientY - rect.top)
         };
     }
     
