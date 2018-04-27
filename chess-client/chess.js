@@ -297,6 +297,8 @@ class Board {
     }
 
     draw(){
+        this.drawarea.getContext('2d')
+        .clearRect(0, 0, this.drawarea.width, this.drawarea.height);
         this.drawBackground();
         this.drawPieces();
         this.drawValidMoves();
@@ -315,6 +317,23 @@ class Board {
             }
             colors.reverse();
         }
+        ctx.strokeStyle = "black";
+        ctx.moveTo(0, this.boardHeight);
+        ctx.lineTo(this.boardWidth, this.boardHeight);
+        ctx.lineTo(this.boardWidth, 0);
+        ctx.stroke();
+        const files = "abcdefgh";
+        ctx.save();
+        ctx.fillStyle = "black";
+        const fontSize = this.tileSize/2;
+        ctx.font = fontSize + "px Verdana";
+        for (let i = 0; i < files.length; i += 1){
+            ctx.fillText(files[i], i*this.tileSize+fontSize/2, this.drawarea.height-fontSize/2);
+        }
+        for (let i = 0; i < this.tiles.length; i += 1){
+            ctx.fillText(i+1, this.boardWidth+fontSize/2, (this.drawarea.height-i*this.tileSize)-this.tileSize-fontSize/2);
+        }
+        ctx.restore();
     }
 
     drawPieces() {
