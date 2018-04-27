@@ -427,12 +427,15 @@ class Board {
         const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null){
             const tile = this.tiles[tilePos.y][tilePos.x];
-            if (!tile){
+            if (!tile || (tilePos.x === this.dragOrigin.x && tilePos.y === this.dragOrigin.y)){
                 this.tiles[this.dragOrigin.y][this.dragOrigin.x].piece = this.dragPiece;
+                this.dragPiece = null;
+                console.log("Nothing...");
             }else{
                 tile.piece = this.dragPiece;
                 this.dragPiece = null;
                 this.validMoves = null;
+                console.log("Send move to server");
             }
         }
         this.dragOrigin = null;
