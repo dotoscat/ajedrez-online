@@ -427,9 +427,13 @@ class Board {
         const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null){
             const tile = this.tiles[tilePos.y][tilePos.x];
-            tile.piece = this.dragPiece;
-            this.dragPiece = null;
-            this.validMoves = null;
+            if (!tile){
+                this.tiles[this.dragOrigin.y][this.dragOrigin.x].piece = this.dragPiece;
+            }else{
+                tile.piece = this.dragPiece;
+                this.dragPiece = null;
+                this.validMoves = null;
+            }
         }
         this.dragOrigin = null;
         this.draw();
