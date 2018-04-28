@@ -237,6 +237,7 @@ class Board {
         this.dragOrigin = null;
         this.dragPiece = null;
         this.validMoves = null;
+        this.lastPos = null;
         const files = "abcdefgh";
         for (let y = 0; y < 8; y += 1){
             this.tiles[y] = new Array(8);
@@ -349,6 +350,13 @@ class Board {
                 ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize-tileSize/8.);
             }
         }
+        console.log("lastPos", this.lastPos);
+        if (this.lastPos){
+            ctx.save();
+            ctx.fillStyle = "#0000FF77";
+            ctx.fillRect(this.lastPos.x*tileSize, height-this.lastPos.y*tileSize-tileSize, tileSize, tileSize);
+            ctx.restore();
+        }
     }
 
     drawValidMoves(){
@@ -439,6 +447,7 @@ class Board {
                 this.validMoves = null;
                 console.log("Nothing...");
             }else{
+                this.lastPos = this.dragOrigin;
                 tile.piece = this.dragPiece;
                 this.dragPiece = null;
                 this.validMoves = null;
