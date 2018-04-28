@@ -416,6 +416,9 @@ class Board {
             this.tiles[tilePos.y][tilePos.x].piece = null;
             console.log("on start drag", tilePos, piece);
         }
+        if (this.dragPiece === null){
+            return;
+        }
         this.draw();
         const pos = this.getMousePosTopLeft(evt);
         const ctx = this.drawarea.getContext("2d");
