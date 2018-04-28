@@ -427,9 +427,13 @@ class Board {
         const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null){
             const tile = this.tiles[tilePos.y][tilePos.x];
-            if (!tile || (tilePos.x === this.dragOrigin.x && tilePos.y === this.dragOrigin.y)){
+            const isValidMove = this.validMoves.find(
+                position => position[0] === tilePos.x && position[1] === tilePos.y);
+            if (!tile || (tilePos.x === this.dragOrigin.x && tilePos.y === this.dragOrigin.y)
+                || !isValidMove){
                 this.tiles[this.dragOrigin.y][this.dragOrigin.x].piece = this.dragPiece;
                 this.dragPiece = null;
+                this.validMoves = null;
                 console.log("Nothing...");
             }else{
                 tile.piece = this.dragPiece;
