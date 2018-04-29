@@ -13,8 +13,8 @@
 		<script>
 			const HOST = "{{ host }}";
 			const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-			const board = new BoardViewer(document.getElementById("board"));
-			board.setFromFEN(startingPosition);
+			const board = new Board(startingPosition);
+			const boardViewer = new BoardViewer(document.getElementById("board"), board);
 		</script>
 	</body>
 </html>

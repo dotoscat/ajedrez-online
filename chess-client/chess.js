@@ -227,17 +227,9 @@ function rankMoves(x, y, piece, tiles){
     return validMoves;
 }
 
-class BoardViewer {
-    constructor (drawarea, tileSize) {
-        this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
-        this.drawarea = drawarea;
-        this.boardWidth = this.tileSize*8;
-        this.boardHeight = this.tileSize*8;
+class Board {
+    constructor(FENdata) {
         this.tiles = new Array(8);
-        this.dragOrigin = null;
-        this.dragPiece = null;
-        this.validMoves = null;
-        this.lastPos = null;
         const files = "abcdefgh";
         for (let y = 0; y < 8; y += 1){
             this.tiles[y] = new Array(8);
@@ -245,15 +237,69 @@ class BoardViewer {
                 this.tiles[y][x] = new Tile(files[x], y+1);
             }
         }
+        if (typeof FENdata === "string"){
+            this.setFromFEN(FENdata);
+        }
+    }
+    
+    setFromFEN(data){
+        const positions = data.split(' ')[0];
+        const ranks = positions.split('/').reverse();
+        for (let y = 0; y < ranks.length; y += 1){
+            const rank = ranks[y];
+            for (let x = 0, r = 0; r < rank.length; r += 1) {
+                const value = rank[r];
+                const number = Number(value);
+                if (Number.isNaN(number)) {
+                    const piece = FENConversion[value];
+                    this.tiles[y][x].piece = piece;
+                    x += 1;
+                } else {
+                    x += number;
+                }
+            }
+        }
+    }
+    
+    getValidMovesOf(x, y){
+        const piece = this.tiles[y][x].piece;
+        if (piece === null || !piece.moves){
+            return null;
+        }
+        let validMoves = null;
+        console.log("getValidMovesOf", x, y)
+        switch(piece.moves.type){
+            case 'pawn':
+                validMoves = pawnMoves(x, y, piece, this.tiles);
+            break;
+            case 'knight':
+                validMoves = knightMoves(x, y, piece, this.tiles);
+            break;
+            case 'range':
+                validMoves = rankMoves(x, y, piece, this.tiles);
+            break;
+        }
+        return validMoves;
+    }
+}
+
+class BoardViewer {
+    constructor (drawarea, board, tileSize) {
+        this.board = board;
+        this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
+        this.drawarea = drawarea;
+        this.boardWidth = this.tileSize*8;
+        this.boardHeight = this.tileSize*8;
+        this.dragOrigin = null;
+        this.dragPiece = null;
+        this.validMoves = null;
+        this.lastPos = null;
         drawarea.width = this.tileSize*8+this.tileSize;
         drawarea.height = this.tileSize*8+this.tileSize;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
         this.drawarea.getContext("2d").font = this.tileSize + "px Verdana";
-        // TODO: debug
-        this.tiles[1][1].piece = WhitePiece.KING;
-        this.draw();
     }
 
     getValidMovesOf(x, y){
