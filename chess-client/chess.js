@@ -227,7 +227,7 @@ function rankMoves(x, y, piece, tiles){
     return validMoves;
 }
 
-class Board {
+class BoardViewer {
     constructor (drawarea, tileSize) {
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
         this.drawarea = drawarea;
