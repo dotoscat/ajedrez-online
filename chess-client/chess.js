@@ -302,47 +302,6 @@ class BoardViewer {
         this.drawarea.getContext("2d").font = this.tileSize + "px Verdana";
     }
 
-    getValidMovesOf(x, y){
-        const piece = this.tiles[y][x].piece;
-        if (piece === null || !piece.moves){
-            return null;
-        }
-        let validMoves = null;
-        console.log("getValidMovesOf", x, y)
-        switch(piece.moves.type){
-            case 'pawn':
-                validMoves = pawnMoves(x, y, piece, this.tiles);
-            break;
-            case 'knight':
-                validMoves = knightMoves(x, y, piece, this.tiles);
-            break;
-            case 'range':
-                validMoves = rankMoves(x, y, piece, this.tiles);
-            break;
-        }
-        return validMoves;
-    }
-
-    setFromFEN(data){
-        const positions = data.split(' ')[0];
-        const ranks = positions.split('/').reverse();
-        for (let y = 0; y < ranks.length; y += 1){
-            const rank = ranks[y];
-            for (let x = 0, r = 0; r < rank.length; r += 1) {
-                const value = rank[r];
-                const number = Number(value);
-                if (Number.isNaN(number)) {
-                    const piece = FENConversion[value];
-                    this.tiles[y][x].piece = piece;
-                    x += 1;
-                } else {
-                    x += number;
-                }
-            }
-        }
-        this.draw();
-    }
-
     draw(){
         this.drawarea.getContext('2d')
         .clearRect(0, 0, this.drawarea.width, this.drawarea.height);
@@ -377,7 +336,7 @@ class BoardViewer {
         for (let i = 0; i < files.length; i += 1){
             ctx.fillText(files[i], i*this.tileSize+fontSize/2, this.drawarea.height-fontSize/2);
         }
-        for (let i = 0; i < this.tiles.length; i += 1){
+        for (let i = 0; i < this.board.tiles.length; i += 1){
             ctx.fillText(i+1, this.boardWidth+fontSize/2, (this.drawarea.height-i*this.tileSize)-this.tileSize-fontSize/2);
         }
         ctx.restore();
@@ -387,10 +346,11 @@ class BoardViewer {
         const tileSize = this.tileSize;
         const height = this.boardHeight;
         const ctx = this.drawarea.getContext("2d");
+        const boardTiles = this.board.tiles;
         ctx.fillStyle = "black";
         for (let y = 0; y < 8; y += 1){
             for(let x = 0; x < 8; x += 1){
-                const tile = this.tiles[y][x];
+                const tile = boardTiles[y][x];
                 if (tile.piece === null)
                     continue;
                 ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize-tileSize/8.);
