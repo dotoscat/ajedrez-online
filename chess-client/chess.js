@@ -298,6 +298,10 @@ class Board {
         return droppedPiece;
     }
 
+    getTile(x, y){
+        return this.tiles[y][x];
+    }
+
 }
 
 class BoardViewer {
@@ -442,9 +446,8 @@ class BoardViewer {
             return;
         } else if (this.dragPiece === null){
             const tilePos = this.dragOrigin;
-            const piece = this.tiles[tilePos.y][tilePos.x].piece;
+            const piece = this.board.takePiece(tilePos.x, tilePos.y);
             this.dragPiece = piece;
-            this.tiles[tilePos.y][tilePos.x].piece = null;
             console.log("on start drag", tilePos, piece);
         }
         if (this.dragPiece === null){
@@ -460,18 +463,18 @@ class BoardViewer {
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null){
-            const tile = this.tiles[tilePos.y][tilePos.x];
+            const tile = this.board.getTile(tilePos.x, tilePos.y);
             const isValidMove = this.validMoves.find(
                 position => position[0] === tilePos.x && position[1] === tilePos.y);
             if (!tile || (tilePos.x === this.dragOrigin.x && tilePos.y === this.dragOrigin.y)
                 || !isValidMove){
-                this.tiles[this.dragOrigin.y][this.dragOrigin.x].piece = this.dragPiece;
+                this.board.putPiece(this.dragOrigin.x, this.dragOrigin.y, this.dragPiece);
                 this.dragPiece = null;
                 this.validMoves = null;
                 console.log("Nothing...");
             }else{
                 this.lastPos = this.dragOrigin;
-                tile.piece = this.dragPiece;
+                this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
                 this.dragPiece = null;
                 this.validMoves = null;
                 console.log("Send move to server");
