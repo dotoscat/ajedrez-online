@@ -281,6 +281,11 @@ class Board {
         }
         return validMoves;
     }
+
+    hasPiece(x, y) {
+        return this.tiles[y][x].piece !== null;
+    }
+
 }
 
 class BoardViewer {
@@ -377,7 +382,7 @@ class BoardViewer {
             if (move === null){
                 continue;
             }
-            if (this.tiles[move[1]][move[0]].piece === null){
+            if (!this.board.hasPiece(move[0], move[1])){
                 ctx.fillStyle = '#00FF0077';
             }else{
                 ctx.fillStyle = '#FF000077';
@@ -416,7 +421,7 @@ class BoardViewer {
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         this.dragOrigin = tilePos;
-        this.validMoves = this.getValidMovesOf(tilePos.x, tilePos.y);
+        this.validMoves = this.board.getValidMovesOf(tilePos.x, tilePos.y);
         this.draw();
     }
 
