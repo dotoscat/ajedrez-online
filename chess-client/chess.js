@@ -286,6 +286,18 @@ class Board {
         return this.tiles[y][x].piece !== null;
     }
 
+    takePiece(x, y){
+        const piece = this.tiles[y][x].piece;
+        this.tiles[y][x].piece = null;
+        return piece;
+    }
+
+    putPiece(x, y, piece){
+        const droppedPiece = this.takePiece(x, y);
+        this.tiles[y][x].piece = piece;
+        return droppedPiece;
+    }
+
 }
 
 class BoardViewer {
