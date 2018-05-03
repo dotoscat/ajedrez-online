@@ -11,6 +11,10 @@ canvas {
     margin-bottom: 1em;
 }
 
+#messages p {
+    margin: 0;
+}
+
 .center {
     display: block;
     width: auto;
