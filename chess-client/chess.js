@@ -327,6 +327,7 @@ class BoardViewer {
         this.dragPiece = null;
         this.validMoves = null;
         this.lastPos = null;
+        this.newPos = null;
         drawarea.width = this.tileSize*8+this.tileSize;
         drawarea.height = this.tileSize*8+this.tileSize;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
@@ -381,6 +382,12 @@ class BoardViewer {
         const ctx = this.drawarea.getContext("2d");
         const boardTiles = this.board.tiles;
         ctx.fillStyle = "black";
+        if(this.newPos){
+            ctx.save();
+            ctx.fillStyle = "#0000FF77";
+            ctx.fillRect(this.newPos.x*tileSize, height-this.newPos.y*tileSize-tileSize, tileSize, tileSize);
+            ctx.restore();
+        }
         for (let y = 0; y < 8; y += 1){
             for(let x = 0; x < 8; x += 1){
                 const tile = boardTiles[y][x];
@@ -389,7 +396,6 @@ class BoardViewer {
                 ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize-tileSize/8.);
             }
         }
-        console.log("lastPos", this.lastPos);
         if (this.lastPos){
             ctx.save();
             ctx.fillStyle = "#0000FF77";
@@ -486,6 +492,7 @@ class BoardViewer {
                 console.log("Nothing...");
             }else{
                 this.lastPos = this.dragOrigin;
+                this.newPos = tilePos;
                 this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
                 this.dragPiece = null;
                 this.validMoves = null;
