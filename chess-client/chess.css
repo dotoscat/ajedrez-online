@@ -2,6 +2,15 @@ canvas {
     border: solid;
 }
 
+#messages {
+    width: 32em;
+    height: 3em;
+    overflow-y: scroll;
+    border: solid;
+    padding-left: 1em;
+    margin-bottom: 1em;
+}
+
 .center {
     display: block;
     width: auto;

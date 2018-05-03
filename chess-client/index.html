@@ -9,12 +9,62 @@
 	<body>
 		<h1>Chess &#9816;</h1>
 		<noscript>Please, enable JavaScript</noscript>
-		<canvas class="center" id="board"></canvas>
+		<!--<section id="game">-->
+			<div id="messages" class="center">
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+				<p>Mensajes</p>
+			</div>
+			<canvas id="board" class="center"></canvas>
+		<!--</section>-->
 		<script>
 			const HOST = "{{ host }}";
 			const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 			const board = new Board(startingPosition);
-			const boardViewer = new BoardViewer(document.getElementById("board"), board);
+			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2);
 			boardViewer.draw();
 		</script>
 	</body>
