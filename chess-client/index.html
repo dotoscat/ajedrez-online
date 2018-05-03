@@ -4,6 +4,7 @@
 		<meta charset="utf8">
 		<title>Chess online &#9816;</title>
 		<link rel="stylesheet" type="text/css" href="chess.css">
+		<script src="messages.js"></script>
 		<script src="chess.js"></script>
 	</head>
 	<body>
@@ -11,52 +12,6 @@
 		<noscript>Please, enable JavaScript</noscript>
 		<!--<section id="game">-->
 			<div id="messages" class="center">
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
-				<p>Mensajes</p>
 			</div>
 			<canvas id="board" class="center"></canvas>
 		<!--</section>-->
@@ -65,6 +20,7 @@
 			const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 			const board = new Board(startingPosition);
 			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2);
+			const messages = new Messages(document.getElementById("messages"));
 			boardViewer.draw();
 		</script>
 	</body>
