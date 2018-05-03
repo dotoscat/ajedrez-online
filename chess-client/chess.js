@@ -262,6 +262,10 @@ class Board {
     }
     
     getValidMovesOf(x, y){
+        if (y < 0 || y >= this.tiles.length
+            || x < 0 || x >= this.tiles[y].length){
+            return null;
+        }
         const piece = this.tiles[y][x].piece;
         if (piece === null || !piece.moves){
             return null;
@@ -283,10 +287,18 @@ class Board {
     }
 
     hasPiece(x, y) {
+        if (y < 0 || y >= this.tiles.length
+            || x < 0 || x >= this.tiles[y].length){
+            return false;
+        }
         return this.tiles[y][x].piece !== null;
     }
 
     takePiece(x, y){
+        if (y < 0 || y >= this.tiles.length
+            || x < 0 || x >= this.tiles[y].length){
+            return null;
+        }
         const piece = this.tiles[y][x].piece;
         this.tiles[y][x].piece = null;
         return piece;
