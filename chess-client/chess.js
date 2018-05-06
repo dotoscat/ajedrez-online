@@ -139,6 +139,8 @@ class Tile {
 }
 
 function pawnMoves(x, y, piece, tiles) {
+    const WHITE_PAWNS_ORIGIN = 1;
+    const BLACK_PAWNS_ORIGIN = 6;
     const validMoves = [];
     for (let move of piece.moves.moves){
         const newX = x + move[0];
@@ -150,6 +152,10 @@ function pawnMoves(x, y, piece, tiles) {
         }
         if (tiles[newY][newX].piece === null){
             validMoves.push([newX, newY]);
+            if ((piece === WhitePiece.PAWN && y !== WHITE_PAWNS_ORIGIN)
+                || piece === BlackPiece.PAWN && y !== BLACK_PAWNS_ORIGIN){
+                break;
+            }
         }else{
             break;
         }
