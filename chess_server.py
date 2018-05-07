@@ -20,6 +20,7 @@ import selectors
 import logging
 import random
 import chess
+import aiohttp
 from aiohttp import web
 import aiohttp_jinja2
 import jinja2
@@ -148,7 +149,25 @@ def main():
         response = aiohttp_jinja2.render_template('index.html', request, {"host": args.ip})
         return response
    
+    async def websocket_handler(request):
+        ws = web.WebSocketResponse()
+        await ws.prepare(request)
+
+        async for msg in ws:
+            if msg.type == aiohttp.WSMsgType.TEXT:
+                if msg.data == 'close':
+                    await ws.close()
+                else:
+                    await ws.send_str(msg.data + '/answer')
+            elif msg.type == aiohttp.WSMsgType.ERROR:
+                print('ws connection clossed with exception {}'.format(ws.exception()))
+
+        print('websocket connection closed')
+
+        return ws
+
     app.router.add_get("/", index)
+    app.router.add_get("/ws", websocket_handler)
     app.router.add_static("/", "chess-client")
     web.run_app(app, host=args.ip, port=args.port)
     # server = Server(args.ip, args.port)
