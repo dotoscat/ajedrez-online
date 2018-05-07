@@ -145,10 +145,8 @@ def main():
         loader=jinja2.FileSystemLoader('chess-client'))
 
     async def index(request):
-        html = open("chess-client/index.html").read()
         response = aiohttp_jinja2.render_template('index.html', request, {"host": args.ip})
         return response
-        # return web.Response(text=html, content_type="text/html")
    
     app.router.add_get("/", index)
     app.router.add_static("/", "chess-client")
