@@ -146,7 +146,10 @@ def main():
         loader=jinja2.FileSystemLoader('chess-client'))
 
     async def index(request):
-        response = aiohttp_jinja2.render_template('index.html', request, {"host": args.ip})
+        response = aiohttp_jinja2.render_template(
+            'index.html',
+            request, 
+            {"host": args.ip, "port": args.port})
         return response
    
     async def websocket_handler(request):
