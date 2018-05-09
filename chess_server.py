@@ -64,6 +64,9 @@ class Game:
         self.players.append(player)
         return True
 
+    def remove_player(self, player):
+        self.players.remove(player)
+
 def main():
     ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
 
@@ -84,7 +87,8 @@ def main():
         return response
    
     async def websocket_handler(request):
-        print("request peer", request.transport.get_extra_info("peername"))
+        peer = request.transport.get_extra_info("peername")
+        print("request peer", peer)
         ws = web.WebSocketResponse()
         await ws.prepare(request)
 
@@ -102,8 +106,14 @@ def main():
                     await ws.send_str(msg.data + '/answer')
             elif msg.type == aiohttp.WSMsgType.ERROR:
                 print('ws connection clossed with exception {}'.format(ws.exception()))
+            elif msg.type == aiohttp.WSMsgType.CLOSE:
+                print(peer, "close")
+            elif msg.type == aiohttp.WSMsgType.CLOSED:
+                print(peer, "closed")
 
         print('websocket connection closed')
+
+        game.remove_player(ws)
 
         return ws
 
