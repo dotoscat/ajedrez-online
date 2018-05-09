@@ -24,6 +24,12 @@
 			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2);
 			const messages = new Messages(document.getElementById("messages"));
 			boardViewer.draw();
+			const conn = new WebSocket('ws://' + ADDRESS + '/ws');
+			conn.addEventListener('open', (event) => {
+				//console.log("something", something, this);
+				event.target.send("Hola mundo");
+			});
+			conn.addEventListener('message', event => messages.add(event.data));
 		</script>
 	</body>
 </html>

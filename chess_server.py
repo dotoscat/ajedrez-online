@@ -48,24 +48,21 @@ class Player:
         self.conn.sendall(data)
 
 class Game:
-    def __init__(self, white:Player=None, black:Player=None):
-        self.white = white
-        self.black = black
+    def __init__(self):
+        self.white = None
+        self.black = None
         self.board = chess.Board()
-        self.current = white
+        self.players = []
 
-    def do_move(self, color, move):
-        if self.current.color != color:
+    @property
+    def unpaired(self):
+        return len(self.players) != 2
+
+    def add_player(self, player):
+        if not self.unpaired:
             return False
-        self.board.push_uci(move)
-        if self.current == self.white:
-            self.current = self.black
-        else:
-            self.current = self.white
+        self.players.append(player)
         return True
-
-    def send_move_to_current(self, data):
-        self.current.send_data(data)
 
 class Server:
     def __init__(self, ip, port):
@@ -153,8 +150,15 @@ def main():
         return response
    
     async def websocket_handler(request):
+        print("request peer", request.transport.get_extra_info("peername"))
         ws = web.WebSocketResponse()
         await ws.prepare(request)
+
+        game = request.app['game']
+        game.add_player(ws)
+
+        if not game.unpaired:
+            print("Start GAME!")
 
         async for msg in ws:
             if msg.type == aiohttp.WSMsgType.TEXT:
@@ -168,6 +172,8 @@ def main():
         print('websocket connection closed')
 
         return ws
+
+    app['game'] = Game()
 
     app.router.add_get("/", index)
     app.router.add_get("/ws", websocket_handler)
