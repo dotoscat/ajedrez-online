@@ -31,26 +31,13 @@ logging.basicConfig(format="%(pathname)s:%(module)s:%(levelname)s:%(message)s", 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class Player:
-    def __init__(self, conn, addr):
-        self.conn = conn
-        self.addr = addr
+    def __init__(self, ws):
+        self.ws = ws
         self.color = None
-
-    def __del__(self):
-        self.conn.close()
-
-    def assign_color(self, color):
-        self.color = color
-        data = protocol.startgame.pack(protocol.STARTGAME, color)
-        self.conn.sendall(data)
-
-    def send_data(self, data):
-        self.conn.sendall(data)
+        self.ready = False
 
 class Game:
     def __init__(self):
-        self.white = None
-        self.black = None
         self.board = chess.Board()
         self.players = []
 
@@ -58,10 +45,11 @@ class Game:
     def unpaired(self):
         return len(self.players) != 2
 
-    def add_player(self, player):
+    def add_player(self, ws):
         if not self.unpaired:
             return False
-        self.players.append(player)
+        player = Player(ws)
+        self.players.append(player) 
         return True
 
     def remove_player(self, player):
@@ -74,8 +62,8 @@ class Game:
         random.shuffle(random_players)
         self.white = random_players.pop()
         self.black = random_players.pop()
-        await send_start_game(self.white, "WHITE")
-        await send_start_game(self.black, "BLACK")
+        await send_start_game(self.white.ws, "WHITE")
+        await send_start_game(self.black.ws, "BLACK")
         return True
 
 async def send_start_game(ws, color):
