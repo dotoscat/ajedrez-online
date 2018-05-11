@@ -10,9 +10,9 @@ class Game{
     }
 
     dispatchMessage(event){
-        const message = event.data;
+        const message = JSON.parse(event.data);
         console.log("message", message);
-        switch(message.startGame){
+        switch(message.command){
             case "STARTGAME":
                 this.startGame(message);
             break;
