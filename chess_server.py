@@ -67,6 +67,21 @@ class Game:
     def remove_player(self, player):
         self.players.remove(player)
 
+    async def start(self):
+        if self.unpaired:
+            return False
+        random_players = list(self.players)
+        random.shuffle(random_players)
+        self.white = random_players.pop()
+        self.black = random_players.pop()
+        await send_start_game(self.white, "WHITE")
+        await send_start_game(self.black, "BLACK")
+        return True
+
+async def send_start_game(ws, color):
+    message = {"command": "STARTGAME", "color": color}
+    await ws.send_json(message)
+
 def main():
     ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
 
@@ -96,6 +111,7 @@ def main():
         game.add_player(ws)
 
         if not game.unpaired:
+            await game.start()
             print("Start GAME!")
 
         async for msg in ws:
