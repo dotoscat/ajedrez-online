@@ -334,6 +334,7 @@ class BoardViewer {
         this.validMoves = null;
         this.lastPos = null;
         this.newPos = null;
+        this._block = false;
         drawarea.width = this.tileSize*8+this.tileSize;
         drawarea.height = this.tileSize*8+this.tileSize;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
@@ -458,6 +459,8 @@ class BoardViewer {
     }
 
     onMouseDown(evt){
+        if (this._block)
+            return;
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         this.dragOrigin = tilePos;
@@ -466,7 +469,7 @@ class BoardViewer {
     }
 
     onMouseMove(evt){
-        if (this.dragOrigin === null){
+        if (this._block || this.dragOrigin === null){
             return;
         } else if (this.dragPiece === null){
             const tilePos = this.dragOrigin;
@@ -484,6 +487,8 @@ class BoardViewer {
     }
 
     onMouseUp(evt) {
+        if (this._block)
+            return;
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null){
