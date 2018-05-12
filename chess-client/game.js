@@ -26,6 +26,7 @@ class Game{
         this.playing = true;
         this.assignedColor = message.color;
         messages.add("Game start! You are " + message.color + ".");
+        this.boardView.block = message.color !== "WHITE";
     }
 
     playerQuits(message){
