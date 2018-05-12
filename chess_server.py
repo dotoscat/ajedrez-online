@@ -53,7 +53,7 @@ class Game:
         return True
 
     async def remove_player(self, ws):
-        player = [p for p in self.players if p.ws == ws][0]
+        player = [p for p in self.players if p.ws is ws][0]
         self.players.remove(player)
         if self.white == player:
             self.white = None
@@ -120,7 +120,7 @@ def main():
                 if msg.data == 'close':
                     await ws.close()
                 else:
-                    await ws.send_str(msg.data + '/answer')
+                    await ws.send_json({'command': msg.data})
             elif msg.type == aiohttp.WSMsgType.ERROR:
                 print('ws connection clossed with exception {}'.format(ws.exception()))
             elif msg.type == aiohttp.WSMsgType.CLOSE:
