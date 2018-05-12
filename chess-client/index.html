@@ -26,6 +26,7 @@
 			const conn = new WebSocket('ws://' + ADDRESS + '/ws');
 			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2);
 			const messages = new Messages(document.getElementById("messages"));
+			messages.add("Waiting a player...");
 			boardViewer.draw();
 			const game = new Game(conn, boardViewer, messages);
 		</script>

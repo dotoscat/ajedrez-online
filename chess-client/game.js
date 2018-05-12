@@ -31,6 +31,7 @@ class Game{
     playerQuits(message){
         this.playing = false;
         messages.add("Player " + message.color + " quits from the match.");
+        messages.add("Waiting a player...");
     }
 
 }
