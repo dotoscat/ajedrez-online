@@ -52,8 +52,14 @@ class Game:
         self.players.append(player) 
         return True
 
-    def remove_player(self, player):
+    async def remove_player(self, ws):
+        player = [p for p in self.players if p.ws == ws][0]
         self.players.remove(player)
+        if self.white == player:
+            self.white = None
+        else:
+            self.black = None
+        await send_player_quits(self.players[0].ws, player.color)
 
     async def start(self):
         if self.unpaired:
@@ -61,10 +67,16 @@ class Game:
         random_players = list(self.players)
         random.shuffle(random_players)
         self.white = random_players.pop()
+        self.white.color = "WHITE"
         self.black = random_players.pop()
+        self.black.color = "BLACK"
         await send_start_game(self.white.ws, "WHITE")
         await send_start_game(self.black.ws, "BLACK")
         return True
+
+async def send_player_quits(ws, color):
+    message = {"command": "PLAYERQUITS", "color": color}
+    await ws.send_json(message)
 
 async def send_start_game(ws, color):
     message = {"command": "STARTGAME", "color": color}
@@ -117,7 +129,7 @@ def main():
 
         print('websocket connection closed')
 
-        game.remove_player(ws)
+        await game.remove_player(ws)
 
         return ws
 

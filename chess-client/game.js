@@ -16,13 +16,21 @@ class Game{
             case "STARTGAME":
                 this.startGame(message);
             break;
+            case "PLAYERQUITS":
+                this.playerQuits(message);
+            break;
         }
     }
 
     startGame(message){
         this.playing = true;
         this.assignedColor = message.color;
-        messages.add("Game start! You are " + message.color);
+        messages.add("Game start! You are " + message.color + ".");
+    }
+
+    playerQuits(message){
+        this.playing = false;
+        messages.add("Player " + message.color + " quits from the match.");
     }
 
 }
