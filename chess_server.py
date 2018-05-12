@@ -59,7 +59,8 @@ class Game:
             self.white = None
         else:
             self.black = None
-        await send_player_quits(self.players[0].ws, player.color)
+        if self.players:
+            await send_player_quits(self.players[0].ws, player.color)
 
     async def start(self):
         if self.unpaired:
