@@ -53,6 +53,8 @@ class Game:
         return True
 
     async def remove_player(self, ws):
+        if not self.players:
+            return False
         player = [p for p in self.players if p.ws is ws][0]
         self.players.remove(player)
         if self.white == player:
@@ -61,6 +63,7 @@ class Game:
             self.black = None
         if self.players:
             await send_player_quits(self.players[0].ws, player.color)
+        return True
 
     async def start(self):
         if self.unpaired:
