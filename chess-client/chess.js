@@ -509,6 +509,9 @@ class BoardViewer {
                 this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
                 this.dragPiece = null;
                 this.validMoves = null;
+                const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
+                const currentTile = this.board.getTile(tilePos.x, tilePos.y);
+                sendUCI(this.conn, lastTile.name, currentTile.name, this.assignedColor);
                 console.log("Send move to server");
             }
         }
