@@ -24,7 +24,7 @@
 			const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 			const board = new Board(startingPosition);
 			const conn = new WebSocket('ws://' + ADDRESS + '/ws');
-			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2);
+			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2, conn);
 			const messages = new Messages(document.getElementById("messages"));
 			messages.add("Waiting a player...");
 			boardViewer.draw();

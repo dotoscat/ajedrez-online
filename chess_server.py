@@ -123,7 +123,7 @@ def main():
                 if msg.data == 'close':
                     await ws.close()
                 else:
-                    await ws.send_json({'command': msg.data})
+                    await ws.send_json({'command': 'DATA', 'data': msg.data})
             elif msg.type == aiohttp.WSMsgType.ERROR:
                 print('ws connection clossed with exception {}'.format(ws.exception()))
             elif msg.type == aiohttp.WSMsgType.CLOSE:

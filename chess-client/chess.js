@@ -323,7 +323,8 @@ class Board {
 }
 
 class BoardViewer {
-    constructor (drawarea, board, tileSize) {
+    constructor (drawarea, board, tileSize, conn) {
+        this.conn = conn;
         this.board = board;
         this.tileSize = typeof tileSize !== "undefined" ? tileSize : 64;
         this.drawarea = drawarea;
