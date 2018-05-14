@@ -1,7 +1,6 @@
 class Game{
     constructor(conn, boardView, messages){
         this.conn = conn;
-        this.assignedColor = null;
         this.boardView = boardView;
         this.messages = messages;
         this.playing = false;
@@ -24,7 +23,7 @@ class Game{
 
     startGame(message){
         this.playing = true;
-        this.assignedColor = message.color;
+        this.boardView.assignedColor = message.color;
         messages.add("Game start! You are " + message.color + ".");
         this.boardView.block = message.color !== "WHITE";
     }

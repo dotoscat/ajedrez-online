@@ -336,6 +336,7 @@ class BoardViewer {
         this.lastPos = null;
         this.newPos = null;
         this.block = false;
+        this.assignedColor = null;
         drawarea.width = this.tileSize*8+this.tileSize;
         drawarea.height = this.tileSize*8+this.tileSize;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
