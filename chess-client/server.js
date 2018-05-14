@@ -4,5 +4,5 @@ function sendToServer(conn, command, data) {
 }
 
 function sendUCI(conn, from, to, color){
-    sendToServer(conn, "SENDPIECE", {'from': from, 'to': to, 'color': color});
+    sendToServer(conn, "SENDMOVE", {'from': from, 'to': to, 'color': color});
 }

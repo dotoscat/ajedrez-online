@@ -74,9 +74,31 @@ class Game:
         self.white.color = "WHITE"
         self.black = random_players.pop()
         self.black.color = "BLACK"
+        self.board.reset()
         await send_start_game(self.white.ws, "WHITE")
         await send_start_game(self.black.ws, "BLACK")
         return True
+
+    async def dispatch_message(self, message):
+        print("message", message)
+        command = message['command']
+        if command == 'SENDMOVE':
+            await self.send_move(message)
+
+    async def send_move(self, message):
+        turn = message['color'] == 'WHITE'
+        if turn == self.board.turn:
+            move = chess.Move.from_uci(message['from'] + message['to'])
+            san = self.board.san(move)
+            ws = self.white.ws if message['color'] == 'WHITE' else self.black.ws
+            message = {
+                "command": "OKMOVE",
+                "color": message['color'],
+                "san": san,
+                "turn": self.board.fullmove_number}
+            await ws.send_json(message)
+        else:
+            print("Move no ok")
 
 async def send_player_quits(ws, color):
     message = {"command": "PLAYERQUITS", "color": color}
@@ -123,6 +145,7 @@ def main():
                 if msg.data == 'close':
                     await ws.close()
                 else:
+                    await game.dispatch_message(msg.json())
                     await ws.send_json({'command': 'DATA', 'data': msg.data})
             elif msg.type == aiohttp.WSMsgType.ERROR:
                 print('ws connection clossed with exception {}'.format(ws.exception()))
