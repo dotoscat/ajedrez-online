@@ -25,4 +25,9 @@ class Messages {
         this.element.scrollTo(0, this.element.scrollHeight);
     }
 
+    addToLast(content, separator){
+        const sep = typeof separator === 'undefined' ? ' ' : separator;
+        this.element.lastChild.innerText += sep + content;
+    }
+
 }
