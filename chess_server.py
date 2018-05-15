@@ -90,6 +90,7 @@ class Game:
         if turn == self.board.turn:
             move = chess.Move.from_uci(message['from'] + message['to'])
             san = self.board.san(move)
+            self.board.push(move)
             ws = self.white.ws if message['color'] == 'WHITE' else self.black.ws
             rival_ws = self.white.ws if message['color'] != 'WHITE' else self.black.ws
             okmove = {
