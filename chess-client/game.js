@@ -46,6 +46,7 @@ class Game{
     }
 
     playerMove(message){
+        this.boardView.pushMove(message.from, message.to);
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = false;
     }

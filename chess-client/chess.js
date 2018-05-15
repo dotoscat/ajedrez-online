@@ -316,6 +316,11 @@ class Board {
         return droppedPiece;
     }
 
+    movePiece(from, to){
+        const piece = this.takePiece(from.x, from.y);
+        return this.putPiece(to.x, to.y, piece);
+    }
+
     getTile(x, y){
         return this.tiles[y][x];
     }
@@ -519,6 +524,13 @@ class BoardViewer {
             }
         }
         this.dragOrigin = null;
+        this.draw();
+    }
+
+    pushMove(from, to){
+        this.lastPos = from;
+        this.newPos = to;
+        this.board.movePiece(from, to);
         this.draw();
     }
 
