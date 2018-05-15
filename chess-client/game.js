@@ -21,6 +21,9 @@ class Game{
             case "OKMOVE":
                 this.OKMove(message);
             break;
+            case "PLAYERMOVE":
+                this.playerMove(message);
+            break;
         }
     }
 
@@ -38,15 +41,21 @@ class Game{
     }
 
     OKMove(message){
-        const color = message.color;
-        const san = message.san;
+        this.addToMessagesSAN(message.turn, message.san, message.color);
+        this.boardView.block = true;
+    }
+
+    playerMove(message){
+        this.addToMessagesSAN(message.turn, message.san, message.color);
+        this.boardView.block = true;
+    }
+
+    addToMessagesSAN(turn, san, color){
         if (color === 'WHITE'){
-            const turn = message.turn;
             this.messages.add(`${turn}. ${san}`);         
         }else{
             this.messages.addToLast(` ${san}`);
         }
-        this.boardView.block = true;
     }
 
 }
