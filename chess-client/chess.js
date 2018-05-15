@@ -180,6 +180,10 @@ function pawnMoves(x, y, piece, tiles) {
     return validMoves;
 }
 
+function isWhitePiece(piece){
+    return Object.values(WhitePiece).includes(piece);
+}
+
 function knightMoves(x, y, piece, tiles){
     const validMoves = [];
     for(let move of piece.moves.moves){
@@ -440,7 +444,6 @@ class BoardViewer {
         ctx.restore();
     }
 
-
     getMousePos(evt) {
         const rect = this.drawarea.getBoundingClientRect();
         //invert y coordinates
@@ -470,6 +473,11 @@ class BoardViewer {
             return;
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
+        const tile = this.board.getTile(tilePos.x, tilePos.y);
+        if ((isWhitePiece(tile.piece) && this.assignedColor !== "WHITE")
+        || (!isWhitePiece(tile.piece) && this.assignedColor === "WHITE")){
+            return;
+        }
         this.dragOrigin = tilePos;
         this.validMoves = this.board.getValidMovesOf(tilePos.x, tilePos.y);
         this.draw();
@@ -480,6 +488,11 @@ class BoardViewer {
             return;
         } else if (this.dragPiece === null){
             const tilePos = this.dragOrigin;
+            const validPiece = this.board.getTile(tilePos.x, tilePos.y).piece;
+            if ((isWhitePiece(validPiece) && this.assignedColor !== "WHITE")
+            || (!isWhitePiece(validPiece) && this.assignedColor === "WHITE")){
+                return;
+            }
             const piece = this.board.takePiece(tilePos.x, tilePos.y);
             this.dragPiece = piece;
             console.log("on start drag", tilePos, piece);
