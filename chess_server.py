@@ -91,12 +91,23 @@ class Game:
             move = chess.Move.from_uci(message['from'] + message['to'])
             san = self.board.san(move)
             ws = self.white.ws if message['color'] == 'WHITE' else self.black.ws
-            message = {
+            rival_ws = self.white.ws if message['color'] != 'WHITE' else self.black.ws
+            okmove = {
                 "command": "OKMOVE",
                 "color": message['color'],
                 "san": san,
-                "turn": self.board.fullmove_number}
-            await ws.send_json(message)
+                "turn": self.board.fullmove_number
+                }
+            await ws.send_json(okmove)
+            playermove = {
+                "command": "PLAYERMOVE",
+                "color": message['color'],
+                "san": san,
+                "turn": self.board.fullmove_number,
+                "from": message['fromXY'],
+                "to": message['toXY']
+                }
+            await rival_ws.send_json(playermove)
         else:
             print("Move no ok")
 
