@@ -511,7 +511,10 @@ class BoardViewer {
                 this.validMoves = null;
                 const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
                 const currentTile = this.board.getTile(tilePos.x, tilePos.y);
-                sendUCI(this.conn, lastTile.name, currentTile.name, this.assignedColor);
+                sendUCI(this.conn, lastTile.name,
+                    currentTile.name,
+                    this.lastPos, this.newPos,
+                    this.assignedColor);
                 console.log("Send move to server");
             }
         }
