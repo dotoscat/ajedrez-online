@@ -265,7 +265,8 @@ class Board {
                     this.tiles[y][x].piece = piece;
                     x += 1;
                 } else {
-                    x += number;
+                    for (let i = 0; i < number; x += 1, i += 1)
+                        this.tiles[y][x].piece = null;
                 }
             }
         }
