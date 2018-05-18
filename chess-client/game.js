@@ -21,6 +21,14 @@ class Game{
         this.playing = false;
 
         conn.addEventListener('message', this.dispatchMessage.bind(this));
+        conn.addEventListener('close', (close) => {
+            if (close.code === 1000 && close.wasClean){
+                return;
+            }
+            const message = `Connection lost with the server, ${close.code}. Reload the page.`;
+            this.messages.add(message);
+            this.boardView.block = true;
+        });
     }
 
     dispatchMessage(event){
