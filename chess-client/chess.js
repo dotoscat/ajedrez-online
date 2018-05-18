@@ -548,4 +548,9 @@ class BoardViewer {
         this.draw();
     }
 
+    quitLastPieceMove(){
+        this.lastPos = null;
+        this.newPos = null;
+    }
+
 }
