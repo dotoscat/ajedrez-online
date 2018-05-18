@@ -553,4 +553,14 @@ class BoardViewer {
         this.newPos = null;
     }
 
+    unselectCurrentPiece(){
+        this.validMoves = null;
+    }
+
+    reset(){
+        this.quitLastPieceMove();
+        this.unselectCurrentPiece();
+        this.draw();
+    }
+
 }

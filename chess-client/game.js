@@ -48,8 +48,7 @@ class Game{
         this.messages.add("Game start! You are " + message.color + ".");
         this.boardView.block = message.color !== "WHITE";
         this.boardView.board.setFromFEN(startingPosition);
-        this.boardView.quitLastPieceMove();
-        this.boardView.draw();
+        this.boardView.reset();
     }
 
     playerQuits(message){
