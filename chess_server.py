@@ -142,7 +142,7 @@ def main():
     async def websocket_handler(request):
         peer = request.transport.get_extra_info("peername")
         print("request peer", peer)
-        ws = web.WebSocketResponse()
+        ws = web.WebSocketResponse(heartbeat=1., receive_timeout=3.)
         await ws.prepare(request)
 
         game = request.app['game']
@@ -153,6 +153,7 @@ def main():
             print("Start GAME!")
 
         async for msg in ws:
+            print("ws: ", msg.data, "; closed:", ws.closed);
             if msg.type == aiohttp.WSMsgType.TEXT:
                 if msg.data == 'close':
                     await ws.close()

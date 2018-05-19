@@ -352,6 +352,7 @@ class BoardViewer {
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
+        drawarea.addEventListener("mouseleave", this.onMouseLeave.bind(this));
         this.drawarea.getContext("2d").font = this.tileSize + "px Verdana";
     }
 
@@ -469,8 +470,12 @@ class BoardViewer {
         };
     }
 
+    onMouseLeave(evt){
+        this.restoreDraggedPiece();
+    }
+
     onMouseDown(evt){
-        if (this.block)
+        if (this.block || this.dragOrigin)
             return;
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
@@ -512,7 +517,7 @@ class BoardViewer {
             return;
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
-        if (this.dragPiece !== null){
+        if (this.dragPiece !== null && this.dragOrigin !== null){
             const tile = this.board.getTile(tilePos.x, tilePos.y);
             const isValidMove = this.validMoves.find(
                 position => position[0] === tilePos.x && position[1] === tilePos.y);
@@ -555,6 +560,16 @@ class BoardViewer {
 
     unselectCurrentPiece(){
         this.validMoves = null;
+    }
+
+    restoreDraggedPiece(){
+        if (!this.dragPiece){
+            return;
+        }
+        this.board.putPiece(this.dragOrigin.x, this.dragOrigin.y, this.dragPiece);
+        this.dragOrigin = null;
+        this.dragPiece = null;
+        this.draw();
     }
 
     reset(){
