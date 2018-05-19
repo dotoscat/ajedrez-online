@@ -347,8 +347,8 @@ class BoardViewer {
         this.newPos = null;
         this.block = false;
         this.assignedColor = null;
-        drawarea.width = this.tileSize*8+this.tileSize;
-        drawarea.height = this.tileSize*8+this.tileSize;
+        drawarea.width = this.tileSize*8+this.tileSize/2.;
+        drawarea.height = this.tileSize*8+this.tileSize/2.;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
         drawarea.addEventListener("mousemove", this.onMouseMove.bind(this));
         drawarea.addEventListener("mouseup", this.onMouseUp.bind(this));
@@ -385,13 +385,13 @@ class BoardViewer {
         const files = "abcdefgh";
         ctx.save();
         ctx.fillStyle = "black";
-        const fontSize = this.tileSize/2;
+        const fontSize = this.tileSize/4;
         ctx.font = fontSize + "px Verdana";
         for (let i = 0; i < files.length; i += 1){
-            ctx.fillText(files[i], i*this.tileSize+fontSize/2, this.drawarea.height-fontSize/2);
+            ctx.fillText(files[i], i*this.tileSize, this.drawarea.height-(this.tileSize/2-fontSize));
         }
         for (let i = 0; i < this.board.tiles.length; i += 1){
-            ctx.fillText(i+1, this.boardWidth+fontSize/2, (this.drawarea.height-i*this.tileSize)-this.tileSize-fontSize/2);
+            ctx.fillText(i+1, this.boardWidth, (this.drawarea.height-i*this.tileSize-fontSize)-fontSize);
         }
         ctx.restore();
     }
