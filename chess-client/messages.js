@@ -14,8 +14,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 class Messages {
-    constructor(element){
+    constructor(element, height){
         this.element = element;
+        element.style.height = typeof height === 'number' ? height + 'px' : '';
     }
 
     add(content) {

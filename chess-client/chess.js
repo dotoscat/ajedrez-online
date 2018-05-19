@@ -356,6 +356,10 @@ class BoardViewer {
         this.drawarea.getContext("2d").font = this.tileSize + "px Verdana";
     }
 
+    get height(){
+        return this.drawarea.offsetHeight;
+    }
+
     draw(){
         this.drawarea.getContext('2d')
         .clearRect(0, 0, this.drawarea.width, this.drawarea.height);

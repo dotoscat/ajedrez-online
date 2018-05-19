@@ -4,12 +4,12 @@ canvas {
 }
 
 #messages {
-    width: 32em;
-    height: 3em;
+    width: auto;
     overflow-y: scroll;
     border: solid;
     padding-left: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 0em;
+    float: left;
 }
 
 #messages p {

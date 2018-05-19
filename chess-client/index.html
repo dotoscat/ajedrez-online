@@ -12,11 +12,11 @@
 	<body>
 		<h1>Chess &#9816;</h1>
 		<noscript>Please, enable JavaScript</noscript>
-		<!--<section id="game">-->
-			<div id="messages" class="center">
+		<section id="game" class="center">
+			<div id="messages">
 			</div>
-			<canvas id="board" class="center"></canvas>
-		<!--</section>-->
+			<canvas id="board"></canvas>
+		</section>
 		<script>
 			const HOST = "{{ host }}";
 			const PORT = "{{ port }}";
@@ -25,7 +25,7 @@
 			const board = new Board(startingPosition);
 			const conn = new WebSocket('ws://' + ADDRESS + '/ws');
 			const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2, conn);
-			const messages = new Messages(document.getElementById("messages"));
+			const messages = new Messages(document.getElementById("messages"), boardViewer.height);
 			messages.add("Waiting a player...");
 			boardViewer.draw();
 			const game = new Game(conn, boardViewer, messages);
