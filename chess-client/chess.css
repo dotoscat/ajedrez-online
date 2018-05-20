@@ -1,15 +1,25 @@
-canvas {
+#board {
+    display: inline-block;
+    width: auto;
     border: 1em solid;
     border-radius: 1em;
 }
 
+#game {
+    text-align: center;
+    /*position: absolute;*/
+    display: block;
+    /*float: left;*/
+}
+
 #messages {
-    width: auto;
+    display: inline-block;
+    width: 8em;
     overflow-y: scroll;
     border: solid;
     padding-left: 1em;
     margin-bottom: 0em;
-    float: left;
+    text-align: left;
 }
 
 #messages p {
@@ -17,8 +27,6 @@ canvas {
 }
 
 .center {
-    display: block;
-    width: auto;
     margin-left: auto;
     margin-right: auto;
 }
