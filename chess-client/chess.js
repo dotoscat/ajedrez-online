@@ -345,7 +345,7 @@ class BoardViewer {
         this.validMoves = null;
         this.lastPos = null;
         this.newPos = null;
-        this.block = false;
+        this.block = true;
         this.assignedColor = null;
         drawarea.width = this.tileSize*8+this.tileSize/2.;
         drawarea.height = this.tileSize*8+this.tileSize/2.;
