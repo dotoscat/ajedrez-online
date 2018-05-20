@@ -484,7 +484,7 @@ class BoardViewer {
         const pos = this.getMousePos(evt);
         const tilePos = this.getTilePos(pos.x, pos.y);
         const tile = this.board.getTile(tilePos.x, tilePos.y);
-        if ((isWhitePiece(tile.piece) && this.assignedColor !== "WHITE")
+        if (!tile || (isWhitePiece(tile.piece) && this.assignedColor !== "WHITE")
         || (!isWhitePiece(tile.piece) && this.assignedColor === "WHITE")){
             return;
         }
