@@ -58,11 +58,17 @@ class PieceCounter {
             BlackPiece ;
         this.pieces = {
             pawn: this._createPiece(pieceColor.PAWN), 
+            knight: this._createPiece(pieceColor.KNIGHT), 
+            bishop: this._createPiece(pieceColor.BISHOP), 
+            rook: this._createPiece(pieceColor.ROOK), 
+            queen: this._createPiece(pieceColor.QUEEN), 
+            king: this._createPiece(pieceColor.KING), 
         };
     }
 
     _createPiece (piece) {
         const child = document.createElement('li');
+        console.debug("createPiece", piece, child);
         this.element.appendChild(child);
         return {
             piece: piece,
@@ -88,7 +94,9 @@ class PieceCounter {
 
     addToParent(parent){
         parent.appendChild(this.element);
-        this._updatePiece('pawn');
+        for (let key in this.pieces){
+            this._updatePiece(key);
+        }
     }
 
 }
