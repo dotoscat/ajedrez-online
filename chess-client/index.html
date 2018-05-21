@@ -12,10 +12,17 @@
 	<body>
 		<h1>Chess &#9816;</h1>
 		<noscript>Please, enable JavaScript</noscript>
-		<div id="game" class="center">
+		<div id="game">
 			<div id="messages">
 			</div>
 			<canvas id="board"></canvas>
+			<div id="misc">
+				<div id="pieces">
+					<p>Captured pieces</p>
+					<div id="white"></div>
+					<div id="black"></div>
+				</div>
+			</div>
 		</div>
 		<script>
 			const HOST = "{{ host }}";
@@ -29,6 +36,7 @@
 			messages.add("Waiting a player...");
 			boardViewer.draw();
 			const game = new Game(conn, boardViewer, messages);
+			document.getElementById("misc").style.height = boardViewer.height + "px";
 		</script>
 	</body>
 </html>

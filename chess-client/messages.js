@@ -16,7 +16,7 @@
 class Messages {
     constructor(element, height){
         this.element = element;
-        element.style.height = typeof height === 'number' ? height + 'px' : '';
+        element.style.height = typeof height === 'number' ? height + 'px' : element.height + 'px';
     }
 
     add(content) {
