@@ -32,3 +32,63 @@ class Messages {
     }
 
 }
+
+class PieceCounter {
+    constructor(color){
+        this.element = document.createElement("ul");
+        const WhitePiece = {
+            KING: "\u2654",
+            QUEEN: "\u2655",
+            ROOK: "\u2656",
+            BISHOP: "\u2657",
+            KNIGHT: "\u2658",
+            PAWN: "\u2659"
+        };
+
+        const BlackPiece = {
+            KING: "\u265A",
+            QUEEN: "\u265B",
+            ROOK: "\u265C",
+            BISHOP: "\u265D",
+            KNIGHT: "\u265E",
+            PAWN: "\u265F"
+        };
+        const pieceColor = typeof color === 'string' && color === 'white' ?
+            WhitePiece :
+            BlackPiece ;
+        this.pieces = {
+            pawn: this._createPiece(pieceColor.PAWN), 
+        };
+    }
+
+    _createPiece (piece) {
+        const child = document.createElement('li');
+        this.element.appendChild(child);
+        return {
+            piece: piece,
+            element: child,
+            amount: 0
+        };
+    }
+
+    _updatePiece(piece) {
+        const aPiece = this.pieces[piece];
+        console.debug('_updatePiece', piece, aPiece);
+        if (typeof aPiece === 'undefined') return;
+        aPiece.element.innerText = aPiece.piece + ' ' + aPiece.amount;
+    }
+
+    addOneTo(piece) {
+        const aPiece = this.pieces[piece];
+        console.debug('_addOneTo', piece, aPiece);
+        if (typeof aPiece === 'undefined') return;
+        aPiece.amount += 1;
+        this._updatePiece(piece);
+    }
+
+    addToParent(parent){
+        parent.appendChild(this.element);
+        this._updatePiece('pawn');
+    }
+
+}
