@@ -18,9 +18,12 @@
       <canvas id="board"></canvas>
       <div id="misc">
         <div id="pieces">
-          <p>Captured pieces</p>
-          <div id="white"></div>
-          <div id="black"></div>
+          <div id="black">
+            <p>BLACK</p>
+          </div>
+          <div id="white">
+            <p>WHITE</p>
+          </div>
         </div>
       </div>
     </div>
@@ -37,6 +40,10 @@
       boardViewer.draw();
       const game = new Game(conn, boardViewer, messages);
       document.getElementById("misc").style.height = boardViewer.height + "px";
+      const whiteCounter = new PieceCounter("white");
+      whiteCounter.addToParent(document.getElementById("black"));
+      const blackCounter = new PieceCounter("black");
+      blackCounter.addToParent(document.getElementById("white"));
     </script>
   </body>
 </html>
