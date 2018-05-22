@@ -32,6 +32,16 @@
     height: auto;
 }
 
+#misc ul {
+    list-style-type: none;
+    list-style-position: outside;
+    padding-left: 0;
+}
+
+#misc ul li {
+    display: inline-block;
+}
+
 .center {
     margin-left: auto;
     margin-right: auto;
