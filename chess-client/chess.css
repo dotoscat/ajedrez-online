@@ -6,7 +6,8 @@
 
 #game {
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
+    justify-content: center;
     align-content: center;
     flex-direction: row;
 }
