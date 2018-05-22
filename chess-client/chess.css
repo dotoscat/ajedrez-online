@@ -6,14 +6,14 @@
 
 #game {
     display: flex;
-    /*align-items: center;*/
+    align-items: stretch;
     justify-content: center;
     align-content: center;
     flex-direction: row;
 }
 
 #messages {
-    height: 100%;
+    height: auto;
     width: 8em;
     overflow-y: scroll;
     border: solid;
@@ -29,7 +29,7 @@
 #misc {
     border: 1px solid;
     width: 8em;
-    height: 100%;
+    height: auto;
 }
 
 .center {
