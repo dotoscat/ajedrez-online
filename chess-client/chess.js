@@ -534,7 +534,8 @@ class BoardViewer {
             }else{
                 this.lastPos = this.dragOrigin;
                 this.newPos = tilePos;
-                this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
+                const piece = this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
+                this.addToCounterPiece(piece);
                 this.dragPiece = null;
                 this.validMoves = null;
                 const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
@@ -549,12 +550,14 @@ class BoardViewer {
         this.dragOrigin = null;
         this.draw();
     }
-
+    
     pushMove(from, to){
         this.lastPos = from;
         this.newPos = to;
-        this.board.movePiece(from, to);
+        const piece = this.board.movePiece(from, to);
+        this.addToCounterPiece(piece);
         this.draw();
+        return piece;
     }
 
     quitLastPieceMove(){
@@ -580,6 +583,18 @@ class BoardViewer {
         this.quitLastPieceMove();
         this.unselectCurrentPiece();
         this.draw();
+    }
+
+    addToCounterPiece (piece) {
+        // TODO: Add the counters as properties to boardView.
+        const counter = isWhitePiece(piece) ? whiteCounter : blackCounter;
+        const pieceSet = isWhitePiece(piece) ? WhitePiece : BlackPiece;
+        for(let key in pieceSet){
+            if (pieceSet[key] !== piece)
+                continue;
+            counter.addOneTo(key.toLocaleLowerCase());
+            break;
+        } 
     }
 
 }
