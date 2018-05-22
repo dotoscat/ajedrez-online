@@ -36,7 +36,6 @@ class PieceCounter {
     constructor(color){
         this.element = document.createElement("ul");
         const WhitePiece = {
-            KING: "\u2654",
             QUEEN: "\u2655",
             ROOK: "\u2656",
             BISHOP: "\u2657",
@@ -45,7 +44,6 @@ class PieceCounter {
         };
 
         const BlackPiece = {
-            KING: "\u265A",
             QUEEN: "\u265B",
             ROOK: "\u265C",
             BISHOP: "\u265D",
@@ -61,7 +59,6 @@ class PieceCounter {
             bishop: this._createPiece(pieceColor.BISHOP), 
             rook: this._createPiece(pieceColor.ROOK), 
             queen: this._createPiece(pieceColor.QUEEN), 
-            king: this._createPiece(pieceColor.KING), 
         };
     }
 
