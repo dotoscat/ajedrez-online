@@ -75,8 +75,9 @@ class Game:
         self.black = random_players.pop()
         self.black.color = "BLACK"
         self.board.reset()
-        await send_start_game(self.white.ws, "WHITE")
-        await send_start_game(self.black.ws, "BLACK")
+        fen = self.board.fen()
+        await send_start_game(self.white.ws, "WHITE", fen)
+        await send_start_game(self.black.ws, "BLACK", fen)
         return True
 
     async def dispatch_message(self, message):
@@ -116,8 +117,11 @@ async def send_player_quits(ws, color):
     message = {"command": "PLAYERQUITS", "color": color}
     await ws.send_json(message)
 
-async def send_start_game(ws, color):
-    message = {"command": "STARTGAME", "color": color}
+async def send_start_game(ws, color, fen):
+    message = {
+        "command": "STARTGAME",
+        "color": color,
+        "fen": fen}
     await ws.send_json(message)
 
 def main():

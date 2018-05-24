@@ -55,7 +55,7 @@ class Game{
         this.boardView.assignedColor = message.color;
         this.messages.add("Game start! You are " + message.color + ".");
         this.boardView.block = message.color !== "WHITE";
-        this.boardView.board.setFromFEN(startingPosition);
+        this.boardView.board.setFromFEN(message.fen);
         this.boardView.reset();
     }
 
