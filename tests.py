@@ -11,3 +11,9 @@ class TestMovesGeneration(unittest.TestCase):
         self.assertTrue(
             isinstance(moves, dict))
         print(moves)
+
+    def test2_pawn_promotion(self):
+        board = chess.Board(fen='k7/ppppppPP/8/8/8/8/PPPPPPpp/K7 w KQkq - 0 10')
+        moves = game.get_pawn_moves(board, "white")
+        print(moves)
+        self.assertTrue(moves)

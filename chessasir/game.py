@@ -50,11 +50,14 @@ def get_pawn_moves(board, color):
         one_step = chess.Move.from_uci(to1)
         if one_step in legal_moves:
             pawn_moves['moves'].append(name1)
-        name2 = file + str(int(rank) + step*2)
-        to2 = name + name2
-        two_step = chess.Move.from_uci(to2)
-        if two_step in legal_moves:
-            pawn_moves['moves'].append(name2)
+        try:
+            name2 = file + str(int(rank) + step*2)
+            to2 = name + name2
+            two_step = chess.Move.from_uci(to2)
+            if two_step in legal_moves:
+                pawn_moves['moves'].append(name2)
+        except ValueError:
+            pass
         for attack in board.attacks(pawn):
             attack_name = chess.SQUARE_NAMES[attack]
             move = chess.Move.from_uci(name + attack_name)
