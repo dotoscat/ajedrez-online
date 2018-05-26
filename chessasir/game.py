@@ -43,12 +43,16 @@ def get_pawn_moves(board, color):
         name = file + rank
         name1 = file + str(int(rank) + step)
         if chess_color and int(name1[1]) == 8:
-            pawn_moves['promote'] = True
+            pawn_moves['promotes'] = True
         elif int(name1[1] == 1):
-            pawn_moves['promote'] = True
+            pawn_moves['promotes'] = True
         to1 = name + name1
         one_step = chess.Move.from_uci(to1)
-        if one_step in legal_moves:
+        if not pawn_moves.get('promotes') and one_step in legal_moves:
+            pawn_moves['moves'].append(name1)
+        elif pawn_moves.get('promotes'):
+            # uci promotion requires r, n, b or q at the end of the command
+            # but I want only the square name
             pawn_moves['moves'].append(name1)
         try:
             name2 = file + str(int(rank) + step*2)
