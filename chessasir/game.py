@@ -42,6 +42,10 @@ def get_pawn_moves(board, color):
         rank = chess.RANK_NAMES[chess.square_rank(pawn)]
         name = file + rank
         name1 = file + str(int(rank) + step)
+        if chess_color and int(name1[1]) == 8:
+            pawn_moves['promote'] = True
+        elif int(name1[1] == 1):
+            pawn_moves['promote'] = True
         to1 = name + name1
         one_step = chess.Move.from_uci(to1)
         if one_step in legal_moves:
