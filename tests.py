@@ -16,4 +16,5 @@ class TestMovesGeneration(unittest.TestCase):
         board = chess.Board(fen='k7/ppppppPP/8/8/8/8/PPPPPPpp/K7 w KQkq - 0 10')
         moves = game.get_pawn_moves(board, "white")
         print(moves)
-        self.assertTrue(moves)
+        self.assertTrue(moves['h7']['promotes'])
+        self.assertFalse(moves['a2'].get('promotes'))
