@@ -28,6 +28,37 @@ async def send_start_game(ws, color, fen):
         "fen": fen}
     await ws.send_json(message)
 
+def get_pawn_moves(board, color):
+    chess_color = chess.WHITE if color.lower() == "white" else chess.BLACK
+    pawns = board.pieces(chess.PAWN, color)
+    moves = {}
+    legal_moves = board.legal_moves
+    for pawn in pawns:
+        step = 1 if chess_color else -1
+        pawn_moves = {
+            'moves': [],
+        }
+        file = chess.FILE_NAMES[chess.square_file(pawn)]
+        rank = chess.RANK_NAMES[chess.square_rank(pawn)]
+        name = file + rank
+        to1 = name + str(file + step)
+        one_step = chess.Move.from_uci(to1)
+        if one_step in legal_moves:
+            pawn_moves['moves'].append(to1)
+        to2 = name + str(file + step*2)
+        two_step = chess.Move.from_uci(to2)
+        if two_step in legal_moves:
+            pawn_moves['moves'].append(to2)
+        for attack in board.attacks(pawn):
+            attack_name = chess.SQUARE_NAMES[attack]
+            move = chess.Move.from_uci(name + attack_name)
+            if move not in legal_moves:
+                continue
+            pawn_moves['moves'].append(attack_name)
+
+        moves[name] = pawn_moves
+    return moves
+
 class Game:
     def __init__(self):
         self.board = chess.Board()
