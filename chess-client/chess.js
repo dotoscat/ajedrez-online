@@ -240,11 +240,14 @@ function rankMoves(x, y, piece, tiles){
 class Board {
     constructor(FENdata) {
         this.tiles = new Array(8);
+        this.tileMap = new Map();
         const files = "abcdefgh";
         for (let y = 0; y < 8; y += 1){
             this.tiles[y] = new Array(8);
             for (let x = 0; x < 8; x += 1) {
-                this.tiles[y][x] = new Tile(files[x], y+1);
+                const tile = new Tile(files[x], y+1);
+                this.tiles[y][x] = tile;
+                this.tileMap.set(tile.name, tile); 
             }
         }
         if (typeof FENdata === "string"){
@@ -328,6 +331,10 @@ class Board {
 
     getTile(x, y){
         return this.tiles[y][x];
+    }
+
+    getTileByName(name){
+        return thisl.tileMap.get(name);
     }
 
 }
