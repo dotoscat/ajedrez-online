@@ -21,11 +21,14 @@ async def send_player_quits(ws, color):
     message = {"command": "PLAYERQUITS", "color": color}
     await ws.send_json(message)
 
-async def send_start_game(ws, color, fen):
+async def send_start_game(ws, color, fen, moves=None):
     message = {
         "command": "STARTGAME",
         "color": color,
-        "fen": fen}
+        "fen": fen
+    }
+    if moves:
+        message["moves"] = moves
     await ws.send_json(message)
 
 def get_pawn_moves(board, color):
@@ -113,7 +116,8 @@ class Game:
         self.black.color = "BLACK"
         self.board.reset()
         fen = self.board.fen()
-        await send_start_game(self.white.ws, "WHITE", fen)
+        await send_start_game(self.white.ws, "WHITE", fen,
+            get_pawn_moves(self.board, chess.WHITE))
         await send_start_game(self.black.ws, "BLACK", fen)
         return True
 
