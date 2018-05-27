@@ -29,22 +29,21 @@ async def send_start_game(ws, color, fen):
     await ws.send_json(message)
 
 def get_pawn_moves(board, color):
-    chess_color = chess.WHITE if color.lower() == "white" else chess.BLACK
-    pawns = board.pieces(chess.PAWN, chess_color)
+    pawns = board.pieces(chess.PAWN, color)
     moves = {}
     legal_moves = board.legal_moves
-    step = 1 if chess_color else -1
+    step = 1 if color else -1
     for pawn in pawns:
         pawn_moves = {
             'moves': [],
         }
-        if board.is_pinned(chess_color, pawn):
+        if board.is_pinned(color, pawn):
             continue
         file = chess.FILE_NAMES[chess.square_file(pawn)]
         rank = chess.RANK_NAMES[chess.square_rank(pawn)]
         name = file + rank
         name1 = file + str(int(rank) + step)
-        if chess_color and int(name1[1]) == 8:
+        if color and int(name1[1]) == 8:
             pawn_moves['promotes'] = True
         elif int(name1[1] == 1):
             pawn_moves['promotes'] = True
@@ -139,13 +138,15 @@ class Game:
                 "turn": self.board.fullmove_number
                 }
             await ws.send_json(okmove)
+            moves = get_pawn_moves(self.board, self.board.turn)
             playermove = {
                 "command": "PLAYERMOVE",
                 "color": message['color'],
                 "san": san,
                 "turn": self.board.fullmove_number,
                 "from": message['fromXY'],
-                "to": message['toXY']
+                "to": message['toXY'],
+                "moves": moves
                 }
             await rival_ws.send_json(playermove)
         else:
