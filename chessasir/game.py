@@ -38,6 +38,8 @@ def get_pawn_moves(board, color):
         pawn_moves = {
             'moves': [],
         }
+        if board.is_pinned(chess_color, pawn):
+            continue
         file = chess.FILE_NAMES[chess.square_file(pawn)]
         rank = chess.RANK_NAMES[chess.square_rank(pawn)]
         name = file + rank

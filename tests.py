@@ -18,3 +18,10 @@ class TestMovesGeneration(unittest.TestCase):
         print(moves)
         self.assertTrue(moves['h7']['promotes'])
         self.assertFalse(moves['a2'].get('promotes'))
+
+    def test3_pawn_pinned(self):
+        board = chess.Board(fen='4q3/8/8/8/8/8/3PP3/4K3 w KQkq - 0 1')
+        moves = game.get_pawn_moves(board, "white")
+        print(moves)
+        self.assertFalse(moves.get("e3"))
+
