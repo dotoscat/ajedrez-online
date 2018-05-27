@@ -31,6 +31,26 @@ async def send_start_game(ws, color, fen, moves=None):
         message["moves"] = moves
     await ws.send_json(message)
 
+def get_piece_moves(board, color, piece):
+    pieces = board.pieces(piece, color)
+    moves = {}
+    legal_moves = board.legal_moves
+    for p in pieces:
+        if piece is not chess.KING and board.is_pinned(color, p):
+            continue
+        name = chess.SQUARE_NAMES[p]
+        piece_moves = {
+            'moves': []
+        }
+        for attack in board.attacks(p):
+            attack_name = chess.SQUARE_NAMES[attack]
+            move = chess.Move.from_uci(name + attack_name)
+            if move not in legal_moves:
+                continue
+            piece_moves['moves'].append(attack_name)
+        moves[name] = piece_moves
+    return moves
+
 def get_pawn_moves(board, color):
     pawns = board.pieces(chess.PAWN, color)
     moves = {}
