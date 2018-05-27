@@ -135,6 +135,8 @@ class Tile {
     constructor(file, rank) {
         this.name = file + rank;
         this.piece = null;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
@@ -247,6 +249,8 @@ class Board {
             for (let x = 0; x < 8; x += 1) {
                 const tile = new Tile(files[x], y+1);
                 this.tiles[y][x] = tile;
+                tile.x = x;
+                tile.y = y;
                 this.tileMap.set(tile.name, tile); 
             }
         }
@@ -333,8 +337,12 @@ class Board {
         return this.tiles[y][x];
     }
 
+    getTileNameFromXY(x, y){
+        return this.getTile(x, y).name;
+    }
+
     getTileByName(name){
-        return thisl.tileMap.get(name);
+        return this.tileMap.get(name);
     }
 
 }
@@ -350,6 +358,7 @@ class BoardViewer {
         this.dragOrigin = null;
         this.dragPiece = null;
         this.validMoves = null;
+        this.currentMoves = null;
         this.lastPos = null;
         this.newPos = null;
         this.block = true;
@@ -436,23 +445,24 @@ class BoardViewer {
     }
 
     drawValidMoves(){
-        if (this.validMoves === null){
+        if (this.currentMoves === null){
             return;
         }
         const ctx = this.drawarea.getContext("2d");
         const tileSize = this.tileSize;
         const height = this.boardHeight;
         ctx.save();
-        for (let move of this.validMoves){
+        for (let move of this.currentMoves){
             if (move === null){
                 continue;
             }
-            if (!this.board.hasPiece(move[0], move[1])){
+            const tile = this.board.getTileByName(move);
+            if (!tile.piece){
                 ctx.fillStyle = '#00FF0077';
             }else{
                 ctx.fillStyle = '#FF000077';
             }
-            ctx.fillRect(move[0]*tileSize, (height-move[1]*tileSize)-tileSize, tileSize, tileSize);
+            ctx.fillRect(tile.x*tileSize, (height-tile.y*tileSize)-tileSize, tileSize, tileSize);
         }
         ctx.restore();
     }
@@ -496,7 +506,8 @@ class BoardViewer {
             return;
         }
         this.dragOrigin = tilePos;
-        this.validMoves = this.board.getValidMovesOf(tilePos.x, tilePos.y);
+        const name = this.board.getTileNameFromXY(tilePos.x, tilePos.y);
+        this.currentMoves = this.validMoves[name].moves;
         this.draw();
     }
 
@@ -530,13 +541,15 @@ class BoardViewer {
         const tilePos = this.getTilePos(pos.x, pos.y);
         if (this.dragPiece !== null && this.dragOrigin !== null){
             const tile = this.board.getTile(tilePos.x, tilePos.y);
-            const isValidMove = this.validMoves.find(
-                position => position[0] === tilePos.x && position[1] === tilePos.y);
+            const isValidMove = this.currentMoves.find((name) => {
+                const tile = this.board.getTileByName(name);
+                return tile.x === tilePos.x && tile.y === tilePos.y;
+            });
             if (!tile || (tilePos.x === this.dragOrigin.x && tilePos.y === this.dragOrigin.y)
                 || !isValidMove){
                 this.board.putPiece(this.dragOrigin.x, this.dragOrigin.y, this.dragPiece);
                 this.dragPiece = null;
-                this.validMoves = null;
+                this.currentMoves = null;
                 console.log("Nothing...");
             }else{
                 this.lastPos = this.dragOrigin;
@@ -544,7 +557,7 @@ class BoardViewer {
                 const piece = this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
                 this.addToCounterPiece(piece);
                 this.dragPiece = null;
-                this.validMoves = null;
+                this.currentMoves = null;
                 const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
                 const currentTile = this.board.getTile(tilePos.x, tilePos.y);
                 sendUCI(this.conn, lastTile.name,

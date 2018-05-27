@@ -57,6 +57,8 @@ class Game{
         this.boardView.block = message.color !== "WHITE";
         this.boardView.board.setFromFEN(message.fen);
         this.boardView.reset();
+        if (message.color === 'WHITE')
+            this.boardView.validMoves = message.moves;
     }
 
     playerQuits(message){
@@ -74,6 +76,7 @@ class Game{
         this.boardView.pushMove(message.from, message.to);
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = false;
+        this.boardView.validMoves = message.moves;
     }
 
     addToMessagesSAN(turn, san, color){
