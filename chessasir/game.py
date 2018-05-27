@@ -96,6 +96,16 @@ def get_pawn_moves(board, color):
         moves[name] = pawn_moves
     return moves
 
+def get_moves(board, color):
+    return dict(
+        **get_pawn_moves(board, color),
+        **get_piece_moves(board, color, chess.ROOK),
+        **get_piece_moves(board, color, chess.KNIGHT),
+        **get_piece_moves(board, color, chess.BISHOP),
+        **get_piece_moves(board, color, chess.QUEEN),
+        **get_piece_moves(board, color, chess.KING),
+    )
+
 class Game:
     def __init__(self):
         self.board = chess.Board()
@@ -137,7 +147,7 @@ class Game:
         self.board.reset()
         fen = self.board.fen()
         await send_start_game(self.white.ws, "WHITE", fen,
-            get_pawn_moves(self.board, chess.WHITE))
+            get_moves(self.board, chess.WHITE))
         await send_start_game(self.black.ws, "BLACK", fen)
         return True
 
@@ -162,7 +172,7 @@ class Game:
                 "turn": self.board.fullmove_number
                 }
             await ws.send_json(okmove)
-            moves = get_pawn_moves(self.board, self.board.turn)
+            moves = get_moves(self.board, self.board.turn)
             playermove = {
                 "command": "PLAYERMOVE",
                 "color": message['color'],
