@@ -49,6 +49,23 @@ def get_piece_moves(board, color, piece):
                 continue
             piece_moves['moves'].append(attack_name)
         moves[name] = piece_moves
+        if piece is chess.KING:
+            if color is chess.WHITE and board.has_kingside_castling_rights(chess.WHITE):
+                move = chess.Move.from_uci('e1g1')
+                if move in legal_moves:
+                    piece_moves['moves'].append('g1')
+            elif color is chess.WHITE and board.has_queenside_castling_rights(chess.WHITE):
+                move = chess.Move.from_uci('e1c1')
+                if move in legal_moves:
+                    piece_moves['moves'].append('c1')
+            elif color is chess.BLACK and board.has_kingside_castling_rights(chess.BLACK):
+                move = chess.Move.from_uci('e8g8')
+                if move in legal_moves:
+                    piece_moves['moves'].append('g8')
+            elif color is chess.BLACK and board.has_queenside_castling_rights(chess.BLACK):
+                move = chess.Move.from_uci('e8c8')
+                if move in legal_moves:
+                    piece_moves['moves'].append('c8')
     return moves
 
 def get_pawn_moves(board, color):
@@ -162,6 +179,7 @@ class Game:
         if turn == self.board.turn:
             move = chess.Move.from_uci(message['from'] + message['to'])
             en_passant = self.board.is_en_passant(move)
+            castling = self.board.is_castling(move)
             print("ep square", self.board.ep_square)
             print("ep", en_passant)
             san = self.board.san(move)
@@ -177,6 +195,8 @@ class Game:
             if en_passant:
                 okmove['ep'] = True
                 okmove['fen'] = self.board.fen()
+            if castling:
+                okmove['fen'] = self.board.fen()
             await ws.send_json(okmove)
             moves = get_moves(self.board, self.board.turn)
             playermove = {
@@ -190,6 +210,8 @@ class Game:
                 }
             if en_passant:
                 playermove['ep'] = True
+                playermove['fen'] = self.board.fen()
+            if castling:
                 playermove['fen'] = self.board.fen()
             await rival_ws.send_json(playermove)
         else:

@@ -72,30 +72,34 @@ class Game{
     OKMove(message){
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = true;
+        if (message.fen){
+            this.boardView.board.setFromFEN(message.fen);
+            this.boardView.draw();
+        }
         if (message.ep){
             if (message.color === "WHITE"){
                 blackCounter.addOneTo('pawn');
             }else{
                 whiteCounter.addOneTo('pawn');
             }
-            this.boardView.board.setFromFEN(message.fen);
-            this.boardView.draw();
         }
     }
 
     playerMove(message){
-        this.boardView.pushMove(message.from, message.to);
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = false;
         this.boardView.validMoves = message.moves;
+        this.boardView.pushMove(message.from, message.to);
+        if (message.fen){
+            this.boardView.board.setFromFEN(message.fen);
+            this.boardView.draw();
+        }
         if (message.ep){
             if (message.color === "WHITE"){
                 blackCounter.addOneTo('pawn');
             }else{
                 whiteCounter.addOneTo('pawn');
             }
-            this.boardView.board.setFromFEN(message.fen);
-            this.boardView.draw();
         }
     }
 
