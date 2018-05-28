@@ -95,4 +95,11 @@ class PieceCounter {
         }
     }
 
+    reset(){
+        for(let key in this.pieces){
+            this.pieces[key].amount = 0;
+            this._updatePiece(key);
+        }
+    }
+
 }
