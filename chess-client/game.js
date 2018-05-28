@@ -70,6 +70,15 @@ class Game{
     OKMove(message){
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = true;
+        if (message.ep){
+            if (message.color === "WHITE"){
+                blackCounter.addOneTo('pawn');
+            }else{
+                whiteCounter.addOneTo('pawn');
+            }
+            this.boardView.board.setFromFEN(message.fen);
+            this.boardView.draw();
+        }
     }
 
     playerMove(message){
@@ -77,6 +86,15 @@ class Game{
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = false;
         this.boardView.validMoves = message.moves;
+        if (message.ep){
+            if (message.color === "WHITE"){
+                blackCounter.addOneTo('pawn');
+            }else{
+                whiteCounter.addOneTo('pawn');
+            }
+            this.boardView.board.setFromFEN(message.fen);
+            this.boardView.draw();
+        }
     }
 
     addToMessagesSAN(turn, san, color){

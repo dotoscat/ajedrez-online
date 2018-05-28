@@ -161,6 +161,9 @@ class Game:
         turn = message['color'] == 'WHITE'
         if turn == self.board.turn:
             move = chess.Move.from_uci(message['from'] + message['to'])
+            en_passant = self.board.is_en_passant(move)
+            print("ep square", self.board.ep_square)
+            print("ep", en_passant)
             san = self.board.san(move)
             self.board.push(move)
             ws = self.white.ws if message['color'] == 'WHITE' else self.black.ws
@@ -171,6 +174,9 @@ class Game:
                 "san": san,
                 "turn": self.board.fullmove_number
                 }
+            if en_passant:
+                okmove['ep'] = True
+                okmove['fen'] = self.board.fen()
             await ws.send_json(okmove)
             moves = get_moves(self.board, self.board.turn)
             playermove = {
@@ -182,6 +188,9 @@ class Game:
                 "to": message['toXY'],
                 "moves": moves
                 }
+            if en_passant:
+                playermove['ep'] = True
+                playermove['fen'] = self.board.fen()
             await rival_ws.send_json(playermove)
         else:
             print("Move no ok")
