@@ -507,7 +507,8 @@ class BoardViewer {
         }
         this.dragOrigin = tilePos;
         const name = this.board.getTileNameFromXY(tilePos.x, tilePos.y);
-        this.currentMoves = this.validMoves[name].moves;
+        if (this.validMoves)
+            this.currentMoves = this.validMoves[name].moves;
         this.draw();
     }
 

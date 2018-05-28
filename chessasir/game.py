@@ -48,24 +48,25 @@ def get_piece_moves(board, color, piece):
             if move not in legal_moves:
                 continue
             piece_moves['moves'].append(attack_name)
-        moves[name] = piece_moves
         if piece is chess.KING:
             if color is chess.WHITE and board.has_kingside_castling_rights(chess.WHITE):
                 move = chess.Move.from_uci('e1g1')
                 if move in legal_moves:
                     piece_moves['moves'].append('g1')
-            elif color is chess.WHITE and board.has_queenside_castling_rights(chess.WHITE):
+            if color is chess.WHITE and board.has_queenside_castling_rights(chess.WHITE):
                 move = chess.Move.from_uci('e1c1')
                 if move in legal_moves:
                     piece_moves['moves'].append('c1')
-            elif color is chess.BLACK and board.has_kingside_castling_rights(chess.BLACK):
+                print("Append queenside", piece_moves)
+            if color is chess.BLACK and board.has_kingside_castling_rights(chess.BLACK):
                 move = chess.Move.from_uci('e8g8')
                 if move in legal_moves:
                     piece_moves['moves'].append('g8')
-            elif color is chess.BLACK and board.has_queenside_castling_rights(chess.BLACK):
+            if color is chess.BLACK and board.has_queenside_castling_rights(chess.BLACK):
                 move = chess.Move.from_uci('e8c8')
                 if move in legal_moves:
                     piece_moves['moves'].append('c8')
+        moves[name] = piece_moves
     return moves
 
 def get_pawn_moves(board, color):
