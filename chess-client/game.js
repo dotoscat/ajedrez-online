@@ -59,6 +59,8 @@ class Game{
         this.boardView.reset();
         if (message.color === 'WHITE')
             this.boardView.validMoves = message.moves;
+        blackCounter.reset();
+        whiteCounter.reset();
     }
 
     playerQuits(message){
