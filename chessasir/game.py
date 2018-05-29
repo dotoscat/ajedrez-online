@@ -17,6 +17,8 @@ import random
 import chess
 from .player import Player
 
+TEST_PROMOTION_FEN = '8/PPPP4/8/4k3/3K4/8/pppp4/8 w KQkq - 0 1'
+
 async def send_player_quits(ws, color):
     message = {"command": "PLAYERQUITS", "color": color}
     await ws.send_json(message)
@@ -27,6 +29,7 @@ async def send_start_game(ws, color, fen, moves=None):
         "color": color,
         "fen": fen
     }
+    print("start game fen", fen)
     if moves:
         message["moves"] = moves
     await ws.send_json(message)
@@ -57,7 +60,6 @@ def get_piece_moves(board, color, piece):
                 move = chess.Move.from_uci('e1c1')
                 if move in legal_moves:
                     piece_moves['moves'].append('c1')
-                print("Append queenside", piece_moves)
             if color is chess.BLACK and board.has_kingside_castling_rights(chess.BLACK):
                 move = chess.Move.from_uci('e8g8')
                 if move in legal_moves:
@@ -89,6 +91,7 @@ def get_pawn_moves(board, color):
         elif int(name1[1] == 1):
             pawn_moves['promotes'] = True
         to1 = name + name1
+        print("get_pawn_moves color", color)
         one_step = chess.Move.from_uci(to1)
         if not pawn_moves.get('promotes') and one_step in legal_moves:
             pawn_moves['moves'].append(name1)
@@ -163,6 +166,7 @@ class Game:
         self.black = random_players.pop()
         self.black.color = "BLACK"
         self.board.reset()
+        self.board.set_fen(TEST_PROMOTION_FEN)
         fen = self.board.fen()
         await send_start_game(self.white.ws, "WHITE", fen,
             get_moves(self.board, chess.WHITE))

@@ -108,6 +108,11 @@ class Promotion {
     constructor(element, boardView){
         this.element = element;
         this.boardView = boardView;
+
+        document.getElementById("cancel")
+            .addEventListener("click", this.cancel.bind(this));
+        //this.element.addEventListener('click', this.hide.bind(this));
+
     }
 
     show(){
@@ -118,6 +123,10 @@ class Promotion {
     hide(){
         this.element.classList.add('hide');
         this.boardView.block = false;
+    }
+
+    cancel(){
+        this.hide();
     }
 
 }
