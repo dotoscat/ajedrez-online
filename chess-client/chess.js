@@ -600,17 +600,22 @@ class BoardViewer {
         this.validMoves = null;
     }
 
+    resetDrag(){
+        this.dragOrigin = null;
+        this.dragPiece = null;
+    }
+
     restoreDraggedPiece(){
         if (!this.dragPiece){
             return;
         }
         this.board.putPiece(this.dragOrigin.x, this.dragOrigin.y, this.dragPiece);
-        this.dragOrigin = null;
-        this.dragPiece = null;
+        this.resetDrag();
         this.draw();
     }
 
     reset(){
+        this.resetDrag();
         this.quitLastPieceMove();
         this.unselectCurrentPiece();
         this.draw();
