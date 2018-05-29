@@ -172,7 +172,12 @@ class Promotion {
         this.boardView.block = false;
     }
 
+    isVisible(){
+        return !this.element.classList.contains("hide");
+    }
+
     cancel(){
+        this.boardView.restoreDraggedPiece();
         this.hide();
     }
 

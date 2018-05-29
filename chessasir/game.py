@@ -17,7 +17,7 @@ import random
 import chess
 from .player import Player
 
-TEST_PROMOTION_FEN = '8/PPPP4/8/4k3/3K4/8/pppp4/8 w KQkq - 0 1'
+TEST_PROMOTION_FEN = '4q1q1/PPPPPPPP/8/4k3/3K4/8/pppp4/Q1Q5 w KQkq - 0 1'
 
 async def send_player_quits(ws, color):
     message = {"command": "PLAYERQUITS", "color": color}

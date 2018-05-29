@@ -492,6 +492,9 @@ class BoardViewer {
     }
 
     onMouseLeave(evt){
+        console.debug("on mouse leave");
+        if (promotion.isVisible())
+            return;
         this.restoreDraggedPiece();
     }
 
@@ -553,6 +556,13 @@ class BoardViewer {
                 this.currentMoves = null;
                 console.log("Nothing...");
             }else{
+                if ((this.dragPiece === WhitePiece.PAWN
+                    || this.dragPiece === BlackPiece.PAWN)
+                    && (tilePos.y === 0 || tilePos.y === 7)){
+                        console.debug("promotion", this.assignedColor);
+                        promotion.show();
+                        return;
+                    }
                 this.lastPos = this.dragOrigin;
                 this.newPos = tilePos;
                 const piece = this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
