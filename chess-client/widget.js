@@ -126,6 +126,10 @@ class Promotion {
         this.element = element;
         this.boardView = boardView;
         this.color = "WHITE";
+        this.from = null;
+        this.to = null;
+        this.lastPos = null;
+        this.newPos = null;
 
         document.getElementById("cancel")
             .addEventListener("click", this.cancel.bind(this));
@@ -144,24 +148,38 @@ class Promotion {
         if (this.color === "BLACK")
             pieceSet = Pieces.Black;
         let thePiece = null;
+        let p = null;
         switch (piece){
             case "queen":
                 thePiece = pieceSet.QUEEN;
+                p = 'q';
             break;
             case "rook":
                 thePiece = pieceSet.ROOK;
+                p = 'r';
             break;
             case "knight":
                 thePiece = pieceSet.KNIGHT;
+                p = 'n';
             break;
             case "bishop":
                 thePiece = pieceSet.BISHOP;
+                p = 'b';
             break;
         }
+        sendUCI(conn, this.from, this.to, this.lastPos, this.newPos, this.color, p);
+        this.boardView.resetDrag();
+        this.hide();
+        const uci = this.from + this.to + p;
         console.debug("Promote", thePiece);
+        console.debug("uci", uci);
     }
 
-    show(color){
+    show(from, to, lastPos, newPos, color){
+        this.from = from;
+        this.to = to;
+        this.lastPos = lastPos;
+        this.newPos = newPos;
         this.color = (color === "WHITE" || color === "BLACK") ? color : "WHITE";
         this.element.classList.remove('hide');
         this.boardView.block = true;

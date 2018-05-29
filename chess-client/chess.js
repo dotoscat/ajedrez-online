@@ -556,21 +556,23 @@ class BoardViewer {
                 this.currentMoves = null;
                 console.log("Nothing...");
             }else{
+                this.lastPos = this.dragOrigin;
+                this.newPos = tilePos;
+                const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
+                const currentTile = this.board.getTile(tilePos.x, tilePos.y);
                 if ((this.dragPiece === WhitePiece.PAWN
                     || this.dragPiece === BlackPiece.PAWN)
                     && (tilePos.y === 0 || tilePos.y === 7)){
                         console.debug("promotion", this.assignedColor);
-                        promotion.show();
+                        promotion.show(lastTile.name, currentTile.name,
+                            this.lastPos, tilePos,
+                            this.assignedColor);
                         return;
                     }
-                this.lastPos = this.dragOrigin;
-                this.newPos = tilePos;
                 const piece = this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
                 this.addToCounterPiece(piece);
                 this.dragPiece = null;
                 this.currentMoves = null;
-                const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
-                const currentTile = this.board.getTile(tilePos.x, tilePos.y);
                 sendUCI(this.conn, lastTile.name,
                     currentTile.name,
                     this.lastPos, this.newPos,

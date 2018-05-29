@@ -18,7 +18,7 @@ function sendToServer(conn, command, data) {
     conn.send(JSON.stringify(message));
 }
 
-function sendUCI(conn, from, to, fromXY, toXY, color){
+function sendUCI(conn, from, to, fromXY, toXY, color, promotion){
     const data = {
         'from': from,
         'to': to,
@@ -26,5 +26,7 @@ function sendUCI(conn, from, to, fromXY, toXY, color){
         "fromXY": fromXY,
         "toXY": toXY
     };
+    if (promotion)
+        data['promotion'] = promotion;
     sendToServer(conn, "SENDMOVE", data);
 }
