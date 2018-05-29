@@ -13,6 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+const Pieces = {
+    White: {
+        QUEEN: "\u2655",
+        ROOK: "\u2656",
+        BISHOP: "\u2657",
+        KNIGHT: "\u2658",
+        PAWN: "\u2659"
+    },
+    Black: {
+        QUEEN: "\u265B",
+        ROOK: "\u265C",
+        BISHOP: "\u265D",
+        KNIGHT: "\u265E",
+        PAWN: "\u265F"
+    }
+};
+
 class Messages {
     constructor(element){
         this.element = element;
@@ -108,14 +125,44 @@ class Promotion {
     constructor(element, boardView){
         this.element = element;
         this.boardView = boardView;
+        this.color = "WHITE";
 
         document.getElementById("cancel")
             .addEventListener("click", this.cancel.bind(this));
-        //this.element.addEventListener('click', this.hide.bind(this));
-
+        document.getElementById("queen")
+            .addEventListener("click", this.promote.bind(this, "queen"));
+        document.getElementById("bishop")
+            .addEventListener("click", this.promote.bind(this, "bishop"));
+        document.getElementById("rook")
+            .addEventListener("click", this.promote.bind(this, "rook"));
+        document.getElementById("knight")
+            .addEventListener("click", this.promote.bind(this, "knight"));
     }
 
-    show(){
+    promote(piece){
+        let pieceSet = Pieces.White;
+        if (this.color === "BLACK")
+            pieceSet = Pieces.Black;
+        let thePiece = null;
+        switch (piece){
+            case "queen":
+                thePiece = pieceSet.QUEEN;
+            break;
+            case "rook":
+                thePiece = pieceSet.ROOK;
+            break;
+            case "knight":
+                thePiece = pieceSet.KNIGHT;
+            break;
+            case "bishop":
+                thePiece = pieceSet.BISHOP;
+            break;
+        }
+        console.debug("Promote", thePiece);
+    }
+
+    show(color){
+        this.color = (color === "WHITE" || color === "BLACK") ? color : "WHITE";
         this.element.classList.remove('hide');
         this.boardView.block = true;
     }
