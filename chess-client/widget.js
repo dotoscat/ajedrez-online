@@ -103,3 +103,21 @@ class PieceCounter {
     }
 
 }
+
+class Promotion {
+    constructor(element, boardView){
+        this.element = element;
+        this.boardView = boardView;
+    }
+
+    show(){
+        this.element.classList.remove('hide');
+        this.boardView.block = true;
+    }
+    
+    hide(){
+        this.element.classList.add('hide');
+        this.boardView.block = false;
+    }
+
+}

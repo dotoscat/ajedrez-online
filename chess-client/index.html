@@ -16,7 +16,16 @@
     <div id="game">
       <div id="messages">
       </div>
-      <canvas id="board"></canvas>
+      <div id="boardgame">
+        <canvas id="board"></canvas>
+        <div id="promotion" class="">
+          <button type="button">Queen</button>
+          <button type="button">Rook</button>
+          <button type="button">Bishop</button>
+          <button type="button">Knight</button>
+          <button type="button">Cancel</button>
+        </div>
+      </div>
       <div id="misc">
         <div id="pieces">
           <div id="black">
@@ -44,6 +53,8 @@
       whiteCounter.addToParent(document.getElementById("black"));
       const blackCounter = new PieceCounter("black");
       blackCounter.addToParent(document.getElementById("white"));
+      const promotion = new Promotion(document.getElementById("promotion"), boardViewer);
+      promotion.hide();
     </script>
   </body>
 </html>
