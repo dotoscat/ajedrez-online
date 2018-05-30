@@ -556,6 +556,7 @@ class BoardViewer {
                 this.currentMoves = null;
                 console.log("Nothing...");
             }else{
+                console.debug("current moves", this.currentMoves);
                 this.lastPos = this.dragOrigin;
                 this.newPos = tilePos;
                 const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
@@ -603,6 +604,7 @@ class BoardViewer {
     }
 
     resetDrag(){
+        this.currentMoves = null;
         this.dragOrigin = null;
         this.dragPiece = null;
     }

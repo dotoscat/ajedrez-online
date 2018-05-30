@@ -182,10 +182,13 @@ class Game:
     async def send_move(self, message):
         turn = message['color'] == 'WHITE'
         if turn == self.board.turn:
-            move = chess.Move.from_uci(message['from'] + message['to'])
+            promotion = message.get('promotion')
+            if promotion:
+                move = chess.Move.from_uci(message['from'] + message['to'] + promotion)
+            else:
+                move = chess.Move.from_uci(message['from'] + message['to'])
             en_passant = self.board.is_en_passant(move)
             castling = self.board.is_castling(move)
-            print("ep square", self.board.ep_square)
             print("ep", en_passant)
             san = self.board.san(move)
             self.board.push(move)
@@ -200,7 +203,7 @@ class Game:
             if en_passant:
                 okmove['ep'] = True
                 okmove['fen'] = self.board.fen()
-            if castling:
+            if castling or promotion:
                 okmove['fen'] = self.board.fen()
             await ws.send_json(okmove)
             moves = get_moves(self.board, self.board.turn)
@@ -216,7 +219,7 @@ class Game:
             if en_passant:
                 playermove['ep'] = True
                 playermove['fen'] = self.board.fen()
-            if castling:
+            if castling or promotion:
                 playermove['fen'] = self.board.fen()
             await rival_ws.send_json(playermove)
         else:
