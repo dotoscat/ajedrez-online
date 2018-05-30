@@ -75,6 +75,8 @@ def get_pawn_moves(board, color):
     pawns = board.pieces(chess.PAWN, color)
     moves = {}
     legal_moves = board.legal_moves
+    print("get pawn moves san", legal_moves)
+    print("get pawn moves", color, list(legal_moves))
     step = 1 if color else -1
     for pawn in pawns:
         pawn_moves = {
@@ -86,19 +88,14 @@ def get_pawn_moves(board, color):
         rank = chess.RANK_NAMES[chess.square_rank(pawn)]
         name = file + rank
         name1 = file + str(int(rank) + step)
+        to1 = name + name1
+        if (chess.Move.from_uci(to1) in legal_moves
+        or chess.Move.from_uci(to1 + 'q')):
+            pawn_moves['moves'].append(name1)
         if color and int(name1[1]) == 8:
             pawn_moves['promotes'] = True
         elif int(name1[1] == 1):
             pawn_moves['promotes'] = True
-        to1 = name + name1
-        print("get_pawn_moves color", color)
-        one_step = chess.Move.from_uci(to1)
-        if not pawn_moves.get('promotes') and one_step in legal_moves:
-            pawn_moves['moves'].append(name1)
-        elif pawn_moves.get('promotes'):
-            # uci promotion requires r, n, b or q at the end of the command
-            # but I want only the square name
-            pawn_moves['moves'].append(name1)
         try:
             name2 = file + str(int(rank) + step*2)
             to2 = name + name2
@@ -109,10 +106,9 @@ def get_pawn_moves(board, color):
             pass
         for attack in board.attacks(pawn):
             attack_name = chess.SQUARE_NAMES[attack]
-            move = chess.Move.from_uci(name + attack_name)
-            if move not in legal_moves:
-                continue
-            pawn_moves['moves'].append(attack_name)
+            if (chess.Move.from_uci(name + attack_name) in legal_moves
+            or chess.Move.from_uci(name + attack_name + 'q') in legal_moves):
+                pawn_moves['moves'].append(attack_name)
 
         moves[name] = pawn_moves
     return moves
@@ -166,7 +162,7 @@ class Game:
         self.black = random_players.pop()
         self.black.color = "BLACK"
         self.board.reset()
-        self.board.set_fen(TEST_PROMOTION_FEN)
+        # self.board.set_fen(TEST_PROMOTION_FEN)
         fen = self.board.fen()
         await send_start_game(self.white.ws, "WHITE", fen,
             get_moves(self.board, chess.WHITE))
