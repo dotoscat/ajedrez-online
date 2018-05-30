@@ -557,20 +557,20 @@ class BoardViewer {
                 console.log("Nothing...");
             }else{
                 console.debug("current moves", this.currentMoves);
-                this.lastPos = this.dragOrigin;
-                this.newPos = tilePos;
-                const lastTile = this.board.getTile(this.lastPos.x, this.lastPos.y);
+                const lastTile = this.board.getTile(this.dragOrigin.x, this.dragOrigin.y);
                 const currentTile = this.board.getTile(tilePos.x, tilePos.y);
                 if ((this.dragPiece === WhitePiece.PAWN
                     || this.dragPiece === BlackPiece.PAWN)
                     && (tilePos.y === 0 || tilePos.y === 7)){
                         console.debug("promotion", this.assignedColor);
                         promotion.show(lastTile.name, currentTile.name,
-                            this.lastPos, tilePos,
+                            this.dragOrigin, tilePos,
                             this.assignedColor);
                         return;
                     }
                 const piece = this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
+                this.lastPos = this.dragOrigin;
+                this.newPos = tilePos;
                 this.addToCounterPiece(piece);
                 this.dragPiece = null;
                 this.currentMoves = null;
