@@ -90,7 +90,7 @@ def get_pawn_moves(board, color):
         name1 = file + str(int(rank) + step)
         to1 = name + name1
         if (chess.Move.from_uci(to1) in legal_moves
-        or chess.Move.from_uci(to1 + 'q')):
+        or chess.Move.from_uci(to1 + 'q') in legal_moves):
             pawn_moves['moves'].append(name1)
         if color and int(name1[1]) == 8:
             pawn_moves['promotes'] = True
