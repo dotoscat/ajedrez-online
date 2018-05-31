@@ -165,7 +165,7 @@ class Game:
         self.black = random_players.pop()
         self.black.color = "BLACK"
         self.board.reset()
-        # self.board.set_fen(TEST_PROMOTION_FEN)
+        self.board.set_fen(TEST_PROMOTION_FEN)
         fen = self.board.fen()
         await send_start_game(self.white.ws, "WHITE", fen,
             get_moves(self.board, chess.WHITE))

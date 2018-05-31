@@ -133,13 +133,13 @@ class Promotion {
 
         document.getElementById("cancel")
             .addEventListener("click", this.cancel.bind(this));
-        document.getElementById("queen")
+        document.getElementById("p-queen")
             .addEventListener("click", this.promote.bind(this, "queen"));
-        document.getElementById("bishop")
+        document.getElementById("p-bishop")
             .addEventListener("click", this.promote.bind(this, "bishop"));
-        document.getElementById("rook")
+        document.getElementById("p-rook")
             .addEventListener("click", this.promote.bind(this, "rook"));
-        document.getElementById("knight")
+        document.getElementById("p-knight")
             .addEventListener("click", this.promote.bind(this, "knight"));
     }
 
@@ -181,6 +181,11 @@ class Promotion {
         this.lastPos = lastPos;
         this.newPos = newPos;
         this.color = (color === "WHITE" || color === "BLACK") ? color : "WHITE";
+        const pieceSet = this.color === "WHITE" ? Pieces.White : Pieces.Black;
+        document.getElementById("p-queen").textContent = pieceSet.QUEEN;
+        document.getElementById("p-rook").textContent = pieceSet.ROOK;
+        document.getElementById("p-bishop").textContent = pieceSet.BISHOP;
+        document.getElementById("p-knight").textContent = pieceSet.KNIGHT;
         this.element.classList.remove('hide');
         this.boardView.block = true;
     }

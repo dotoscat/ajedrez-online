@@ -63,6 +63,10 @@ html, body{
     left: 1em;
 }
 
+#promotion button[id^="p-"] {
+    font-size: 3em;
+}
+
 .hide {
     display: none;
 }
