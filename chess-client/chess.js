@@ -20,9 +20,10 @@ function translateNotationToSpanish(san){
         Q: 'D',
         K: 'R',
         R: 'T',
-        B: 'A'
+        B: 'A',
+        N: 'C'
     };
-    return san.replace(/[QKRB]/g, match => trans[match]);
+    return san.replace(/[QKRBN]/g, match => trans[match]);
 }
 
 const WhitePiece = {

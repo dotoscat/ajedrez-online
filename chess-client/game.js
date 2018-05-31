@@ -105,9 +105,9 @@ class Game{
 
     addToMessagesSAN(turn, san, color){
         if (color === 'WHITE'){
-            this.messages.add(`${turn}. ${san}`);         
+            this.messages.add(`${turn}. ${translateNotationToSpanish(san)}`);         
         }else{
-            this.messages.addToLast(` ${san}`);
+            this.messages.addToLast(` ${translateNotationToSpanish(san)}`);
         }
     }
 
