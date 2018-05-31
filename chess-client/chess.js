@@ -469,18 +469,25 @@ class BoardViewer {
 
     getMousePos(evt) {
         const rect = this.drawarea.getBoundingClientRect();
+        const computedCSS = window.getComputedStyle(this.drawarea);
+        const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
+        const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
+        console.debug("border", borderLeftWidth, borderTopWidth);
         //invert y coordinates
         return {
-            x: evt.clientX - rect.left,
-            y: this.boardHeight - (evt.clientY - rect.top)
+            x: evt.clientX - rect.left - borderLeftWidth,
+            y: this.boardHeight - (evt.clientY - rect.top - borderTopWidth)
         };
     }
     
     getMousePosTopLeft(evt) {
         const rect = this.drawarea.getBoundingClientRect();
+        const computedCSS = window.getComputedStyle(this.drawarea);
+        const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
+        const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
         return {
-            x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
+            x: evt.clientX - rect.left - borderLeftWidth,
+            y: evt.clientY - rect.top - borderTopWidth
         };
     }
 
