@@ -15,105 +15,32 @@
 
 'use strict';
 
-const PieceMoves = {
-    WHITE_PAWN: {
-        type: 'pawn',
-        moves: [
-            [0, 1],
-            [0, 2]
-        ],
-        attacks: [
-            [1, 1],
-            [-1, 1]
-        ]
-    },
-    BLACK_PAWN: {
-        type: 'pawn',
-        moves: [
-            [0, -1],
-            [0, -2]
-        ],
-        attacks: [
-            [1, -1],
-            [-1, -1]
-        ]
-    },
-    ROOK: {
-        type: 'range',
-        directions: [ 
-            [1, 0],
-            [-1, 0],
-            [0, -1],
-            [0, 1]
-        ]
-    },
-    BISHOP: {
-        type: 'range',
-        directions: [ 
-            [1, 1],
-            [-1, -1],
-            [1, -1],
-            [-1, 1]
-        ]
-    },
-    KING: {
-        type: 'range',
-        directions: [ 
-            [1, 1],
-            [-1, 1],
-            [1, -1],
-            [-1, -1],
-            [1, 0],
-            [-1, 0],
-            [0, 1],
-            [0, -1]
-        ],
-        times: 1
-    },
-    QUEEN: {
-        type: 'range',
-        directions: [ 
-            [1, 1],
-            [-1, 1],
-            [1, -1],
-            [-1, -1],
-            [1, 0],
-            [-1, 0],
-            [0, 1],
-            [0, -1]
-        ],
-    },
-    KNIGHT: {
-        type: 'knight',
-        moves: [
-            [1, 2],
-            [-1, 2],
-            [-1, -2],
-            [1, -2],
-            [2, 1],
-            [-2, 1],
-            [-2, -1],
-            [2, -1],
-        ]
-    }
+function translateNotationToSpanish(san){
+    const trans = {
+        Q: 'D',
+        K: 'R',
+        R: 'T',
+        B: 'A'
+    };
+    return san.replace(/[QKRB]/g, match => trans[match]);
 }
 
 const WhitePiece = {
-    KING: {text: "\u2654", moves: PieceMoves.KING},
-    QUEEN: {text: "\u2655", moves: PieceMoves.QUEEN},
-    ROOK: {text: "\u2656", moves: PieceMoves.ROOK},
-    BISHOP: {text: "\u2657", moves: PieceMoves.BISHOP},
-    KNIGHT: {text: "\u2658", moves: PieceMoves.KNIGHT},
-    PAWN: {text: "\u2659", moves: PieceMoves.WHITE_PAWN},
+    KING: {text: "\u2654"},
+    QUEEN: {text: "\u2655"},
+    ROOK: {text: "\u2656"},
+    BISHOP: {text: "\u2657"},
+    KNIGHT: {text: "\u2658"},
+    PAWN: {text: "\u2659"},
 };
 
 const BlackPiece = {
-    KING: {text: "\u265A", moves: PieceMoves.KING},
-    QUEEN: {text: "\u265B", moves: PieceMoves.QUEEN},
-    ROOK: {text: "\u265C", moves: PieceMoves.ROOK},
-    BISHOP: {text: "\u265D", moves: PieceMoves.BISHOP},
-    KNIGHT: {text: "\u265E", moves: PieceMoves.KNIGHT},
-    PAWN: {text: "\u265F", moves: PieceMoves.BLACK_PAWN},
+    KING: {text: "\u265A"},
+    QUEEN: {text: "\u265B"},
+    ROOK: {text: "\u265C"},
+    BISHOP: {text: "\u265D"},
+    KNIGHT: {text: "\u265E"},
+    PAWN: {text: "\u265F"},
 };
 
 const FENConversion = {
