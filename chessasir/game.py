@@ -142,7 +142,10 @@ class Game:
     async def remove_player(self, ws):
         if not self.players:
             return False
-        player = [p for p in self.players if p.ws is ws][0]
+        try:
+            player = [p for p in self.players if p.ws is ws][0]
+        except IndexError:
+            return False
         self.players.remove(player)
         if self.white == player:
             self.white = None
