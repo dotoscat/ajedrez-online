@@ -238,10 +238,12 @@ class BoardViewer {
         const files = "abcdefgh";
         ctx.save();
         ctx.fillStyle = "black";
-        const fontSize = this.tileSize/4;
+        const fontSize = this.tileSize/3;
         ctx.font = fontSize + "px Verdana";
         for (let i = 0; i < files.length; i += 1){
-            ctx.fillText(files[i], i*this.tileSize, this.drawarea.height-(this.tileSize/2-fontSize));
+            ctx.fillText(files[i],
+            i*this.tileSize+this.tileSize/2-fontSize/2,
+            this.drawarea.height-(this.tileSize/2-fontSize-1));
         }
         for (let i = 0; i < this.board.tiles.length; i += 1){
             ctx.fillText(i+1, this.boardWidth, (this.drawarea.height-i*this.tileSize-fontSize)-fontSize);
