@@ -246,7 +246,9 @@ class BoardViewer {
             this.drawarea.height-(this.tileSize/2-fontSize-1));
         }
         for (let i = 0; i < this.board.tiles.length; i += 1){
-            ctx.fillText(i+1, this.boardWidth, (this.drawarea.height-i*this.tileSize-fontSize)-fontSize);
+            ctx.fillText(i+1,
+                this.boardWidth + fontSize/2,
+                (this.drawarea.height-i*this.tileSize-fontSize-fontSize/2)-fontSize);
         }
         ctx.restore();
     }
