@@ -61,6 +61,7 @@
       whiteCounter.addToParent(document.getElementById("black"));
       const blackCounter = new PieceCounter("black");
       blackCounter.addToParent(document.getElementById("white"));
+      const startGame = new StartGame(document.getElementById("start"));
       const promotion = new Promotion(document.getElementById("promotion"), boardViewer);
       promotion.hide();
     </script>
