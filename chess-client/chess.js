@@ -91,6 +91,10 @@ class Board {
             this.setFromFEN(FENdata);
         }
     }
+
+    clear(){
+        this.tiles.forEach(row => row.forEach(tile => tile.piece = null));
+    }
     
     setFromFEN(data){
         const positions = data.split(' ')[0];
