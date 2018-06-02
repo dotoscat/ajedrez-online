@@ -69,7 +69,7 @@ class Game{
 
     playerQuits(message){
         this.playing = false;
-        this.message.text = "El otro jugador se ha quitado de la partida. Esperando a un jugador...";
+        this.messages.text = "El otro jugador se ha quitado de la partida. Esperando a un jugador...";
     }
 
     OKMove(message){
