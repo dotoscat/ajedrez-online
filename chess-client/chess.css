@@ -17,6 +17,12 @@ html, body{
 }
 
 #messages {
+    border: solid;
+    height: 4rem;
+    width: 8em;
+}
+
+#historial {
     height: 20rem;
     width: 8em;
     overflow-y: scroll;
@@ -26,7 +32,7 @@ html, body{
     text-align: left;
 }
 
-#messages p {
+#historial p {
     margin: 0;
 }
 

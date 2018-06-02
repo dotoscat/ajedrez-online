@@ -25,8 +25,8 @@ class Game{
             if (close.code === 1000 && close.wasClean){
                 return;
             }
-            const message = `Connection lost with the server, ${close.code}. Reload the page.`;
-            this.messages.add(message);
+            const message = `Conexión perdida con el servidor, ${close.code}. Recarga la página.`;
+            this.messages.set = message;
             this.boardView.block = true;
         });
     }
@@ -53,25 +53,29 @@ class Game{
     startGame(message){
         this.playing = true;
         this.boardView.assignedColor = message.color;
-        this.messages.add("Game start! You are " + message.color + ".");
+        historial.clear();
         this.boardView.block = message.color !== "WHITE";
         this.boardView.board.setFromFEN(message.fen);
         this.boardView.reset();
-        if (message.color === 'WHITE')
+        if (message.color === 'WHITE'){
             this.boardView.validMoves = message.moves;
+            messages.text = "Comienza el juego. Su turno.";
+        }else{
+            messages.text = "Esperando turno del jugador."
+        }
         blackCounter.reset();
         whiteCounter.reset();
     }
 
     playerQuits(message){
         this.playing = false;
-        this.messages.add("Player " + message.color + " quits from the match.");
-        this.messages.add("Waiting a player...");
+        this.message.text = "El otro jugador se ha quitado de la partida. Esperando a un jugador...";
     }
 
     OKMove(message){
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = true;
+        messages.text = "Esperando turno del jugador.";
         if (message.fen){
             this.boardView.board.setFromFEN(message.fen);
             this.boardView.draw();
@@ -88,6 +92,7 @@ class Game{
     playerMove(message){
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = false;
+        messages.text = "Su turno.";
         this.boardView.validMoves = message.moves;
         this.boardView.pushMove(message.from, message.to);
         if (message.fen){
@@ -105,9 +110,9 @@ class Game{
 
     addToMessagesSAN(turn, san, color){
         if (color === 'WHITE'){
-            this.messages.add(`${turn}. ${translateNotationToSpanish(san)}`);         
+            historial.add(`${turn}. ${translateNotationToSpanish(san)}`);         
         }else{
-            this.messages.addToLast(` ${translateNotationToSpanish(san)}`);
+            historial.addToLast(` ${translateNotationToSpanish(san)}`);
         }
     }
 

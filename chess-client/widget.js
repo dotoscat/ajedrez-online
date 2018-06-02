@@ -35,6 +35,10 @@ class Messages {
         this.element = element;
     }
 
+    set text (content){
+        this.element.innerText = content;
+    }
+
     add(content) {
         const p = document.createElement("p");
         p.innerText = content;
@@ -45,6 +49,10 @@ class Messages {
     addToLast(content, separator){
         const sep = typeof separator === 'undefined' ? ' ' : separator;
         this.element.lastChild.innerText += sep + content;
+    }
+
+    clear(){
+        this.element.innerHTML = "";
     }
 
 }

@@ -16,6 +16,8 @@
     <div id="game">
       <div id="messages">
       </div>
+      <div id="historial">
+      </div>
       <div id="boardgame">
         <canvas id="board"></canvas>
         <div id="promotion" class="">
@@ -46,7 +48,8 @@
       const conn = new WebSocket('ws://' + ADDRESS + '/ws');
       const boardViewer = new BoardViewer(document.getElementById("board"), board, (32+64)/2, conn);
       const messages = new Messages(document.getElementById("messages"));
-      messages.add("Waiting a player...");
+      const historial = new Messages(document.getElementById("historial"));
+      messages.text = "Esperando un jugador...";
       boardViewer.draw();
       const game = new Game(conn, boardViewer, messages);
       const whiteCounter = new PieceCounter("white");
