@@ -162,28 +162,37 @@ class Game:
         await self.players[0].ws.send_json(message)
         await self.players[1].ws.send_json(message)
 
+    async def request_white(self, player_ws):
+        if self.white or self.unpaired:
+            return False
+        try:
+            player = [p for p in self.players if p.ws is player_ws][0]
+        except IndexError:
+            return False
+        self.white = player
+        self.white.color = "WHITE"
+        self.black = [p for p in self.players if p.ws is not player_ws][0]
+        self.black.color = "BLACK"
+        return await self.start()
+
     async def start(self):
         if self.unpaired:
             return False
-        random_players = list(self.players)
-        random.shuffle(random_players)
-        self.white = random_players.pop()
-        self.white.color = "WHITE"
-        self.black = random_players.pop()
-        self.black.color = "BLACK"
         self.board.reset()
-        self.board.set_fen(TEST_PROMOTION_FEN)
+        # self.board.set_fen(TEST_PROMOTION_FEN)
         fen = self.board.fen()
         await send_start_game(self.white.ws, "WHITE", fen,
             get_moves(self.board, chess.WHITE))
         await send_start_game(self.black.ws, "BLACK", fen)
         return True
 
-    async def dispatch_message(self, message):
+    async def dispatch_message(self, message, ws):
         print("message", message)
         command = message['command']
         if command == 'SENDMOVE':
             await self.send_move(message)
+        elif command == 'REQUESTWHITE':
+            await self.request_white(ws)
 
     async def send_move(self, message):
         turn = message['color'] == 'WHITE'

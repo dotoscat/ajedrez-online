@@ -217,6 +217,8 @@ class Promotion {
 class StartGame {
     constructor(element){
         this.element = element;
+        const startButton = document.getElementById("startbutton");
+        startButton.addEventListener("click", this.doRequest.bind(this));
     }
 
     show(){
@@ -225,6 +227,11 @@ class StartGame {
 
     hide(){
         this.element.classList.add('hide');
+    }
+
+    doRequest(evt){
+        sendToServer(conn, "REQUESTWHITE");
+        this.hide();
     }
 
 }

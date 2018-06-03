@@ -74,6 +74,7 @@ class Game{
         }
         blackCounter.reset();
         whiteCounter.reset();
+        startGame.hide();
     }
 
     playerQuits(message){

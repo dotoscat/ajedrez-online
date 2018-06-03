@@ -64,7 +64,7 @@ def main():
                 if msg.data == 'close':
                     await ws.close()
                 else:
-                    await game.dispatch_message(msg.json())
+                    await game.dispatch_message(msg.json(), ws)
                     await ws.send_json({'command': 'DATA', 'data': msg.data})
             elif msg.type == aiohttp.WSMsgType.ERROR:
                 print('ws connection clossed with exception {}'.format(ws.exception()))
