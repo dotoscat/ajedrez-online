@@ -231,7 +231,6 @@ class StartGame {
 
     doRequest(evt){
         sendToServer(conn, "REQUESTWHITE");
-        this.hide();
     }
 
 }

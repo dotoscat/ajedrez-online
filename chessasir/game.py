@@ -149,10 +149,8 @@ class Game:
         except IndexError:
             return False
         self.players.remove(player)
-        if self.white == player:
-            self.white = None
-        else:
-            self.black = None
+        self.white = None
+        self.black = None
         if self.players:
             await send_player_quits(self.players[0].ws, player.color)
         return True
@@ -163,11 +161,16 @@ class Game:
         await self.players[1].ws.send_json(message)
 
     async def request_white(self, player_ws):
-        if self.white or self.unpaired:
+        if self.unpaired:
+            print("request unpaired")
+            return False
+        if self.white:
+            print("request white")
             return False
         try:
             player = [p for p in self.players if p.ws is player_ws][0]
         except IndexError:
+            print("request player not found")
             return False
         self.white = player
         self.white.color = "WHITE"
