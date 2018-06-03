@@ -55,11 +55,11 @@ def main():
         game.add_player(ws)
 
         if not game.unpaired:
-            await game.start()
-            print("Start GAME!")
+            await game.send_joined()
+            print("Send PLAYERJOINED message!")
 
         async for msg in ws:
-            print("ws: ", msg.data, "; closed:", ws.closed);
+            print("ws: ", msg.data, "; closed:", ws.closed)
             if msg.type == aiohttp.WSMsgType.TEXT:
                 if msg.data == 'close':
                     await ws.close()

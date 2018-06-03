@@ -127,6 +127,8 @@ class Game:
     def __init__(self):
         self.board = chess.Board()
         self.players = []
+        self.white = None
+        self.black = None
 
     @property
     def unpaired(self):
@@ -154,6 +156,11 @@ class Game:
         if self.players:
             await send_player_quits(self.players[0].ws, player.color)
         return True
+
+    async def send_joined(self):
+        message = {'command': 'PLAYERJOINED'}
+        await self.players[0].ws.send_json(message)
+        await self.players[1].ws.send_json(message)
 
     async def start(self):
         if self.unpaired:

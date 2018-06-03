@@ -26,6 +26,7 @@ class Game{
                 return;
             }
             const message = `Conexión perdida con el servidor, ${close.code}. Recarga la página.`;
+            startGame.hide();
             this.messages.set = message;
             this.boardView.block = true;
         });
@@ -47,7 +48,15 @@ class Game{
             case "PLAYERMOVE":
                 this.playerMove(message);
             break;
+            case "PLAYERJOINED":
+                this.playerJoined(message);
+            break;
         }
+    }
+
+    playerJoined(message){
+        messages.text = "Se ha unido un jugador.";
+        startGame.show();
     }
 
     startGame(message){
@@ -70,6 +79,7 @@ class Game{
     playerQuits(message){
         this.playing = false;
         this.messages.text = "El otro jugador se ha quitado de la partida. Esperando a un jugador...";
+        startGame.hide();
         this.boardView.board.clear();
         this.boardView.reset();
         this.boardView.draw();
