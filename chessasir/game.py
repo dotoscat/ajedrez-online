@@ -150,7 +150,22 @@ class Game:
                 playermove['fen'] = self.board.fen()
             if castling or promotion:
                 playermove['fen'] = self.board.fen()
+            #self.check_endofgame(playermove, message['color'])
             await rival_ws.send_json(playermove)
         else:
             print("Move no ok")
 
+    def check_endofgame(self, message, color):
+        if not self.board.is_game_over():
+            return
+        white_result, black_result = self.board.result().split('-')
+        if color == "WHITE":
+            message["result"] = white_result
+        elif color == "BLACK":
+            message["result"] = black_result
+        if self.board.is_checkmate():
+            message["reason"] = "checkmate"
+        elif self.board.is_stalemate():
+            message["reason"] = "stalemate"
+        elif self.board.is_insufficient_material():
+            message["reason"] = "material"
