@@ -121,8 +121,8 @@ class Game:
             print("ep", en_passant)
             san = self.board.san(move)
             self.board.push(move)
-            ws = self.white.ws if message['color'] == 'WHITE' else self.black.ws
-            rival_ws = self.white.ws if message['color'] != 'WHITE' else self.black.ws
+            player = self.white if message['color'] == 'WHITE' else self.black
+            rival = self.white if message['color'] != 'WHITE' else self.black
             okmove = {
                 "command": "OKMOVE",
                 "color": message['color'],
@@ -134,7 +134,8 @@ class Game:
                 okmove['fen'] = self.board.fen()
             if castling or promotion:
                 okmove['fen'] = self.board.fen()
-            await ws.send_json(okmove)
+            self.check_endofgame(okmove, player.color)
+            await player.ws.send_json(okmove)
             moves = get_moves(self.board, self.board.turn)
             playermove = {
                 "command": "PLAYERMOVE",
@@ -150,8 +151,8 @@ class Game:
                 playermove['fen'] = self.board.fen()
             if castling or promotion:
                 playermove['fen'] = self.board.fen()
-            #self.check_endofgame(playermove, message['color'])
-            await rival_ws.send_json(playermove)
+            self.check_endofgame(playermove, rival.color)
+            await rival.ws.send_json(playermove)
         else:
             print("Move no ok")
 

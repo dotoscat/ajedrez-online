@@ -32,6 +32,32 @@ class Game{
         });
     }
 
+    check_gameover(message){
+        if (!message.result)
+            return;
+        let mess = '';
+        if (message.result === '1'){
+            mess += 'Ganaste';
+        }
+        else if (message.result === '0'){
+            mess += 'Perdiste';
+        }
+        else if (message.result === '1/2'){
+            mess += 'Empate';
+        }
+        if (message.reason === 'checkmate'){
+            mess += ' por jaque mate';
+        }
+        else if (message.reason === 'stalemate'){
+            mess += ' por ahogamiento';
+        }
+        else if(message.reason === ''){
+            mess += ' por insuficiencia de material';
+        }
+        messages.text = mess;
+        this.boardView.block = true;
+    }
+
     dispatchMessage(event){
         const message = JSON.parse(event.data);
         console.log("message", message);
@@ -101,6 +127,7 @@ class Game{
                 whiteCounter.addOneTo('pawn');
             }
         }
+        this.check_gameover(message);
     }
 
     playerMove(message){
@@ -120,6 +147,7 @@ class Game{
                 whiteCounter.addOneTo('pawn');
             }
         }
+        this.check_gameover(message);
     }
 
     addToMessagesSAN(turn, san, color){
