@@ -90,6 +90,8 @@ class Game{
         this.playing = true;
         this.boardView.assignedColor = message.color;
         historial.clear();
+        this.boardView.reset();
+        this.boardView.board.setFromFEN(message.fen);
         if (message.color === 'WHITE'){
             this.boardView.validMoves = message.moves;
             this.boardView.blackSide = false;
@@ -99,8 +101,7 @@ class Game{
             messages.text = "Esperando turno del jugador."
         }
         this.boardView.block = message.color !== "WHITE";
-        this.boardView.board.setFromFEN(message.fen);
-        this.boardView.reset();
+        this.boardView.draw();
         blackCounter.reset();
         whiteCounter.reset();
         startGame.hide();
