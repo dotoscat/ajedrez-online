@@ -217,16 +217,15 @@ class Promotion {
 class StartGame {
     constructor(element){
         this.element = element;
-        const startButton = document.getElementById("startbutton");
-        startButton.addEventListener("click", this.doRequest.bind(this));
+        this.element.addEventListener("click", this.doRequest.bind(this));
     }
 
     show(){
-        this.element.classList.remove('hide');
+        this.element.style.visibility = "visible";
     }
 
     hide(){
-        this.element.classList.add('hide');
+        this.element.style.visibility = "hidden";
     }
 
     doRequest(evt){
