@@ -200,6 +200,7 @@ class BoardViewer {
         this.newPos = null;
         this.block = true;
         this.assignedColor = null;
+        this.blackSide = false;
         drawarea.width = this.tileSize*8+this.tileSize/2.;
         drawarea.height = this.tileSize*8+this.tileSize/2.;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
@@ -257,6 +258,17 @@ class BoardViewer {
         ctx.restore();
     }
 
+    transformBySide(x, y){
+        const tileSize = this.tileSize;
+        if (this.blackSide){
+           return {
+               x: this.boardWidth - x*tileSize - tileSize,
+               y: y*tileSize - tileSize/8. + tileSize
+           }; 
+        }
+        return {x: x, y: y};
+    }
+
     drawPieces() {
         const tileSize = this.tileSize;
         const height = this.boardHeight;
@@ -274,7 +286,16 @@ class BoardViewer {
                 const tile = boardTiles[y][x];
                 if (tile.piece === null)
                     continue;
-                ctx.fillText(tile.piece.text, x*tileSize, height-y*tileSize-tileSize/8.);
+                let finalX = 0;
+                let finalY = 0;
+                if (this.blackSide){
+                    finalX = this.boardWidth - x*tileSize - tileSize;
+                    finalY = y*tileSize - tileSize/8. + tileSize;
+                }else{
+                    finalX = x*tileSize;
+                    finalY = height - y*tileSize - tileSize/8.;
+                }
+                ctx.fillText(tile.piece.text, finalX, finalY);
             }
         }
         if (this.lastPos){

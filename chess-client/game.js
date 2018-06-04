@@ -90,15 +90,17 @@ class Game{
         this.playing = true;
         this.boardView.assignedColor = message.color;
         historial.clear();
+        if (message.color === 'WHITE'){
+            this.boardView.validMoves = message.moves;
+            this.boardView.blackSide = false;
+            messages.text = "Comienza el juego. Su turno.";
+        }else{
+            this.boardView.blackSide = true;
+            messages.text = "Esperando turno del jugador."
+        }
         this.boardView.block = message.color !== "WHITE";
         this.boardView.board.setFromFEN(message.fen);
         this.boardView.reset();
-        if (message.color === 'WHITE'){
-            this.boardView.validMoves = message.moves;
-            messages.text = "Comienza el juego. Su turno.";
-        }else{
-            messages.text = "Esperando turno del jugador."
-        }
         blackCounter.reset();
         whiteCounter.reset();
         startGame.hide();
