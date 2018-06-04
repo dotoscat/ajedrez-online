@@ -75,8 +75,8 @@ class Game:
         if self.unpaired:
             print("request unpaired")
             return False
-        if self.white:
-            print("request white")
+        if self.white and not [p for p in self.players if p.ws is player_ws]:
+            print("request white from another connection")
             return False
         try:
             player = [p for p in self.players if p.ws is player_ws][0]
