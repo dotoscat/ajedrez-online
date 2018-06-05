@@ -246,9 +246,15 @@ class BoardViewer {
         const fontSize = this.tileSize/3;
         ctx.font = fontSize + "px Verdana";
         for (let i = 0; i < files.length; i += 1){
-            ctx.fillText(files[i],
-            i*this.tileSize+this.tileSize/2-fontSize/2,
-            this.drawarea.height-(this.tileSize/2-fontSize-1));
+            if (this.blackSide){
+                ctx.fillText(files[i],
+                    this.drawarea.width - (i*this.tileSize + tileSize + fontSize/2),
+                    this.drawarea.height - (this.tileSize/2 - fontSize - 1));
+            }else{
+                ctx.fillText(files[i],
+                    i*this.tileSize + this.tileSize/2 - fontSize/2,
+                    this.drawarea.height - (this.tileSize/2 - fontSize - 1));
+            }
         }
         for (let i = 0; i < this.board.tiles.length; i += 1){
             ctx.fillText(i+1,
