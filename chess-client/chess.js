@@ -278,7 +278,17 @@ class BoardViewer {
         if(this.newPos){
             ctx.save();
             ctx.fillStyle = "#0000FF77";
-            ctx.fillRect(this.newPos.x*tileSize, height-this.newPos.y*tileSize-tileSize, tileSize, tileSize);
+            if (this.blackSide){
+                ctx.fillRect(
+                    this.boardWidth - this.newPos.x*tileSize - tileSize,
+                    this.newPos.y*tileSize, 
+                    tileSize, tileSize);
+            }else{
+                ctx.fillRect(
+                    this.newPos.x*tileSize,
+                    height - this.newPos.y*tileSize - tileSize,
+                    tileSize, tileSize);
+            }
             ctx.restore();
         }
         for (let y = 0; y < 8; y += 1){
@@ -300,8 +310,18 @@ class BoardViewer {
         }
         if (this.lastPos){
             ctx.save();
-            ctx.fillStyle = "#0000FF77";
-            ctx.fillRect(this.lastPos.x*tileSize, height-this.lastPos.y*tileSize-tileSize, tileSize, tileSize);
+            ctx.fillStyle = "#0000FF77";if (this.blackSide){
+                ctx.fillRect(
+                    this.boardWidth - this.lastPos.x*tileSize - tileSize,
+                    this.lastPos.y*tileSize, 
+                    tileSize, tileSize);
+            }else{
+                ctx.fillRect(
+                    this.lastPos.x*tileSize,
+                    height - this.lastPos.y*tileSize - tileSize,
+                    tileSize, tileSize);
+            }
+            //ctx.fillRect(this.lastPos.x*tileSize, height-this.lastPos.y*tileSize-tileSize, tileSize, tileSize);
             ctx.restore();
         }
     }
