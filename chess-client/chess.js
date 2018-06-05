@@ -354,6 +354,12 @@ class BoardViewer {
     }
 
     getTilePos(x, y) {
+        if (this.blackSide){
+            return {
+                x: 7 - parseInt(x/this.tileSize),
+                y: 7 - parseInt(y/this.tileSize),
+            };
+        }
         return {
             x: parseInt(x/this.tileSize),
             y: parseInt(y/this.tileSize),
