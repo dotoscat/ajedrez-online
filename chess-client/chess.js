@@ -344,7 +344,15 @@ class BoardViewer {
             }else{
                 ctx.fillStyle = '#FF000077';
             }
-            ctx.fillRect(tile.x*tileSize, (height-tile.y*tileSize)-tileSize, tileSize, tileSize);
+            if (this.blackSide){
+                ctx.fillRect(this.boardWidth - tile.x*tileSize - tileSize,
+                    tile.y*tileSize,
+                    tileSize, tileSize);
+            }else{
+                ctx.fillRect(tile.x*tileSize,
+                    (height-tile.y*tileSize) - tileSize,
+                    tileSize, tileSize);
+            }
         }
         ctx.restore();
     }
