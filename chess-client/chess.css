@@ -22,7 +22,7 @@ html, body{
     width: 8em;
 }
 
-#historial {
+#historial-container {
     height: 20rem;
     width: 8em;
     overflow-y: scroll;
@@ -30,6 +30,16 @@ html, body{
     padding-left: 1em;
     margin-bottom: 0em;
     text-align: left;
+}
+
+#historial {
+    widows: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#historial td, tr {
+    border: 1px solid black;
 }
 
 #historial p {

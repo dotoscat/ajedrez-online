@@ -156,9 +156,9 @@ class Game{
 
     addToMessagesSAN(turn, san, color){
         if (color === 'WHITE'){
-            historial.add(`${turn}. ${translateNotationToSpanish(san)}`);         
+            historial.add(turn, translateNotationToSpanish(san));
         }else{
-            historial.addToLast(` ${translateNotationToSpanish(san)}`);
+            historial.addToLast(translateNotationToSpanish(san));
         }
     }
 

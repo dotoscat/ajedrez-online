@@ -57,6 +57,36 @@ class Messages {
 
 }
 
+class Historial {
+    constructor(element){
+        this.element = element;
+        this.lastRow = null;
+    }
+
+    add (turn, san){
+        const row = this.element.insertRow();
+        this.lastRow = row;
+        row.insertCell();
+        row.insertCell();
+        row.insertCell();
+        row.cells[0].innerText = turn;
+        row.cells[1].innerText = san;
+    }
+
+    addToLast(san){
+        if(!this.lastRow)
+            return;
+        this.lastRow.cells[2].innerText = san;
+    }
+
+    clear (){
+        while (this.element.rows.length !== 0){
+            this.element.deleteRow(0);
+        }
+    }
+
+}
+
 class PieceCounter {
     constructor(color){
         this.element = document.createElement("ul");
