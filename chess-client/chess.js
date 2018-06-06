@@ -257,6 +257,12 @@ class BoardViewer {
             }
         }
         for (let i = 0; i < this.board.tiles.length; i += 1){
+            if (this.blackSide){
+                ctx.fillText(i+1,
+                    this.boardWidth + fontSize/2,
+                    this.tileSize + i*this.tileSize - fontSize/1.25);
+                continue;
+            }
             ctx.fillText(i+1,
                 this.boardWidth + fontSize/2,
                 (this.drawarea.height-i*this.tileSize-fontSize-fontSize/2)-fontSize);
