@@ -374,11 +374,13 @@ class BoardViewer {
         const computedCSS = window.getComputedStyle(this.drawarea);
         const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
         const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
+        const paddingLeft = +computedCSS.paddingLeft.replace(/\D+/, '');
+        const paddingTop = +computedCSS.paddingTop.replace(/\D+/, '');
         console.debug("border", borderLeftWidth, borderTopWidth);
         //invert y coordinates
         return {
-            x: evt.clientX - rect.left - borderLeftWidth,
-            y: this.boardHeight - (evt.clientY - rect.top - borderTopWidth)
+            x: evt.clientX - rect.left - borderLeftWidth - paddingLeft,
+            y: this.boardHeight - (evt.clientY - rect.top - borderTopWidth - paddingTop)
         };
     }
     
@@ -387,9 +389,11 @@ class BoardViewer {
         const computedCSS = window.getComputedStyle(this.drawarea);
         const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
         const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
+        const paddingLeft = +computedCSS.paddingLeft.replace(/\D+/, '');
+        const paddingTop = +computedCSS.paddingTop.replace(/\D+/, '');
         return {
-            x: evt.clientX - rect.left - borderLeftWidth,
-            y: evt.clientY - rect.top - borderTopWidth
+            x: evt.clientX - rect.left - borderLeftWidth - paddingLeft,
+            y: evt.clientY - rect.top - borderTopWidth - paddingTop
         };
     }
 
