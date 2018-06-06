@@ -59,7 +59,7 @@ class Messages {
 
 class Historial {
     constructor(element){
-        this.element = element;
+        this.element = element.tBodies[0];
         this.lastRow = null;
     }
 
