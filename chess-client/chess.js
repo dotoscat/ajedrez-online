@@ -201,6 +201,7 @@ class BoardViewer {
         this.block = true;
         this.assignedColor = null;
         this.blackSide = false;
+        this.textColor = "azure";
         drawarea.width = this.tileSize*8+this.tileSize/2.;
         drawarea.height = this.tileSize*8+this.tileSize/2.;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
@@ -235,14 +236,9 @@ class BoardViewer {
             }
             colors.reverse();
         }
-        ctx.strokeStyle = "black";
-        ctx.moveTo(0, this.boardHeight);
-        ctx.lineTo(this.boardWidth, this.boardHeight);
-        ctx.lineTo(this.boardWidth, 0);
-        ctx.stroke();
         const files = "abcdefgh";
         ctx.save();
-        ctx.fillStyle = "black";
+        ctx.fillStyle = this.textColor;
         const fontSize = this.tileSize/3;
         ctx.font = fontSize + "px Verdana";
         for (let i = 0; i < files.length; i += 1){
