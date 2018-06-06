@@ -1,11 +1,20 @@
 html, body{
     height: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
+    background-color: midnightblue;
+    color: azure;
+}
+
+.border {
+    border: 1px solid;
+    border-radius: 1px;
+    margin: 1px;
+    padding: 1em;
 }
 
 #board {
     width: auto;
-    border: 1em solid;
-    border-radius: 1em;
 }
 
 #game {
@@ -17,7 +26,6 @@ html, body{
 }
 
 #messages {
-    border: solid;
     height: 4rem;
     width: 8em;
 }
@@ -26,7 +34,6 @@ html, body{
     height: 20rem;
     width: 8em;
     overflow-y: scroll;
-    border: solid;
     padding-left: 1em;
     margin-bottom: 0em;
     text-align: left;
@@ -34,12 +41,13 @@ html, body{
 
 #historial {
     widows: 100%;
-    border: 1px solid black;
     border-collapse: collapse;
 }
 
 #historial td, tr, th {
-    border: 1px solid black;
+    border: 1px solid azure;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 #historial p {
@@ -47,7 +55,6 @@ html, body{
 }
 
 #misc {
-    border: 1px solid;
     width: 8em;
     height: auto;
 }
