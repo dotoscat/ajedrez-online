@@ -202,6 +202,8 @@ class BoardViewer {
         this.assignedColor = null;
         this.blackSide = false;
         this.textColor = "azure";
+        this.boardColors = ["lightblue", "steelblue"];
+        this.pieceColor = "black";
         drawarea.width = this.tileSize*8+this.tileSize/2.;
         drawarea.height = this.tileSize*8+this.tileSize/2.;
         drawarea.addEventListener("mousedown", this.onMouseDown.bind(this));
@@ -225,7 +227,7 @@ class BoardViewer {
 
     drawBackground() {
         const ctx = this.drawarea.getContext("2d");
-        const colors = ["white", "darkgrey"];
+        const colors = Array.from(this.boardColors); 
         const tileSize = this.tileSize;
         for (let y = 0; y < 8; y += 1){
             for (let x = 0; x < 8; x += 1){
@@ -282,7 +284,6 @@ class BoardViewer {
         const height = this.boardHeight;
         const ctx = this.drawarea.getContext("2d");
         const boardTiles = this.board.tiles;
-        ctx.fillStyle = "black";
         if(this.newPos){
             ctx.save();
             ctx.fillStyle = "#0000FF77";
@@ -299,6 +300,7 @@ class BoardViewer {
             }
             ctx.restore();
         }
+        ctx.fillStyle = this.pieceColor;
         for (let y = 0; y < 8; y += 1){
             for(let x = 0; x < 8; x += 1){
                 const tile = boardTiles[y][x];

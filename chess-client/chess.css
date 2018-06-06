@@ -40,7 +40,7 @@ html, body{
 }
 
 #historial {
-    widows: 100%;
+    width: 100%;
     border-collapse: collapse;
 }
 
