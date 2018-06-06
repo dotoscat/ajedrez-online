@@ -6,6 +6,14 @@ html, body{
     color: azure;
 }
 
+
+button{
+    border: 1 solid darkblue;
+    border-color: steelblue;
+    background-color: steelblue;
+    color: azure;
+}
+
 .border {
     border: 1px solid;
     border-radius: 1px;
