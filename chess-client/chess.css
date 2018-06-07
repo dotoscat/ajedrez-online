@@ -6,6 +6,9 @@ html, body{
     color: azure;
 }
 
+body h1{
+    text-align: center;
+}
 
 button{
     border: 1 solid darkblue;
