@@ -34,13 +34,13 @@ button{
 }
 
 #messages {
-    height: 4rem;
-    width: 8em;
+    height: 7rem;
+    width: auto;
 }
 
 #historial-container {
-    height: 20rem;
-    width: 8em;
+    height: 7rem;
+    width: auto;
     overflow-y: scroll;
     padding-left: 1em;
     margin-bottom: 0em;
