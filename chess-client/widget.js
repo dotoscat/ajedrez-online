@@ -59,6 +59,7 @@ class Messages {
 
 class Historial {
     constructor(element){
+        this.parent = element.parentNode;
         this.element = element.tBodies[0];
         this.lastRow = null;
     }
@@ -71,6 +72,7 @@ class Historial {
         row.insertCell();
         row.cells[0].innerText = turn;
         row.cells[1].innerText = san;
+        this.parent.scroll(0, this.parent.getBoundingClientRect().bottom);
     }
 
     addToLast(san){
