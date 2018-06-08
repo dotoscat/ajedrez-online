@@ -286,7 +286,7 @@ class BoardViewer {
         const boardTiles = this.board.tiles;
         if(this.newPos){
             ctx.save();
-            ctx.fillStyle = "#0000FF77";
+            ctx.fillStyle = "#FF00FF77";
             if (this.blackSide){
                 ctx.fillRect(
                     this.boardWidth - this.newPos.x*tileSize - tileSize,
@@ -320,7 +320,7 @@ class BoardViewer {
         }
         if (this.lastPos){
             ctx.save();
-            ctx.fillStyle = "#0000FF77";if (this.blackSide){
+            ctx.fillStyle = "#FF00FF77";if (this.blackSide){
                 ctx.fillRect(
                     this.boardWidth - this.lastPos.x*tileSize - tileSize,
                     this.lastPos.y*tileSize, 
