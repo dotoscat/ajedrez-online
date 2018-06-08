@@ -104,3 +104,7 @@ button{
 .hide {
     display: none;
 }
+
+.fixed-width-5rem {
+    width: 5rem;
+}
