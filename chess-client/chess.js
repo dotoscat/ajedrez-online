@@ -320,7 +320,8 @@ class BoardViewer {
         }
         if (this.lastPos){
             ctx.save();
-            ctx.fillStyle = "#FF00FF77";if (this.blackSide){
+            ctx.fillStyle = "#FF00FF77";
+            if (this.blackSide){
                 ctx.fillRect(
                     this.boardWidth - this.lastPos.x*tileSize - tileSize,
                     this.lastPos.y*tileSize, 

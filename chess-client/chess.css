@@ -37,7 +37,16 @@ button{
 }
 
 #messages {
-    height: 7rem;
+    /*height: 7rem;*/
+    /*word-break: break-all;
+    word-wrap: break-word;*/
+    /*width: 100%;
+    display: table-caption;
+    white-space: normal;*/
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-decoration: none;
+    white-space: normal;
     width: auto;
 }
 
@@ -51,7 +60,8 @@ button{
 }
 
 #historial {
-    width: 100%;
+    table-layout: fixed;
+    width: auto;
     border-collapse: collapse;
 }
 
