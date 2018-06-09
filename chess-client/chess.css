@@ -36,18 +36,13 @@ button{
     flex-direction: row;
 }
 
-#messages {
-    /*height: 7rem;*/
-    /*word-break: break-all;
-    word-wrap: break-word;*/
-    /*width: 100%;
-    display: table-caption;
-    white-space: normal;*/
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    text-decoration: none;
-    white-space: normal;
+#left {
+    box-sizing: content-box;
     width: auto;
+}
+
+#messages {
+    height: 8rem;
 }
 
 #historial-container {
