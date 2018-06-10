@@ -53,6 +53,9 @@
         <button type="button" id="startbutton">
           Empezar partida como BLANCAS
         </button>
+        <button type="button" id="request-restart">
+          Pedir reiniciar la partida como BLANCAS.
+        </button>
       </div>
     </div>
     <script>
@@ -73,9 +76,11 @@
       const blackCounter = new PieceCounter("black");
       blackCounter.addToParent(document.getElementById("white"));
       const startGame = new StartGame(document.getElementById("startbutton"));
+      const requestRestart = new RequestRestart(document.getElementById("request-restart"));
       const promotion = new Promotion(document.getElementById("promotion"), boardViewer);
       promotion.hide();
       startGame.hide();
+      requestRestart.hide();
       messages.element.style.width = getComputedStyle(document.getElementById("historial-container")).width;
     </script>
   </body>

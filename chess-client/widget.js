@@ -92,24 +92,9 @@ class Historial {
 class PieceCounter {
     constructor(color){
         this.element = document.createElement("ul");
-        const WhitePiece = {
-            QUEEN: "\u2655",
-            ROOK: "\u2656",
-            BISHOP: "\u2657",
-            KNIGHT: "\u2658",
-            PAWN: "\u2659"
-        };
-
-        const BlackPiece = {
-            QUEEN: "\u265B",
-            ROOK: "\u265C",
-            BISHOP: "\u265D",
-            KNIGHT: "\u265E",
-            PAWN: "\u265F"
-        };
         const pieceColor = typeof color === 'string' && color === 'white' ?
-            WhitePiece :
-            BlackPiece ;
+            Pieces.White :
+            Pieces.Black ;
         this.pieces = {
             pawn: this._createPiece(pieceColor.PAWN), 
             knight: this._createPiece(pieceColor.KNIGHT), 
@@ -262,6 +247,37 @@ class StartGame {
 
     doRequest(evt){
         sendToServer(conn, "REQUESTWHITE");
+    }
+
+}
+
+class RequestRestart{
+    constructor(element){
+        this.element = element;
+        this.text = element.innerText;
+        element.addEventListener("click", this.sendRequestRestart.bind(this));
+    }
+
+    disable(text){
+        this.element.disabled = true;
+        this.element.innerText = text;
+    }
+
+    enable(){
+        this.element.disabled = false;
+        this.element.innerText = this.text;
+    }
+    
+    show(){
+        this.element.style.visibility = "visible";
+    }
+
+    hide(){
+        this.element.style.visibility = "hidden";
+    }
+
+    sendRequestRestart(){
+        console.debug("Send request restart");
     }
 
 }
