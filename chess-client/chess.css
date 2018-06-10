@@ -10,10 +10,18 @@ body h1{
 }
 
 button{
-    border: 1 solid darkblue;
+    font: "lucida console", monospace;
+    border-width: 1px;
+    border-style: solid;
     border-color: steelblue;
-    background-color: steelblue;
+    background-color: azure;
+    color: midnightblue;
+}
+
+button:active{
     color: azure;
+    background-color: midnightblue;
+    border-color: azure;
 }
 
 .border {
