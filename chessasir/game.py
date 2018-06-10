@@ -40,6 +40,7 @@ class Game:
         self.players = []
         self.white = None
         self.black = None
+        self._request_restart = None
 
     @property
     def unpaired(self):
@@ -107,6 +108,15 @@ class Game:
             await self.send_move(message)
         elif command == 'REQUESTWHITE':
             await self.request_white(ws)
+        elif command == 'REQUESTRESTART':
+            await self.request_restart(ws)
+
+    async def request_restart(self, ws):
+        if not self.request_restart:
+            return
+        rival = [p for p in self.players if ws is not p.ws][0]
+        await rival.ws.send_json({'command': 'REQUESTRESTART'})
+        self._request_restart = ws
 
     async def send_move(self, message):
         turn = message['color'] == 'WHITE'

@@ -107,6 +107,13 @@ button:active{
     font-size: 3em;
 }
 
+#request-dialog {
+    background-color: midnightblue;
+    position: absolute;
+    top: 1em;
+    left: 1em;
+}
+
 .hide {
     display: none;
 }

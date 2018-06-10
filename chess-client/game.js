@@ -19,6 +19,7 @@ class Game{
         this.boardView = boardView;
         this.messages = messages;
         this.playing = false;
+        this._requestRestart = false;
 
         conn.addEventListener('message', this.dispatchMessage.bind(this));
         conn.addEventListener('close', (close) => {
@@ -78,6 +79,9 @@ class Game{
             case "PLAYERJOINED":
                 this.playerJoined(message);
             break;
+            case "REQUESTRESTART":
+                this.requestRestart();
+            break;
         }
     }
 
@@ -116,6 +120,7 @@ class Game{
         this.boardView.board.clear();
         this.boardView.reset();
         this.boardView.draw();
+        requestDialog.hide();
     }
 
     OKMove(message){
@@ -154,6 +159,12 @@ class Game{
             }
         }
         this.check_gameover(message);
+    }
+
+    requestRestart(){
+        this.boardView.block = true;
+        this._requestRestart = true;
+        requestDialog.show();
     }
 
     addToMessagesSAN(turn, san, color){
