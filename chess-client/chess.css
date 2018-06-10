@@ -10,7 +10,7 @@ body h1{
 }
 
 button{
-    font: "lucida console", monospace;
+    font-family: "lucida console", monospace;
     border-width: 1px;
     border-style: solid;
     border-color: steelblue;
