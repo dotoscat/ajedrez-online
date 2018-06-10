@@ -40,19 +40,11 @@ class Messages {
     }
 
     add(content) {
-        const p = document.createElement("p");
-        p.innerText = content;
-        this.element.appendChild(p);
-        this.element.scrollTo(0, this.element.scrollHeight);
-    }
-
-    addToLast(content, separator){
-        const sep = typeof separator === 'undefined' ? ' ' : separator;
-        this.element.lastChild.innerText += sep + content;
+       this.element.innerText = ' ' + content; 
     }
 
     clear(){
-        this.element.innerHTML = "";
+        this.element.innerText = "";
     }
 
 }
@@ -277,6 +269,9 @@ class RequestRestart{
     }
 
     sendRequestRestart(){
+        sendRequestRestart(conn);
+        messages.text = "Esperando respuesta del jugador para reiniciar la partida como BLANCAS...";
+        this.hide();
         console.debug("Send request restart");
     }
 

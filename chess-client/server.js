@@ -18,6 +18,10 @@ function sendToServer(conn, command, data) {
     conn.send(JSON.stringify(message));
 }
 
+function sendRequestRestart(conn){
+    sendToServer(conn, "REQUESTRESTART");
+}
+
 function sendUCI(conn, from, to, fromXY, toXY, color, promotion){
     const data = {
         'from': from,

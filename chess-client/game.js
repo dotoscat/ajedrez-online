@@ -105,6 +105,8 @@ class Game{
         blackCounter.reset();
         whiteCounter.reset();
         startGame.hide();
+        requestRestart.show();
+        requestRestart.enable();
     }
 
     playerQuits(message){
