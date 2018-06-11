@@ -116,7 +116,7 @@ class Game:
     async def reject_restart(self, ws):
         print("_request_restart", not self._request_restart, self._request_restart)
         if self._request_restart is None:
-            print("vuelta...")
+            await ws.send_json({'command': 'REJECTRESTART'})
             return
         await self._request_restart.send_json({'command': 'REJECTRESTART'})
         self._request_restart = None
