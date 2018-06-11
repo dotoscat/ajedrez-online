@@ -39,6 +39,10 @@ class Messages {
         this.element.innerText = content;
     }
 
+    get text(){
+        return this.element.innerText;
+    }
+
     add(content) {
        this.element.innerText = ' ' + content; 
     }
@@ -270,6 +274,9 @@ class RequestRestart{
 
     sendRequestRestart(){
         sendRequestRestart(conn);
+        game.saveCurrentBoardViewBlock();
+        boardViewer.block = true;
+        game.saveCurrentMessage();
         messages.text = "Esperando respuesta del jugador para reiniciar la partida como BLANCAS...";
         this.hide();
         console.debug("Send request restart");
@@ -280,7 +287,22 @@ class RequestRestart{
 class RequestDialog {
     constructor(element){
         this.element = element;
+        const requestYes = document.getElementById("request-yes");
+        const requestNo = document.getElementById("request-no");
+        requestNo.addEventListener("click", this.requestNo.bind(this));
+        requestYes.addEventListener("click", this.requestYes.bind(this));
+    }
 
+    requestNo(){
+        game.restoreBoardViewBlock();
+        sendRejectRestart(conn);
+        this.hide();
+        requestRestart.show();
+        console.debug("request no");
+    }
+
+    requestYes(){
+        console.debug("request yes");
     }
     
     show(){

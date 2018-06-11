@@ -110,9 +110,19 @@ class Game:
             await self.request_white(ws)
         elif command == 'REQUESTRESTART':
             await self.request_restart(ws)
+        elif command == 'REJECTRESTART':
+            await self.reject_restart(ws)
+
+    async def reject_restart(self, ws):
+        print("_request_restart", not self._request_restart, self._request_restart)
+        if self._request_restart is None:
+            print("vuelta...")
+            return
+        await self._request_restart.send_json({'command': 'REJECTRESTART'})
+        self._request_restart = None
 
     async def request_restart(self, ws):
-        if not self.request_restart:
+        if self._request_restart:
             return
         rival = [p for p in self.players if ws is not p.ws][0]
         await rival.ws.send_json({'command': 'REQUESTRESTART'})

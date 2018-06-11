@@ -20,6 +20,8 @@ class Game{
         this.messages = messages;
         this.playing = false;
         this._requestRestart = false;
+        this.boardViewBlock = null;
+        this.lastMessage = null;
 
         conn.addEventListener('message', this.dispatchMessage.bind(this));
         conn.addEventListener('close', (close) => {
@@ -33,7 +35,26 @@ class Game{
         });
     }
 
-    check_gameover(message){
+    saveCurrentMessage(){
+        this.lastMessage = messages.text;
+    }
+
+    restoreCurrentMessage(){
+        if (typeof this.lastMessage !== 'string')
+            return;
+        messages.text = this.lastMessage;
+    }
+
+    saveCurrentBoardViewBlock(){
+        this.boardViewBlock = this.boardView.block;
+    }
+
+    restoreBoardViewBlock(){
+        if(typeof this.boardViewBlock !== 'boolean') return;
+        this.boardView.block = this.boardViewBlock;
+    }
+
+    checkGameover(message){
         if (!message.result)
             return;
         let mess = '';
@@ -82,12 +103,16 @@ class Game{
             case "REQUESTRESTART":
                 this.requestRestart();
             break;
+            case "REJECTRESTART":
+                this.rejectRestart();
+            break;
         }
     }
 
     playerJoined(message){
         messages.text = "Se ha unido un jugador.";
         startGame.show();
+        requestRestart.hide();
     }
 
     startGame(message){
@@ -111,6 +136,12 @@ class Game{
         startGame.hide();
         requestRestart.show();
         requestRestart.enable();
+    }
+
+    rejectRestart(){
+        this.restoreCurrentMessage();
+        this.restoreBoardViewBlock();
+        requestRestart.show();
     }
 
     playerQuits(message){
@@ -138,7 +169,7 @@ class Game{
                 whiteCounter.addOneTo('pawn');
             }
         }
-        this.check_gameover(message);
+        this.checkGameover(message);
     }
 
     playerMove(message){
@@ -158,13 +189,15 @@ class Game{
                 whiteCounter.addOneTo('pawn');
             }
         }
-        this.check_gameover(message);
+        this.checkGameover(message);
     }
 
     requestRestart(){
+        this.saveCurrentBoardViewBlock();
         this.boardView.block = true;
         this._requestRestart = true;
         requestDialog.show();
+        requestRestart.hide();
     }
 
     addToMessagesSAN(turn, san, color){

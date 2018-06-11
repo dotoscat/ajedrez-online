@@ -18,6 +18,10 @@ function sendToServer(conn, command, data) {
     conn.send(JSON.stringify(message));
 }
 
+function sendRejectRestart(conn){
+    sendToServer(conn, "REJECTRESTART");
+}
+
 function sendRequestRestart(conn){
     sendToServer(conn, "REQUESTRESTART");
 }
