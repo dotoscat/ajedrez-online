@@ -112,6 +112,14 @@ class Game:
             await self.request_restart(ws)
         elif command == 'REJECTRESTART':
             await self.reject_restart(ws)
+        elif command == 'ACCEPTRESTART':
+            await self.accept_restart()
+
+    async def accept_restart(self):
+        self.white = None
+        self.black = None
+        await self.request_white(self._request_restart)
+        self._request_restart = None
 
     async def reject_restart(self, ws):
         print("_request_restart", not self._request_restart, self._request_restart)

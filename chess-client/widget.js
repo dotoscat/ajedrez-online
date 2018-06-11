@@ -302,6 +302,7 @@ class RequestDialog {
     }
 
     requestYes(){
+        sendAcceptRestart(conn);
         console.debug("request yes");
     }
     

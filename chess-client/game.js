@@ -136,6 +136,7 @@ class Game{
         startGame.hide();
         requestRestart.show();
         requestRestart.enable();
+        requestDialog.hide();
     }
 
     rejectRestart(){
