@@ -132,7 +132,11 @@ class Game:
         if self._request_restart:
             await ws.send_json({'command': 'REJECTRESTART'})
             return
-        rival = [p for p in self.players if ws is not p.ws][0]
+        try:
+            rival = [p for p in self.players if ws is not p.ws][0]
+        except IndexError:
+            await ws.send_json({'command': 'REJECTRESTART'})
+            return
         await rival.ws.send_json({'command': 'REQUESTRESTART'})
         self._request_restart = ws
 
