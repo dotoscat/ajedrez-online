@@ -19,8 +19,8 @@ from .moves import get_moves
 
 TEST_PROMOTION_FEN = '4q1q1/PPPPPPPP/8/k7/7K/8/pppp4/Q1Q5 w KQkq - 0 1'
 
-async def send_player_quits(ws, color):
-    message = {"command": "PLAYERQUITS", "color": color}
+async def send_player_quits(ws):
+    message = {"command": "PLAYERQUITS"}
     await ws.send_json(message)
 
 async def send_start_game(ws, color, fen, moves=None):
@@ -64,7 +64,7 @@ class Game:
         self.white = None
         self.black = None
         if self.players:
-            await send_player_quits(self.players[0].ws, player.color)
+            await send_player_quits(self.players[0].ws)
         return True
 
     async def send_joined(self):
