@@ -153,6 +153,7 @@ class Game{
         this.boardView.reset();
         this.boardView.draw();
         requestDialog.hide();
+        requestRestart.hide();
     }
 
     OKMove(message){
