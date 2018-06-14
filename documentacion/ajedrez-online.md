@@ -2,26 +2,19 @@
 
 ## Introducción
 
-El objetivo es hacer un juego de ajedrez en línea. El ajedrez es un juego pausado, por turnos, haciendo fácil de sincronizar entre hosts.
+El objetivo es hacer un juego de ajedrez en línea. Es un juego pausado, por turnos, haciendo fácil de sincronizar entre hosts.
 
 Para el proyecto consta de dos host clientes conectados a un servidor, que puede estar alojado en una máquina remota para permitir partidas a través de Internet, o estar alojado en una máquina de una LAN.
 ![cliente-servidor](diagrama-cliente-servidor.png)
 
 Solamente se requiere de un navegador web de parte del cliente para jugar en línea.
-
-### Glosario de términos
-
-+ **fen**: **Forsyth–Edwards Notation** Es una notación estándard para describir una posición particular de una partida de ajedrez. Da la información necesaria para reempezar una partida de ajedrez desde un momento en particular.
-+ **san**: **Standard Algebraic Notation** Es una notación para registrar y describir movimientos en una partida de ajedrez.
-+ **ep**: **En passant** (al paso) Es un movimiento de ajedrez que puede hacerse justo después de que un peón adelanta dos casillas y se sitúa al lado de un peón rival. Este peón rival puede entonces capturar al peón como si hubiese adelantado solo una casilla sólo en su próximo turno.
-
 ## Lado Cliente
 
-El lado cliente es un navegador web en su última versión (recomendable) disponible donde corre una SPA (Single Page Application). La aplicación web está escrita en HTML5, JavaScript y CSS3. Se usa WebSockets para enviar y recibir datos del servidor.
+El lado cliente es un navegador web en su última versión (recomendable) disponible donde corre una aplicación escrita en HTML5, JavaScript y CSS3. Se usa WebSockets para enviar y recibir datos del servidor.
 
 No se ha usado ningún framework de JavaScript. El motivo es que da más libertad a la hora de cómo organizar y escribir el código, además de ser más rápido de ejecutar.
 
-Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancia como objetos globales.
+Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancian como objetos globales.
 
 Dos constantes está disponibles de forma global que son definidas en el momento de ofrecer la aplicación al cliente. **HOST**, con la dirección IP del servidor y **PORT**, donde se indica el puerto del servidor. Estas dos variables son necesarias para crear un websocket para comunicarse con el servidor. Para hacer esto la página web a servir es una plantilla Jinja2 con la siguiente parte:
 
@@ -34,9 +27,6 @@ Dos constantes está disponibles de forma global que son definidas en el momento
 </script>
 <!-- ... -->
 ```
-
-
-
 ## Lado Servidor
 
 El lado servidor es un servidor web escrito en Python3. La versión de Python3.5 o superior es necesario para hacer correr el servidor. Hace uso de las nuevas palabras claves **async** y **await** para la programación asíncrona con *asyncio*, un módulo de biblioteca estándard de Python que permite la programación asíncrona.
@@ -72,6 +62,12 @@ Ejemplos:
 {"command": "ACCEPTRESTART"}
 {"command": "SENDMOVE", "color": "BLACK", "to": "b3", "from": "b2", "fromXY": {"x": 1, "y": 1}, "toXY": {"x": 1, "y": 2}}
 ```
+
+El protocolo usa algunos términos que son estos
+
++ **fen**: Es una notación estándard para describir una posición particular de una partida de ajedrez. Da la información necesaria para reempezar una partida de ajedrez desde un momento en particular.
++ **san**: Es una notación para registrar y describir movimientos en una partida de ajedrez.
++ **ep**: **En passant** (al paso) Es un movimiento de ajedrez que puede hacerse justo después de que un peón adelanta dos casillas y se sitúa al lado de un peón rival. Este peón rival puede entonces capturar al peón como si hubiese adelantado solo una casilla sólo en su próximo turno.
 
 | Comando        | Parámetros                                                   | Destinatario                   | Información                                                  |
 | -------------- | ------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------ |
