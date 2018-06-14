@@ -109,3 +109,4 @@ Una aplicación web permite el juego en línea en cualquier medio con un navegad
 + Guardar y restaurar partidas. Ya esto requiere registro de usuarios.
 + Ofrecer una versión adaptada a los móviles. Ahora mismo está diseñado pensado para el escritorio.
 + Una IA al lado del servidor para partidas remotas contra la máquina. El servidor web tendría que comunicarse con un motor de ajedrez como GNU Chess y enviar los resultados de vuelta al cliente.
++ Hacer que se ajuste mejor en escritorios mas pequeños.
