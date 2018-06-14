@@ -21,7 +21,7 @@ No se ha usado ningún framework de JavaScript. El motivo es que da más liberta
 + main.js: El archivo principal para instanciar las clases e iniciar la conexión con el servidor. Tiene que ir después de definirse **HOST** y **PORT** y va en el cuerpo de la página.
 + chess.js: Contiene las clases BoardViewer y Board.
 + widget.js: Contiene las clases para controlar el resto de los elementos de la interfaz como el diálogo de las promociones o el historial.
-+ game.js: Contiene una clase para controlar toda la interfaz y atender los mensajes que llega desde el servidor.
++ game.js: Contiene una clase para controlar toda la interfaz y atender los mensajes que llegan desde el servidor.
 + server.js: Contiene funciones para enviar mensajes al servidor.
 
 ### Clases
@@ -58,6 +58,22 @@ Estas son las siguientes clases:
 <script src="main.js"></script>
 <!-- ... -->
 ```
+### Traducción de la notación algebraica del historial
+
+Entre el cliente y el servidor hay mensajes que contiene una parte con la notación algebraica del movimiento realizado por un jugador durante su turno. En la información transmitida se pasa una letra en inglés indicando el tipo de pieza que participa en el movimiento. Para ser representado en historial se traduce las letras usando una función. Se traducen de esta forma:
+
++ Q (Queen) -> D (Dama)
++ R (Rook) -> T (Torre)
++ N (kNight) -> C (Caballo)
++ B (Bishop) -> A (Alfil)
++ K (King) -> R (Rey)
+
+Para la traducción se usa una tabla, un objeto, dentro de una función que lo realiza de la siguiente forma
+
+```javascript
+return san.replace(/[QKRBN]/g, match => trans[match]);
+```
+
 ## Lado Servidor
 
 El lado servidor es un servidor web escrito en Python3. La versión de Python3.5 o superior es necesario para hacer correr el servidor. Hace uso de las nuevas palabras claves **async** y **await** para la programación asíncrona con *asyncio*, un módulo de biblioteca estándard de Python que permite la programación asíncrona.
