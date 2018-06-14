@@ -40,6 +40,14 @@ Estas son las siguientes clases:
 + BoardViewer: Controla la entrada y la visualización de una instancia de Board. También controla un elemento canvas.
 + Board: Guarda y almacena información acerca del estado del tablero.
 
+Un ejemplo de cómo instanciar estas clases
+
+```javascript
+const historial = new Historial(document.getElementById("historial"));
+const board = new Board();
+const boardViewer = new BoardViewer(document.getElementById("board"), board);
+```
+
 ### Constantes globales
 
 * HOST: IP del servidor. Se define cuando se sirve la la aplicación web.
@@ -59,6 +67,8 @@ Estas son las siguientes clases:
 <!-- ... -->
 ```
 ### Traducción de la notación algebraica del historial
+
+![1529011859462](1529011859462.png)
 
 Entre el cliente y el servidor hay mensajes que contiene una parte con la notación algebraica del movimiento realizado por un jugador durante su turno. En la información transmitida se pasa una letra en inglés indicando el tipo de pieza que participa en el movimiento. Para ser representado en historial se traduce las letras usando una función. Se traducen de esta forma:
 
