@@ -10,11 +10,23 @@ Para el proyecto consta de dos host clientes conectados a un servidor, que puede
 Solamente se requiere de un navegador web de parte del cliente para jugar en línea.
 ## Lado Cliente
 
-El lado cliente es un navegador web en su última versión (recomendable) disponible donde corre una aplicación escrita en HTML5, JavaScript y CSS3. Se usa WebSockets para enviar y recibir datos del servidor.
+El lado cliente es un navegador web donde corre una aplicación escrita en HTML5, JavaScript y CSS3. Se usa WebSockets para enviar y recibir datos con el servidor.
 
 No se ha usado ningún framework de JavaScript. El motivo es que da más libertad a la hora de cómo organizar y escribir el código, además de ser más rápido de ejecutar.
 
-Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancian como objetos globales.
+### Clases
+
+Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancian como objetos globales. Al ser instaciadas se les pasa el elemento, o los elementos, que tienen que manejar.
+
+Estas son las siguientes clases:
+
++ Messages: Controla los mensajes que irán apareciendo al usuario.
++ Historial: Este registra cada uno de los movimientos que se van haciendo durante la partida.
++ PieceCounter: Se encarga de llevar el registro de los movimientos hechos para cada uno de los jugadores durante sus turnos.
++ Promotion: Maneja la promoción de las piezas. Muestra un diálogo.
++ StartGame: Se encarga de empezar la partida como las BLANCAS.
++ RequestRestart: Este inicia el proceso para reempezar una partida como BLANCAS.
++ RequestDialog: Controla un diálogo de "Sí/No" cuando el cliente reciba la orden que el contrario quiere reiniciar la partida como las BLANCAS.
 
 Dos constantes está disponibles de forma global que son definidas en el momento de ofrecer la aplicación al cliente. **HOST**, con la dirección IP del servidor y **PORT**, donde se indica el puerto del servidor. Estas dos variables son necesarias para crear un websocket para comunicarse con el servidor. Para hacer esto la página web a servir es una plantilla Jinja2 con la siguiente parte:
 
