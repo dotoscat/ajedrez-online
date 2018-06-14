@@ -1,7 +1,5 @@
 'use strict';
 
-const HOST = "{{ host }}";
-const PORT = "{{ port }}";
 const ADDRESS = HOST + ":" + PORT;
 const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 const board = new Board();
