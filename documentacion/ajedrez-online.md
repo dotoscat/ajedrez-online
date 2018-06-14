@@ -2,9 +2,9 @@
 
 ## Introducción
 
-El objetivo es hacer un juego multijugador en línea. El juego para hacer es el ajedrez. El ajedrez es un juego pausado, por turnos, haciendo fácil de sincronizar entre hosts.
+El objetivo es hacer un juego de ajedrez en línea. El ajedrez es un juego pausado, por turnos, haciendo fácil de sincronizar entre hosts.
 
-Para el proyecto consta de dos host clientes conectados a un servidor. Este servidor puede estar alojado en una máquina remota para permitir partidas a través de Internet, o estar alojado en una máquina de una LAN.
+Para el proyecto consta de dos host clientes conectados a un servidor, que puede estar alojado en una máquina remota para permitir partidas a través de Internet, o estar alojado en una máquina de una LAN.
 ![cliente-servidor](diagrama-cliente-servidor.png)
 
 Solamente se requiere de un navegador web de parte del cliente para jugar en línea.
@@ -17,9 +17,9 @@ Solamente se requiere de un navegador web de parte del cliente para jugar en lí
 
 ## Lado Cliente
 
-El lado cliente es un navegador web en su última versión (recomendable) disponible donde corre una SPA (Single Page Application). La aplicación web está escrita en HTML5, JavaScript y CSS3. La aplicación web usa WebSockets para enviar y recibir datos del servidor.
+El lado cliente es un navegador web en su última versión (recomendable) disponible donde corre una SPA (Single Page Application). La aplicación web está escrita en HTML5, JavaScript y CSS3. Se usa WebSockets para enviar y recibir datos del servidor.
 
-Ningún framework de JavaScript se ha usado. El motivo es que da más libertad a la hora de cómo organizar y escribir el código, además de ser más rápido de ejecutar.
+No se ha usado ningún framework de JavaScript. El motivo es que da más libertad a la hora de cómo organizar y escribir el código, además de ser más rápido de ejecutar.
 
 Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancia como objetos globales.
 
@@ -34,6 +34,8 @@ Dos constantes está disponibles de forma global que son definidas en el momento
 </script>
 <!-- ... -->
 ```
+
+
 
 ## Lado Servidor
 
