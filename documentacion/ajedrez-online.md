@@ -14,9 +14,19 @@ El lado cliente es un navegador web donde corre una aplicación escrita en HTML5
 
 No se ha usado ningún framework de JavaScript. El motivo es que da más libertad a la hora de cómo organizar y escribir el código, además de ser más rápido de ejecutar.
 
+### Archivos
+
++ index.html: El archivo principal. Es una plantilla de Jinja2 para poder pasar al cliente la dirección IP y el puerto del servidor.
++ chess.css: La hoja de estilos.
++ main.js: El archivo principal para instanciar las clases e iniciar la conexión con el servidor. Tiene que ir después de definirse **HOST** y **PORT** y va en el cuerpo de la página.
++ chess.js: Contiene las clases BoardViewer y Board.
++ widget.js: Contiene las clases para controlar el resto de los elementos de la interfaz como el diálogo de las promociones o el historial.
++ game.js: Contiene una clase para controlar toda la interfaz y atender los mensajes que llega desde el servidor.
++ server.js: Contiene funciones para enviar mensajes al servidor.
+
 ### Clases
 
-Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancian como objetos globales. Al ser instaciadas se les pasa el elemento, o los elementos, que tienen que manejar.
+Cada elemento de la aplicación como el historial, el tablero o los mensajes... son clases que se instancian como objetos globales. Al ser instaciadas se les pasa el elemento, o los elementos, que tienen que manejar. Hay algunas clases que son de apoyo o no hay interacción directa.
 
 Estas son las siguientes clases:
 
@@ -27,8 +37,16 @@ Estas son las siguientes clases:
 + StartGame: Se encarga de empezar la partida como las BLANCAS.
 + RequestRestart: Este inicia el proceso para reempezar una partida como BLANCAS.
 + RequestDialog: Controla un diálogo de "Sí/No" cuando el cliente reciba la orden que el contrario quiere reiniciar la partida como las BLANCAS.
++ BoardViewer: Controla la entrada y la visualización de una instancia de Board. También controla un elemento canvas.
++ Board: Guarda y almacena información acerca del estado del tablero.
 
-Dos constantes está disponibles de forma global que son definidas en el momento de ofrecer la aplicación al cliente. **HOST**, con la dirección IP del servidor y **PORT**, donde se indica el puerto del servidor. Estas dos variables son necesarias para crear un websocket para comunicarse con el servidor. Para hacer esto la página web a servir es una plantilla Jinja2 con la siguiente parte:
+### Constantes globales
+
+* HOST: IP del servidor. Se define cuando se sirve la la aplicación web.
+* PORT: Puerto del servidor. Se define cuando se sirve la aplicación web.
+* conn: Conexión WebSocket.
+
+**HOST** y **PORT** son necesarias para crear un websocket para comunicarse con el servidor. Para hacer esto la página web a servir es una plantilla Jinja2 con la siguiente parte:
 
 ```jinja2
 <!-- ... -->
@@ -37,6 +55,7 @@ Dos constantes está disponibles de forma global que son definidas en el momento
   const PORT = "{{ port }}";
   // ...
 </script>
+<script src="main.js"></script>
 <!-- ... -->
 ```
 ## Lado Servidor
