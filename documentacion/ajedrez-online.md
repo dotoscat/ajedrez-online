@@ -242,10 +242,28 @@ Los métodos para manipular estas celdas son las siguientes:
 + takePiece(x, y) -> Piece?: Toma una pieza del tablero y lo devuelve. La casilla queda vacía.
 + putPiece(x, y) -> Piece?: Pone una pieza en el tablero y devuelve la pieza que sustituye.
 + movePiece(from, to) -> Piece?: Mueve una pieza desde un punto a otro. Los puntos son objetos {x: número, y: número}. Devuelve la pieza que toma si hay alguna.
-+ getTile(x, y) -> Tile: Obtener una instancia de Tile a partir de la columna y la fila.
-+ getTileByName(name) -> Tile: Obtener una instancia de Tile a partir de su nombre.
++ getTile(x, y) -> Tile?: Obtener una instancia de Tile a partir de la columna y la fila.
++ getTileByName(name) -> Tile?: Obtener una instancia de Tile a partir de su nombre.
 
 ### clase BoardViewer
+
+Se encarga de controlar los eventos de ratón y usar los métodos de Board, así como de dibujar en pantalla los contenidos de este y las acciones que puede hacer. El elemento que se pasa a su constructor es un canvas y hay que atender a sus eventos **mousedown**, **mousemove**, **mouseup** y **mouseleave**.
+
+Para obtener el índice de una celda hay que dividir el ancho y alto del tablero entre las dimensiones de una celda, además de tener en cuenta el ancho del borde y el padding.
+
+```javascript
+getMousePos(evt) {
+	const rect = this.drawarea.getBoundingClientRect();
+	const computedCSS = window.getComputedStyle(this.drawarea);
+	const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
+	const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
+	const paddingLeft = +computedCSS.paddingLeft.replace(/\D+/, '');
+	const paddingTop = +computedCSS.paddingTop.replace(/\D+/, '');
+    // ...
+}
+```
+
+
 
 ## Lado Servidor
 
