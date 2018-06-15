@@ -38,20 +38,38 @@ Estas son las siguientes clases:
 + RequestRestart: Este inicia el proceso para reempezar una partida como BLANCAS.
 + RequestDialog: Controla un diálogo de "Sí/No" cuando el cliente reciba la orden que el contrario quiere reiniciar la partida como las BLANCAS.
 + BoardViewer: Controla la entrada y la visualización de una instancia de Board. También controla un elemento canvas.
-+ Board: Guarda y almacena información acerca del estado del tablero.
++ Board: Almacena y gestiona información acerca del estado del tablero.
++ Game: Tiene controles para sincronizar entre sí el resto de las instancias globales.
 
 Un ejemplo de cómo instanciar estas clases
 
 ```javascript
+// ...
 const historial = new Historial(document.getElementById("historial"));
 const board = new Board();
 const boardViewer = new BoardViewer(document.getElementById("board"), board);
 const promotion = new Promotion(document.getElementById("promotion"));
+// ...
 ```
 
 ![1529054747424](1529054747424.png)
 
 ![1529055210806](1529055210806.png)
+
+### Gestión de eventos en las clases
+
+Elementos como un botón, una división o un canvas atiende a eventos como un click, un movimiento de ratón o si ha perdido el foco. También hay que gestionar la información que maneja la clase. Para atender a estos eventos se hace uso del método .addEventListener donde se pasa una función.
+
+```javascript
+function startGame(evt) {
+    this.hide();
+}
+
+const starButton = document.getElementById("start-button");
+startButton.addEventListener("click", startGame;
+```
+
+
 
 ### Constantes globales
 
@@ -62,13 +80,15 @@ const promotion = new Promotion(document.getElementById("promotion"));
 **HOST** y **PORT** son necesarias para crear un websocket para comunicarse con el servidor. Para hacer esto la página web a servir es una plantilla Jinja2 con la siguiente parte:
 
 ```jinja2
-<!-- ... -->
-<script>
-  const HOST = "{{ host }}";
-  const PORT = "{{ port }}";
-  // ...
-</script>
-<script src="main.js"></script>
+<body>
+    <!-- ... -->
+    <script>
+      const HOST = "{{ host }}";
+      const PORT = "{{ port }}";
+      // ...
+    </script>
+    <script src="main.js"></script>
+</body>
 <!-- ... -->
 ```
 ### Traducción de la notación algebraica del historial
@@ -91,7 +111,46 @@ return san.replace(/[QKRBN]/g, match => trans[match]);
 
 ### Comunicación con el servidor
 
-### Gestión de los mensajes del servidor
+(Hablar del socket)
+
+Para comunicarse con el servidor los distintos controles usan las funciones definidas en *server.js*. Todas ellas aceptan como primer parámetro una conexión por websocket y no devuelven nada.
+
++ sendToServer(conn, command, data): Esta función es la que se encarga de enviar datos del servidor. El resto de funciones se basan en esta.
+
++ sendAcceptRestart(conn): Enviar al servidor que se ha aceptado la petición de reempezar la partida.
+
++ sendRejectRestart(conn): Enviar al servidor que es niega la petición de reempezar la partida.
+
++ sendRequestRestart(conn): Enviar al servidor una petición de reempezar la partida como BLANCAS.
+
++ sendUCI(conn, from, to, fromXY, toXY, color, promotion): Enviar al servidor el movimiento hecho, de qué turno (color) y la promoción si hay.
+
+  ```javascript
+  class RequestRestart {
+      // ...
+      sendRequestRestart(evt){
+          sendRequestRestart(conn);
+          this.hide();
+          game.saveCurrentBoardViewBlock();
+          // ...
+      }
+  }
+  ```
+
+  
+
+  Hay algunas partes del código que usa sendToServer directamente. Por ejemplo, en la clase StartGame
+
+  ```javascript
+  class StartGame {
+      // ...
+      doRequest(evt){
+          sendToServer(conn, "REQUESTWHITE");
+      }
+  }
+  ```
+
+### Clase juego y gestión de los mensajes del servidor
 
 ### Tablero
 
@@ -135,7 +194,7 @@ El protocolo usa algunos términos que son estos
 
 + **fen**: Es una notación estándard para describir una posición particular de una partida de ajedrez. Da la información necesaria para reempezar una partida de ajedrez desde un momento en particular.
 + **san**: Es una notación para registrar y describir movimientos en una partida de ajedrez.
-+ **ep**: **En passant** (al paso) Es un movimiento de ajedrez que puede hacerse justo después de que un peón adelanta dos casillas y se sitúa al lado de un peón rival. Este peón rival puede entonces capturar al peón como si hubiese adelantado solo una casilla sólo en su próximo turno.
++ **ep:** Es un movimiento de ajedrez que puede hacerse justo después de que un peón adelanta dos casillas y se sitúa al lado de un peón rival. Este peón rival puede entonces capturar al peón como si hubiese adelantado solo una casilla sólo en su próximo turno.
 
 | Comando        | Parámetros                                                   | Destinatario                   | Información                                                  |
 | -------------- | ------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------ |
