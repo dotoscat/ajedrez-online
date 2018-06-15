@@ -46,7 +46,12 @@ Un ejemplo de cómo instanciar estas clases
 const historial = new Historial(document.getElementById("historial"));
 const board = new Board();
 const boardViewer = new BoardViewer(document.getElementById("board"), board);
+const promotion = new Promotion(document.getElementById("promotion"));
 ```
+
+![1529054747424](1529054747424.png)
+
+![1529055210806](1529055210806.png)
 
 ### Constantes globales
 
@@ -70,7 +75,7 @@ const boardViewer = new BoardViewer(document.getElementById("board"), board);
 
 ![1529011859462](1529011859462.png)
 
-Entre el cliente y el servidor hay mensajes que contiene una parte con la notación algebraica del movimiento realizado por un jugador durante su turno. En la información transmitida se pasa una letra en inglés indicando el tipo de pieza que participa en el movimiento. Para ser representado en historial se traduce las letras usando una función. Se traducen de esta forma:
+Entre el cliente y el servidor hay mensajes que contiene una parte con la notación algebraica del movimiento realizado por un jugador durante su turno. En la información transmitida se pasa una letra en inglés indicando el tipo de pieza que participa en el movimiento. Para ser representado en historial en español se traduce las letras usando una función. Se traducen de esta forma:
 
 + Q (Queen) -> D (Dama)
 + R (Rook) -> T (Torre)
@@ -83,6 +88,12 @@ Para la traducción se usa una tabla, un objeto, dentro de una función que lo r
 ```javascript
 return san.replace(/[QKRBN]/g, match => trans[match]);
 ```
+
+### Comunicación con el servidor
+
+### Gestión de los mensajes del servidor
+
+### Tablero
 
 ## Lado Servidor
 
