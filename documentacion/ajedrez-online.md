@@ -238,12 +238,14 @@ Las instancias de Tile se guarda dentro del tablero de dos formas
 Los métodos para manipular estas celdas son las siguientes:
 
 + setFromFEN(fen): Establecer el tablero según la información dada en formato FEN
-+ hasPiece(x, y): Mirar si alguna posición en particular tiene una pieza.
++ hasPiece(x, y) -> Booleano: Mirar si alguna posición en particular tiene una pieza.
 + takePiece(x, y) -> Piece?: Toma una pieza del tablero y lo devuelve. La casilla queda vacía.
 + putPiece(x, y) -> Piece?: Pone una pieza en el tablero y devuelve la pieza que sustituye.
 + movePiece(from, to) -> Piece?: Mueve una pieza desde un punto a otro. Los puntos son objetos {x: número, y: número}. Devuelve la pieza que toma si hay alguna.
-+ getTile(x, y): Obtener una instancia de Tile a partir de la columna y la fila.
-+ getTileByName(name): Obtener una instancia de Tile a partir de su nombre.
++ getTile(x, y) -> Tile: Obtener una instancia de Tile a partir de la columna y la fila.
++ getTileByName(name) -> Tile: Obtener una instancia de Tile a partir de su nombre.
+
+### clase BoardViewer
 
 ## Lado Servidor
 
