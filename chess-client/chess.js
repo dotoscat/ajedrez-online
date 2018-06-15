@@ -116,31 +116,6 @@ class Board {
         }
     }
     
-    getValidMovesOf(x, y){
-        if (y < 0 || y >= this.tiles.length
-            || x < 0 || x >= this.tiles[y].length){
-            return null;
-        }
-        const piece = this.tiles[y][x].piece;
-        if (piece === null || !piece.moves){
-            return null;
-        }
-        let validMoves = null;
-        console.log("getValidMovesOf", x, y)
-        switch(piece.moves.type){
-            case 'pawn':
-                validMoves = pawnMoves(x, y, piece, this.tiles);
-            break;
-            case 'knight':
-                validMoves = knightMoves(x, y, piece, this.tiles);
-            break;
-            case 'range':
-                validMoves = rankMoves(x, y, piece, this.tiles);
-            break;
-        }
-        return validMoves;
-    }
-
     hasPiece(x, y) {
         if (y < 0 || y >= this.tiles.length
             || x < 0 || x >= this.tiles[y].length){
