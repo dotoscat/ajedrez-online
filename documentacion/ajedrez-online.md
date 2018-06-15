@@ -132,7 +132,13 @@ return san.replace(/[QKRBN]/g, match => trans[match]);
 
 ### Comunicación con el servidor
 
-(Hablar del socket)
+En el cliente se crea un websocket que conecta con el servidor de esta forma
+
+````javascript
+const conn = new WebSocket('ws://' + HOST + ':' + PORT + '/ws');
+````
+
+*/ws* es un punto en el servidor para atender conexiones con websockets. Después este socket se pasa a una instancia de Game para conectar con sus métodos con los eventos que ocurren durante la conexión.
 
 Para comunicarse con el servidor los distintos controles usan las funciones definidas en *server.js*. Todas ellas aceptan como primer parámetro una conexión por websocket y no devuelven nada.
 
