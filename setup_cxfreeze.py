@@ -5,7 +5,7 @@ from cx_Freeze import setup, Executable
 buildOptions = dict(
     packages = ['asyncio', 'idna'],
     excludes = ['tkinter'],
-    include_files = ['chess-client'])
+    include_files = ['chess-client', 'LICENSE.txt'])
 
 base = 'Console'
 
