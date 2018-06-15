@@ -76,7 +76,7 @@ class Promotion {
     }
     
     cancel(){
-        this.boardView.restoreDraggedPiece();
+        this.boardViewer.restoreDraggedPiece();
         this.hide();
     }
     
