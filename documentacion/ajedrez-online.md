@@ -173,7 +173,46 @@ Para comunicarse con el servidor los distintos controles usan las funciones defi
   }
   ```
 
-### Clase juego y gestión de los mensajes del servidor
+### Clase Game y gestión de los mensajes del servidor
+
+La clase Game recibe como parámetro en su constructor un websocket y luego conecta el evento "message" a .dispatchMessage() y "close" a una clausura dentro del constructor. Dentro del dispatch se usa switch para el miembro command del mensaje.
+
+```javascript
+class Game{
+	constructor(conn, boardViewer, messages){
+    	this.conn = conn;
+    	this.boardViewer = boardViewer;
+    	this.messages = messages;
+    	// ...
+
+    	conn.addEventListener('message', this.dispatchMessage.bind(this));
+    	conn.addEventListener('close', (close) => {
+        	if (close.code === 1000 && close.wasClean){
+                return;
+            }
+        const message = `Conexión perdida con el servidor, ${close.code}. Recarga la página.`;
+            startGame.hide();
+            this.messages.set = message;
+            this.boardView.block = true;
+        });
+	}
+    
+    dispatchMessage(event){
+		const message = JSON.parse(event.data);
+        console.log("message", message);
+        switch(message.command){
+            case "STARTGAME":
+                this.startGame(message);
+            break;
+            // ...
+     }
+    
+        startGame(message){
+            // ...
+        }
+        
+}
+```
 
 ### Tablero
 
