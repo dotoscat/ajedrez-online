@@ -58,18 +58,39 @@ const promotion = new Promotion(document.getElementById("promotion"));
 
 ### Gestión de eventos en las clases
 
-Elementos como un botón, una división o un canvas atiende a eventos como un click, un movimiento de ratón o si ha perdido el foco. También hay que gestionar la información que maneja la clase. Para atender a estos eventos se hace uso del método .addEventListener donde se pasa una función.
+Elementos como un botón, una división o un canvas atiende a eventos como un click, un movimiento de ratón o si ha perdido el foco. También hay que gestionar la información que se maneje con esos eventos. Para atender a estos eventos se hace uso del método .addEventListener donde se pasa una función. *this* en una función que maneja el evento es el elemento que recibió la señal. Con .bind *this* ahora es la instancia de la clase siendo más cómodo de manipularla.
+
+Ejemplo con la clase Promotion
 
 ```javascript
-function startGame(evt) {
-    this.hide();
+class Promotion {
+    constructor(element, boardViewer){
+        this.element = element;
+        this.boardViewer = boardViewer;
+        
+	    document.getElementById("cancel")
+            .addEventListener("click", this.cancel.bind(this));
+        document.getElementById("p-queen")
+            .addEventListener("click", this.promote.bind(this, "queen"));
+        // ...
+    }
+    
+    cancel(){
+        this.boardView.restoreDraggedPiece();
+        this.hide();
+    }
+    
+	promote(piece){
+        let pieceSet = Pieces.White;
+        if (this.color === "BLACK")
+            pieceSet = Pieces.Black;
+        // ...  
+		sendUCI(conn, this.from, this.to, this.lastPos, this.newPos, this.color, p);
+         this.boardView.resetDrag();
+         his.hide();
+    }
 }
-
-const starButton = document.getElementById("start-button");
-startButton.addEventListener("click", startGame;
 ```
-
-
 
 ### Constantes globales
 
@@ -137,16 +158,18 @@ Para comunicarse con el servidor los distintos controles usan las funciones defi
   }
   ```
 
-  
-
   Hay algunas partes del código que usa sendToServer directamente. Por ejemplo, en la clase StartGame
 
   ```javascript
   class StartGame {
-      // ...
+      constructor(element){
+          this.element = element;
+          element.addEventListener("click", this.doRequest.bind(this));
+      }
       doRequest(evt){
           sendToServer(conn, "REQUESTWHITE");
       }
+      //...
   }
   ```
 
