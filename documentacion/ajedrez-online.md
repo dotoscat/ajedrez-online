@@ -175,7 +175,7 @@ Para comunicarse con el servidor los distintos controles usan las funciones defi
 
 ### Clase Game y gestión de los mensajes del servidor
 
-La clase Game recibe como parámetro en su constructor un websocket y luego conecta el evento "message" a .dispatchMessage() y "close" a una clausura dentro del constructor. Dentro del dispatch se usa switch para el miembro command del mensaje.
+La clase Game recibe como parámetro en su constructor un websocket y luego conecta el evento "message" a .dispatchMessage() y "close" a una clausura dentro del constructor. Dentro del dispatch se usa switch para el miembro **command** del mensaje.
 
 ```javascript
 class Game{
@@ -208,13 +208,36 @@ class Game{
      }
     
         startGame(message){
+            this.color = message.color;
             // ...
         }
         
 }
 ```
 
-### Tablero
+### clase Board
+
+Esta clase se encarga de gestionar la posición de las piezas en el tablero. Dispone de métodos para acceder a las piezas y manipularlas. Board hace uso de una estructura auxiliar, Tile, que guarda:
+
++ su nombre:  columna + rango
++ pieza: Si tiene alguna pieza
++ x: Posición que ocupa en las columnas
++ y: Posición que ocupa en las filas
+
+Las instancias de Tile se guarda dentro del tablero de dos formas
+
++ En una matriz de dos dimnesiones
++ Mapa o mapa con su nombre como clave
+
+Los métodos para manipular estas celdas son las siguientes:
+
++ setFromFEN(fen): Establecer el tablero según la información dada en formato FEN
++ hasPiece(x, y): Mirar si alguna posición en particular tiene una pieza.
++ takePiece(x, y) -> Piece?: Toma una pieza del tablero y lo devuelve. La casilla queda vacía.
++ putPiece(x, y) -> Piece?: Pone una pieza en el tablero y devuelve la pieza que sustituye.
++ movePiece(from, to) -> Piece?: Mueve una pieza desde un punto a otro. Los puntos son objetos {x: número, y: número}. Devuelve la pieza que toma si hay alguna.
++ getTile(x, y): Obtener una instancia de Tile a partir de la columna y la fila.
++ getTileByName(name): Obtener una instancia de Tile a partir de su nombre.
 
 ## Lado Servidor
 
