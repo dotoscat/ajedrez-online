@@ -249,12 +249,14 @@ Los métodos para manipular estas celdas son las siguientes:
 
 Se encarga de controlar los eventos de ratón y usar los métodos de Board, así como de dibujar en pantalla los contenidos de este y las acciones que puede hacer. El elemento que se pasa a su constructor es un canvas y hay que atender a sus eventos **mousedown**, **mousemove**, **mouseup** y **mouseleave**.
 
-Para obtener el índice de una celda hay que dividir el ancho y alto del tablero entre las dimensiones de una celda, además de tener en cuenta el ancho del borde y el padding.
+Para obtener el índice de una celda hay que dividir el ancho y alto del tablero, no del canvas, entre las dimensiones de una celda, además de tener en cuenta el ancho del borde y el padding. Si se desea añadir funciones de arrastre (drag and drop) hay que hacer los cálculos teniendo en cuenta todo el ancho y alto del canvas.
 
 ```javascript
 getMousePos(evt) {
+    // drawarea es un elemento canvas, el usado para dibujar el tablero
 	const rect = this.drawarea.getBoundingClientRect();
 	const computedCSS = window.getComputedStyle(this.drawarea);
+    // Se quita el sufijo 'px' del atributo precalculado y se convierte en un número.
 	const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
 	const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
 	const paddingLeft = +computedCSS.paddingLeft.replace(/\D+/, '');
@@ -263,7 +265,47 @@ getMousePos(evt) {
 }
 ```
 
+La posición del ratón obtenido por evt.clientX y evt.clientY tiene su origen desde la partida superior izquierda y corresponde al área de la pantalla de la aplicación. Para obtener su posición relativa dentro del elemento hay que restarlos con la posición top y left del canvas. Top y left se obtienen con getBoundingClientRect(), que devuelve un objeto con las dimensiones del canvas.
 
+```javascript
+const rect = this.drawarea.getBoundingClientRect();
+// ...
+return {
+    x: evt.clientX - rect.left - borderLeftWidth - paddingLeft,
+    y: evt.clientY - rect.top - borderTopWidth - paddingTop
+};
+```
+
+![1529146758998](1529146758998.png)
+
+Aquí un ejemplo de lo que pasaría si se soltase el ratón mientras se arrastra una pieza:
+
+Se pone la pieza arrastrada en el tablero y la pieza devuelta, o capturada, se añade al contador. Para indicar desde dónde hasta dónde se ha movido la pieza se almacena en *lastPos* y *newPos* para ser dibujado en el tablero luego. La pieza que se estaba arrastrando, *dragPiece*, se pone a nulo y los movimiento actuales de dicha pieza, *currentMoves*, se ponen a nulo también. Por último se envía el movimiento con *sendUCI* al servidor, que luego lo enviará al cliente rival.
+
+```javascript
+class BoardViewer {
+    // ...
+    onMouseUp(evt){
+        const pos = this.getMousePos(evt);
+        const tilePos = this.getTilePos(pos.x, pos.y);
+        // ...
+		const piece = this.board.putPiece(tilePos.x, tilePos.y, this.dragPiece);
+        this.lastPos = this.dragOrigin;
+        this.newPos = tilePos;
+        this.addToCounterPiece(piece);
+        this.dragPiece = null;
+        this.currentMoves = null;
+        sendUCI(conn, lastTile.name,
+                currentTile.name,
+                this.lastPos, this.newPos,
+                this.assignedColor);
+    }
+}
+```
+
+
+
+### Dibujado
 
 ## Lado Servidor
 
