@@ -116,7 +116,7 @@ class Promotion {
 
 ![1529011859462](1529011859462.png)
 
-Entre el cliente y el servidor hay mensajes que contiene una parte con la notación algebraica del movimiento realizado por un jugador durante su turno. En la información transmitida se pasa una letra en inglés indicando el tipo de pieza que participa en el movimiento. Para ser representado en historial en español se traduce las letras usando una función. Se traducen de esta forma:
+Entre el cliente y el servidor hay mensajes que contiene una parte con la notación algebraica del movimiento realizado por un jugador durante su turno. En la información transmitida se pasa una letra en inglés indicando el tipo de pieza que participa en el movimiento. Para ser representado en el historial en español se traduce las letras usando una función. Se traducen de esta forma:
 
 + Q (Queen) -> D (Dama)
 + R (Rook) -> T (Torre)
@@ -181,7 +181,7 @@ Para comunicarse con el servidor los distintos controles usan las funciones defi
 
 ### Clase Game y gestión de los mensajes del servidor
 
-La clase Game recibe como parámetro en su constructor un websocket y luego conecta el evento "message" a .dispatchMessage() y "close" a una clausura dentro del constructor. Dentro del dispatch se usa switch para el miembro **command** del mensaje.
+La clase Game recibe como parámetro en su constructor un websocket y luego conecta el evento "message" a .dispatchMessage() y "close" a una clausura dentro del constructor. Dentro de *dispatchMessage* se usa switch para el miembro **command** del mensaje.
 
 ```javascript
 class Game{
@@ -265,7 +265,7 @@ getMousePos(evt) {
 }
 ```
 
-La posición del ratón obtenido por evt.clientX y evt.clientY tiene su origen desde la partida superior izquierda y corresponde al área de la pantalla de la aplicación. Para obtener su posición relativa dentro del elemento hay que restarlos con la posición top y left del canvas. Top y left se obtienen con getBoundingClientRect(), que devuelve un objeto con las dimensiones del canvas.
+La posición del ratón obtenido por *evt.clientX* y *evt.clientY* tiene su origen desde la partida superior izquierda y corresponde al área de la pantalla de la aplicación. Para obtener su posición relativa dentro del elemento hay que restarlos con la posición top y left del canvas. *top* y *left* se obtienen con getBoundingClientRect(), que devuelve un objeto con las dimensiones del canvas.
 
 ```javascript
 const rect = this.drawarea.getBoundingClientRect();
@@ -280,7 +280,7 @@ return {
 
 Aquí un ejemplo de lo que pasaría si se soltase el ratón mientras se arrastra una pieza:
 
-Se pone la pieza arrastrada en el tablero y la pieza devuelta, o capturada, se añade al contador. Para indicar desde dónde hasta dónde se ha movido la pieza se almacena en *lastPos* y *newPos* para ser dibujado en el tablero luego. La pieza que se estaba arrastrando, *dragPiece*, se pone a nulo y los movimiento actuales de dicha pieza, *currentMoves*, se ponen a nulo también. Por último se envía el movimiento con *sendUCI* al servidor, que luego lo enviará al cliente rival.
+Se pone la pieza arrastrada en el tablero y la pieza devuelta, o capturada, se añade al contador *addToCounterPiece*. Para indicar desde dónde hasta dónde se ha movido la pieza se almacena en *lastPos* y *newPos* para ser dibujado en el tablero luego. La pieza que se estaba arrastrando, *dragPiece*, se pone a nulo y los movimiento actuales de dicha pieza, *currentMoves*, se ponen a nulo también. Por último se envía el movimiento con *sendUCI* al servidor, que luego lo enviará al cliente rival.
 
 ```javascript
 class BoardViewer {
@@ -299,13 +299,59 @@ class BoardViewer {
                 currentTile.name,
                 this.lastPos, this.newPos,
                 this.assignedColor);
+        // ...
+        this.dragOrigin = null;
+        this.draw();
     }
 }
 ```
 
-
-
 ### Dibujado
+
+Por cada cambio en *board* o eventos como como pulsar o arrastrar una ficha se tiene que actualizar la visualización de *BoardViewer*. Se tiene que hacer por pasos para evitar, por ejemplo, que se dibuje una pieza antes que el fondo del tablero haciéndolo invisible.
+
+Todos estos pasos se pueden englobar dentro de un método *draw* para *BoardViewer*, y todas las operaciones se realizan con el contexto del canvas:
+
++ Limpiar el canvas.
++ Dibujar fondo del tablero.
++ Dibujar las coordenadas del tablero.
++ Dibujar la última y nueva posición de la última pieza movida, si hay.
++ Dibujar todas las piezas del tablero, en *board*.
++ Dibujar los movimiento legales de una pieza seleccionada, si hay.
+
+```javascript
+// ...
+draw() {
+	this.drawarea.getContext('2d')
+        .clearRect(0, 0, this.drawarea.width, this.drawarea.height);
+     this.drawBackground();
+     this.drawCoordinates();
+     // ...
+}
+
+drawBackground() {
+    // Dibujar el fondo de tablero de ajedrez.
+    const ctx = this.drawarea.getContext("2d");
+    const colors = ["white", "grey"];
+    const tileSize = this.tileSize;
+    ctx.save();
+    for (let y = 0; y < 8; y += 1){
+        for (let x = 0; x < 8; x += 1){
+            const color = colors[0];
+            ctx.fillStyle = color;
+            ctx.fillRect(x*tileSize, y*tileSize, tileSize, tileSize);
+            colors.reverse();
+        }
+        colors.reverse();
+    }
+    ctx.restore();
+}
+// ...
+```
+
+Para poder dibujar las coordenadas, el área del canvas tiene que ser ligeramente mayor como para poder dibujar los símbolos de los rangos y las columnas. Un buen valor para comenzar es usar el tamaño de la fuente para dibujar las letras de las coordenadas.
+
+![1529164041239](1529164041239.png)
 
 ## Lado Servidor
 
@@ -380,13 +426,13 @@ El cliente al ser un navegador web usa una hoja de estilos proporcionado desde e
 
 Para aprender a hacer juegos en línea, juegos de ritmo lento como el ajedrez o el tres en raya es una buena forma de empezar. Se aprende a diseñar e interpretar un protocolo. Además no tienes muchos problemas de sincronización entre el servidor y los clientes.
 
-Una aplicación web permite el juego en línea en cualquier medio con un navegador web con soporte a JavaScript, WebSockets y el elemento **canvas**.
+Una aplicación web permite el juego en línea en cualquier medio con un navegador web con soporte a JavaScript, WebSockets y el elemento *canvas*.
 
 ## Mejoras
 
 + Poder entrar en una sala bajo un nick y crear una partida.
 + Hacer correr el servidor web a través Apache o Nginx, ya que no es seguro servir los contenidos estáticos (js, html, css) a través de la aplicación web.
 + Guardar y restaurar partidas. Ya esto requiere registro de usuarios.
-+ Ofrecer una versión adaptada a los móviles. Ahora mismo está diseñado pensado para el escritorio.
++ Ofrecer una versión adaptada a los móviles. Ahora mismo está diseñado sólo para el escritorio.
 + Una IA al lado del servidor para partidas remotas contra la máquina. El servidor web tendría que comunicarse con un motor de ajedrez como GNU Chess y enviar los resultados de vuelta al cliente.
 + Hacer que se ajuste mejor en escritorios mas pequeños.
