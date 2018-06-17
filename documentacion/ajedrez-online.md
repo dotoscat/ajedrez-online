@@ -608,11 +608,11 @@ Cuando le toca el turno al siguiente jugador, se genera una lista de movimientos
 
 Se usan las funciones auxiliares contenidas en el módulo *moves* de *chessasir*
 
-+ get_pieces_moves(board, color, piece): Obtiene la lista de movimientos válidas para todas las piezas del tipo *piece* excepto de los peones.
++ get_pieces_moves(board, color, piece) -> Dict: Obtiene un diccionarios de movimientos válidas para todas las piezas del tipo *piece* excepto de los peones.
 
-+ get_pawn_moves(board, color): Función exclusivamente para obtener una lista de movimientos válidos de los peones.
++ get_pawn_moves(board, color) -> Dict: Función exclusivamente para obtener un diccionario de movimientos válidos de los peones.
 
-+ get_moves(board, color): Función de conveniencia para obtener todos los movimientos válidos de todas las piezas.
++ get_moves(board, color) -> Dict: Función de conveniencia para obtener todos los movimientos válidos de todas las piezas.
 
   ```python
   def get_moves(board, color):
@@ -640,6 +640,48 @@ for p in pieces:
 ```
 
 ### Enroques
+
+Si la pieza es el rey se comprueba si el jugador tiene derecho a enroque por un lado, está el lado de la reina y el lado del rey, entonces si tiene derecho comprobar si está en la lista de movimientos legales.
+
+Ejemplo para mirar si el enroque es posible por el lado de rey para las blancas.
+
+```python
+if piece is chess.KING:
+    if color is chess.WHITE and board.has_kingside_castling_rights(chess.WHITE):
+        move = chess.Move.from_uci('e1g1')
+        if move in legal_moves:
+            piece_moves['moves'].append('g1')
+```
+
+### Promoción
+
+Este tipo de movimientos legales incorporan una de las 4 letras 'q' 'n' 'r' 'b' (reina, caballo, torre y alfil respectivamente) para indicar que además promociona, por ejemplo, 'd2e1q' para indicar un peón que mueve  haciendo una captura y promociona a reina.
+
+Para saber si la promoción forma parte de la lista de los movimientos legales solamente hace falta poner una de las 4 letras para comprobarlo. En el peón hace falta calcularlo en dos casos. Una es cuando alcanza el otro lado sin capturar otra pieza.
+
+```python
+for pawn in pawns:
+    # ...
+    name = file + rank
+    name1 = file + str(int(rank) + step) # step puede ser -1 ó 1, según color
+    to1 = name + name1
+    if (chess.Move.from_uci(to1) in legal_moves
+        or chess.Move.from_uci(to1 + 'q') in legal_moves):
+        pawn_moves['moves'].append(name1)
+    # ...
+```
+
+El otro caso es cuando el peón ataca una pieza y alcanza el otro lado
+
+```python
+for pawn in pawns:
+    # ...
+    for attack in board.attacks(pawn):
+        attack_name = chess.SQUARE_NAMES[attack]
+        if (chess.Move.from_uci(name + attack_name) in legal_moves
+        or chess.Move.from_uci(name + attack_name + 'q') in legal_moves):
+            pawn_moves['moves'].append(attack_name)
+```
 
 
 
