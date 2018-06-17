@@ -268,7 +268,7 @@ getMousePos(evt) {
 }
 ```
 
-La posición del ratón obtenido por *evt.clientX* y *evt.clientY* tiene su origen desde la partida superior izquierda y corresponde al área de la pantalla de la aplicación. Para obtener su posición relativa dentro del elemento hay que restarlos con la posición top y left del canvas. *top* y *left* se obtienen con getBoundingClientRect(), que devuelve un objeto con las dimensiones del canvas.
+La posición del ratón obtenido por *evt.clientX* y *evt.clientY* tiene su origen desde la parte superior izquierda y corresponde al área de la pantalla de la aplicación. Para obtener su posición relativa dentro del elemento hay que restarlos con la posición top y left del canvas. *top* y *left* se obtienen con getBoundingClientRect(), que devuelve un objeto con las dimensiones del canvas.
 
 ```javascript
 const rect = this.drawarea.getBoundingClientRect();
@@ -835,7 +835,7 @@ Se usa *flex* para centrar los elementos por la pantalla.
 
 ## Conclusiones
 
-Para aprender a hacer juegos en línea, juegos de ritmo lento como el ajedrez o el tres en raya es una buena forma de empezar. Se aprende a diseñar e interpretar un protocolo. Además no tienes muchos problemas de sincronización entre el servidor y los clientes.
+Para aprender a hacer juegos en línea, los de ritmo lento como el ajedrez o el tres en raya es una buena forma de empezar. Se aprende a diseñar e interpretar un protocolo. Además no tienes muchos problemas de sincronización entre el servidor y los clientes.
 
 Una aplicación web permite el juego en línea en cualquier medio con un navegador web con soporte a JavaScript, WebSockets y el elemento *canvas*.
 
@@ -847,3 +847,4 @@ Una aplicación web permite el juego en línea en cualquier medio con un navegad
 + Ofrecer una versión adaptada a los móviles. Ahora mismo está diseñado sólo para el escritorio.
 + Una IA al lado del servidor para partidas remotas contra la máquina. El servidor web tendría que comunicarse con un motor de ajedrez como GNU Chess y enviar los resultados de vuelta al cliente.
 + Hacer que se ajuste mejor en escritorios mas pequeños.
+
