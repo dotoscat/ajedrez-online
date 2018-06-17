@@ -490,7 +490,7 @@ Así al escribir solamente la dirección asignada del servidor en el navegador, 
 
 ### Websockets
 
-Para que el cliente pueda comunicarse mediante websockets con el servidor, este tiene que habilitar un punto donde ofrezca el servicio. Los websockets se atienden con el uso del bucle **async for** dentro der su manejador, esto permite atender atender otras peticiones web.
+Para que el cliente pueda comunicarse mediante websockets con el servidor, este tiene que habilitar un punto donde ofrezca el servicio. Los websockets se atienden con el uso del bucle **async for** dentro der su manejador, esto permite atender otras peticiones web u otros mensajes de websockets.
 
 Desde la aplicación web se conecta al servidor desde la ruta *'/ws'*.
 
@@ -524,13 +524,124 @@ app.router.add_get("/ws", websocket_handler)
 
 ### Websockets vs REST
 
-El motivo por el que se ha elegido websockets sobre una API REST es porque se transmite un estado de forma bidireccional entre el cliente y el servidor mientras que en una API REST es bastante complicado de menajear estado, además de que el cliente siempre tiene que empezar a enviar una petición para poder recibir una respuesta por parte del servidor.
+El motivo por el que se ha elegido websockets sobre una API REST es porque se transmite un estado de forma bidireccional entre el cliente y el servidor mientras que en una API REST es bastante complicado de menajar estado, además de que el cliente siempre tiene que empezar a enviar una petición para poder recibir una respuesta por parte del servidor.
 
-## Game
+## clase Game
+
+La clase Game en el servidor es parecido a lo que hace la clase Game en el lado cliente, también gestiona los comandos recibidos desde los clientes. Game se encarga de:
+
++ Registrar que jugadores están unidos a la partida.
++ Qué jugadores son las blancas o las negras.
++ Gestionar los mensajes recibidos desde los clientes y responderles.
++ Intermediar con una instacia de **Board** del módulo *python-chess*.
++ Calcular una lista de movimientos válidos.
+
+### clase Player
+
+Es una clase auxiliar para la clase **Game**. Almacena el websocket de un jugador y su color, si tiene.
+
+### Registro de jugadores en una partida
+
+En una nueva conexión con websocket Game se encarga de mirar si ya hay jugadores unidos a la partida. Si hay ya dos jugadores entonces se le envía el mensaje que un jugador ya se ha unido a la partida.
+
+```python
+async def websocket_handler(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+
+    game = request.app['game']
+    game.add_player(ws)
+
+    if not game.unpaired:
+        await game.send_joined()
+    async for msg in ws:
+        # ...
+        
+class Game:
+    # ...
+    def add_player(self, ws):
+        if not self.unpaired:
+            return False
+        player = Player(ws)
+        self.players.append(player) 
+        return True
+    
+    async def send_joined(self):      
+        message = {'command': 'PLAYERJOINED'}
+        await self.players[0].ws.send_json(message)
+        await self.players[1].ws.send_json(message)
+```
+
+### Gestión de los mensajes recibidos
+
+Por cada mensaje recibido desde un cliente el servidor siempre va a responder al menos a uno. La gestión empieza desde el manejador del websocket.
+
+```python
+async def websocket_handler(request):
+    # ...
+    async for msg in ws:
+        if msg.type == aiohttp.WSMsgType.TEXT:
+            await game.dispatch_message(msg.json(), ws)
+```
+
+Según el comando del mensaje, **command**, el servidor hará una operación u otra.
+
+```python
+class Game:
+    # ...
+	async def dispatch_message(self, message, ws):
+        command = message['command']
+        if command == 'SENDMOVE':
+            await self.send_move(message)
+        elif command == 'REQUESTWHITE':
+            await self.request_white(ws)
+        # ...
+```
+
+### Generar lista de movimiento válidos
+
+Cuando le toca el turno al siguiente jugador, se genera una lista de movimientos legales para cada una de las piezas y se envía en el mensaje dirigido al próximo turno del jugador. Estos movimientos son una lista de nombres de celda asociadas a la ficha de una celda. Por ejemplo, los movimientos válidos un peón en b2:
+
+```python
+{'b2': ['b3', 'b4']}
+```
+
+Se usan las funciones auxiliares contenidas en el módulo *moves* de *chessasir*
+
++ get_pieces_moves(board, color, piece): Obtiene la lista de movimientos válidas para todas las piezas del tipo *piece* excepto de los peones.
+
++ get_pawn_moves(board, color): Función exclusivamente para obtener una lista de movimientos válidos de los peones.
+
++ get_moves(board, color): Función de conveniencia para obtener todos los movimientos válidos de todas las piezas.
+
+  ```python
+  def get_moves(board, color):
+      return dict(
+          **get_pawn_moves(board, color),
+          **get_piece_moves(board, color, chess.ROOK),
+          **get_piece_moves(board, color, chess.KNIGHT),
+          **get_piece_moves(board, color, chess.BISHOP),
+          **get_piece_moves(board, color, chess.QUEEN),
+          **get_piece_moves(board, color, chess.KING),
+      )
+  ```
 
 
 
-Para controlar las partidas de ajedrez hace uso del módulo *python-chess* que valida los movimientos enviados desde los clientes, y puede generar listas de movimientos legales de cada una de las piezas de un jugador.
+### Clavadas
+
+Si una pieza está clavada entonces no se genera una lista de movimientos legales y se pasa a la siguiente
+
+```python
+for p in pieces:
+    if piece is not chess.KING and board.is_pinned(color, p):
+        continue
+    # ...
+```
+
+### Enroques
+
+
 
 ## Protocolos y la red
 
