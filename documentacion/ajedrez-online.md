@@ -205,7 +205,6 @@ class Game{
     
     dispatchMessage(event){
 		const message = JSON.parse(event.data);
-        console.log("message", message);
         switch(message.command){
             case "STARTGAME":
                 this.startGame(message);
@@ -738,6 +737,37 @@ class Game:
 ```
 
 Para el cliente que envió el movimiento se le envía un mensaje de respuesta con el comando "OKMOVE", para el siguiente turno del jugador, el rival, "PLAYERMOVE". 
+
+### Fin del juego
+
+Antes de enviar los mensajes de respuesta a los jugadores tras un movimiento hecho por un jugador se tiene que comprobar después si es el fin de la partida. Esto se hace con el método *check_endofgame*.
+
+```python
+class Game:
+    # ...
+    async def send_move(self, message):
+        # ...
+        self.check_endofgame(okmove, player.color)
+        await player.ws.send_json(okmove)
+        # ...
+        self.check_endofgame(playermove, rival.color)
+        await rival.ws.send_json(playermove)
+        
+	def check_endofgame(self, message, color):
+        if not self.board.is_game_over():
+            return
+        white_result, black_result = self.board.result().split('-')
+        if color == "WHITE":
+            message["result"] = white_result
+        elif color == "BLACK":
+            message["result"] = black_result
+        if self.board.is_checkmate():
+            message["reason"] = "checkmate"
+        elif self.board.is_stalemate():
+            message["reason"] = "stalemate"
+        elif self.board.is_insufficient_material():
+            message["reason"] = "material"
+```
 
 ## Protocolos y la red
 
