@@ -1,13 +1,15 @@
 # Juego multijugador en línea: ajedrez
 
+Oscar Triano García
+
 ## Introducción
 
 El objetivo es hacer un juego de ajedrez en línea. Es un juego pausado, por turnos, haciendo fácil de sincronizar entre hosts.
 
-Para el proyecto consta de dos host clientes conectados a un servidor, que puede estar alojado en una máquina remota para permitir partidas a través de Internet, o estar alojado en una máquina de una LAN.
+Para el proyecto consta de dos host clientes conectados a un servidor, que puede estar alojado en una máquina remota para permitir partidas a través de Internet, o estar en una máquina de una LAN.
 ![cliente-servidor](diagrama-cliente-servidor.png)
 
-Solamente se requiere de un navegador web de parte del cliente para jugar en línea.
+Solamente se requiere de un navegador web por parte del cliente para jugar en línea.
 ## Lado Cliente
 
 El lado cliente es un navegador web donde corre una aplicación escrita en HTML5, JavaScript y CSS3. Se usa WebSockets para enviar y recibir datos con el servidor.
@@ -847,4 +849,3 @@ Una aplicación web permite el juego en línea en cualquier medio con un navegad
 + Ofrecer una versión adaptada a los móviles. Ahora mismo está diseñado sólo para el escritorio.
 + Una IA al lado del servidor para partidas remotas contra la máquina. El servidor web tendría que comunicarse con un motor de ajedrez como GNU Chess y enviar los resultados de vuelta al cliente.
 + Hacer que se ajuste mejor en escritorios mas pequeños.
-
