@@ -355,17 +355,130 @@ Para poder dibujar las coordenadas, el área del canvas tiene que ser ligerament
 
 ## Lado Servidor
 
-El lado servidor es un servidor web escrito en Python3. La versión de Python3.5 o superior es necesario para hacer correr el servidor. Hace uso de las nuevas palabras claves **async** y **await** para la programación asíncrona con *asyncio*, un módulo de biblioteca estándard de Python que permite la programación asíncrona.
+El lado servidor es un servidor web escrito en Python3. La versión 3.5 o superior es necesario para hacer correr el servidor porque hace uso de las nuevas palabras claves **async** y **await** para la programación asíncrona con *aiohttp*. Se ha elegido Python porque es fácil de usar y de aprender.
 
-Python es un lenguaje fácil de usar pero no está pensado para la programación asíncrona que involucra operaciones de entrada y salida. Para servir aplicaciones web de forma asíncrona hace uso de *aiohttp*, construida por encima de *asyncio* y además ofrece soporte para gestionar conexiones de websockets sin necesidad de retrollamadas (callbacks) como pasa con nodejs.
+### Estructura del servidor
 
-La página web está escrita como una plantilla de Jinja2, así que el módulo *aiohttp-jinja2* también es usado para dar soporte a la plantillas jinja2 con *aiohttp*.
++ chess_server.py: Punto de entrada para arrancar el servidor.
++ chessasir: Paquete de Python, una carpeta, donde están las clases y utilidades para ser usadas por el servidor web.
+  + game.py: Contiene la clase Game para manejar la partidas entre los clientes y atender los websockets.
+  + moves.py: Contiene funciones de apoyo para calcular la lista de movimientos válidos para cada una de las piezas de un jugador en concreto.
+  + player.py: Es una clase auxiliar usada por Game para guardar el websocket del cliente y su color (BLANCAS o NEGRAS).
++ chess-client: Carpeta donde está alojado la aplicación web para servir al cliente.
+
+### Módulos o paquetes usados
+
++ [aiohttp](https://aiohttp.readthedocs.io/en/stable/): servidor y cliente http asíncrono para [asyncio](https://docs.python.org/3.5/library/asyncio.html) y Python. Soporta websockets para el servidor y el cliente.
+
++ [aiohttp-jinja2](http://aiohttp-jinja2.readthedocs.io/en/stable/): Soporte de plantillas de [Jinja2](http://jinja.pocoo.org/) para aiohttp.
+
++ [python-chess](https://python-chess.readthedocs.io/en/stable/): Genera movimientos y valida los movimientos recibidos de un jugador.
+
++ chessasir: Paquete propio del proyecto de ayuda.
+
+### Arranque del servidor
+
+Al ejecutar chess_server por defecto toma la dirección de la última interfaz disponible y el puerto por defecto es 1337.
+
+Para dar una dirección válida al servidor de forma automática se utiliza el siguiente código en Python
+
+```python
+import socket
+
+ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
+ip = ip_list.pop()
+```
+
+Se puede cambiar la dirección y el puerto en el momento de ejecutar el servidor.
+
+```shell
+./chess_server -i 127.0.0.1 -p 30000
+```
+
+Para dar soporte a la interfaz de línea de comandos con parámetros por defecto se usa [argparse](https://docs.python.org/3.5/library/argparse.html#module-argparse) que es un módulo de la biblioteca estándard de Python.
+
+```python
+ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
+
+parse = argparse.ArgumentParser()
+parse.add_argument("--ip", "-i", default=ip_list.pop(), help="ipv4")
+parse.add_argument("--port", "-p", default=1337)
+args = parse.parse_args()
+# ...
+```
+
+### Programación asíncrona
+
+Enviar y recibir datos de internet y leer y escribir datos en los archivos implica operaciones de entrada y salida que normalmente bloquean el flujo de un programa que espera a que se completen. Ese tiempo se puede emplear para otras tareas, incluso hacer mas operaciones de entrada y salida, cosa que se logra con la programación asíncrona. En un servidor web esto significa atender mas peticiones en menos tiempo.
+
+En Python para atender peticiones web de forma asíncrona se hace con las palabras claves **async**, **await** y el módulo **aiohttp**.
+
+### Servir la aplicación web
+
+Para servir la aplicación web y pueda comunicarse con el servidor se hace uso del módulo *aiohttp-jinja2* para poder pasar la dirección ip del servidor y el puerto. Con poner la dirección del sitio ya se sirve la aplicación web.
+
+```python
+from aiohttp import web
+import aiohttp_jinja2
+import jinja2
+
+app = web.Application()
+aiohttp_jinja2.setup(app,
+                     loader=jinja2.FileSystemLoader('chess-client'))
+
+async def index(request):
+    response = aiohttp_jinja2.render_template(
+        'index.html',
+        request, 
+        {"host": args.ip, "port": args.port})
+    return response
+
+app.router.add_get("/", index)
+# ...
+```
+
+Así al escribir solamente la dirección asignada del servidor en el navegador, por ejemplo 192.168.1.7, ya se mostraría.
+
+### Websockets
+
+Para que el cliente pueda comunicarse mediante websockets con el servidor, este tiene que habilitar un punto donde ofrezca el servicio. Los websockets se atienden con el uso del bucle **async for** dentro der su manejador, esto permite atender atender otras peticiones web.
+
+Desde la aplicación web se conecta al servidor desde la ruta *'/ws'*.
+
+```python
+from chessasir.game import Game
+# ...
+app['game'] = Game()
+# ...
+async def websocket_handler(request):
+    ws = web.WebSocketResponse()
+    await ws.prepare(request)
+	# ...
+    game = request.app['game']
+    async for msg in ws:
+    	if msg.type == aiohttp.WSMsgType.TEXT:
+        if msg.data == 'close':
+        	await ws.close()
+        else:
+           	await game.dispatch_message(msg.json(), ws)
+            await ws.send_json({'command': 'DATA', 'data': msg.data})
+        elif msg.type == aiohttp.WSMsgType.ERROR:
+            print('ws connection clossed with exception {}'.format(ws.exception()))
+    return
+
+# ...
+app.router.add_get("/", index)
+app.router.add_get("/ws", websocket_handler)
+# ...
+```
+
+### Websockets vs REST
+
+## Game
+
+
 
 Para controlar las partidas de ajedrez hace uso del módulo *python-chess* que valida los movimientos enviados desde los clientes, y puede generar listas de movimientos legales de cada una de las piezas de un jugador.
-
-La aplicación consiste en un script de entrada y un paquete específico para el servidor web llamado *chessasir*. Desde el script de entrada se sirve a los cliente el contenido de *chess-client*.
-
-La dirección IP y el puerto del servidor se puede configurar desde la línea de comandos. Por defecto la IP del servidor se adopta desde la última interfaz de red detectada que no sea localhost.
 
 ## Protocolos y la red
 
@@ -381,7 +494,7 @@ El formato del protocolo es JSON, basado en texto. JSON es fácil de manejar en 
 
 Todos los mensajes que se transmiten tienen el miembro **command** que almacena como cadena en mayúsculas el comando que se quiere realizar. Dependiendo el comando habrá miembros adicionales.
 
-Ejemplos:
+Ejemplos de mensajes:
 
 ```json
 {"command": "STARTGAME", "color": "WHITE"}
