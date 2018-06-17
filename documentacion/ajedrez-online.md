@@ -221,6 +221,10 @@ class Game{
 }
 ```
 
+### Promoción
+
+El cliente será responsable de gestionar la promoción de las piezas. Se detecta si un peón llega a un determinado rango en tablero. Para las blancas el rango es 8 y para las negras el rango es 1. El cliente deberá enviar al servidor el movimiento del peón mas la pieza que se promociona con el comando "SENDMOVE".
+
 ### clase Board
 
 Esta clase se encarga de gestionar la posición de las piezas en el tablero. Dispone de métodos para acceder a las piezas y manipularlas. Board hace uso de una estructura auxiliar, Tile, que guarda:
@@ -626,8 +630,6 @@ Se usan las funciones auxiliares contenidas en el módulo *moves* de *chessasir*
       )
   ```
 
-
-
 ### Clavadas
 
 Si una pieza está clavada entonces no se genera una lista de movimientos legales y se pasa a la siguiente
@@ -683,7 +685,59 @@ for pawn in pawns:
             pawn_moves['moves'].append(attack_name)
 ```
 
+### Capturas al paso
 
+Para saber si un movimiento que envía un jugador es una captura al paso solamente hay que preguntar al tablero sobre el movimiento. Si lo es hay que indicar a ambos jugadores que el movimiento hecho es al paso.
+
+```python
+async def send_move(self, message):
+    # ...
+	promotion = message.get('promotion')
+    if promotion:
+        move = chess.Move.from_uci(message['from'] + message['to'] + promotion)
+    else:
+        move = chess.Move.from_uci(message['from'] + message['to'])
+        en_passant = self.board.is_en_passant(move)
+    # okmove es para el cliente que envió el movimiento 
+    okmove = {
+        "command": "OKMOVE",
+        "color": message['color'],
+        "san": san,
+        "turn": self.board.fullmove_number
+    }
+    if en_passant:
+        okmove['ep'] = True
+        okmove['fen'] = self.board.fen()
+    await player.ws.send_json(okmove)
+```
+
+### Verificación de movimientos
+
+Las **clavadas**, los **enroques**, y las **capturas al paso** no lo detecta la clase *Board* del cliente. Estos tipos de movimientos son detectados, no cuando se generan los movimientos legales, cuando se envía el movimiento al servidor. Las **promociones** deben estar manejadas por el cliente. Todos estos movimientos al final se gestiona por el método *send_move* de la clase *Game* del servidor. Si un movimiento es un enroque, una captura al paso o una promoción se hace una copia del estado del tablero en **fen** para enviarlo luego a los clientes y actualice el estado del tablero.
+
+```python
+class Game:
+    # ...
+    async def send_move(self, message):
+        turn = message['color'] == 'WHITE'
+        if turn == self.board.turn:
+            promotion = message.get('promotion')
+            if promotion:
+                move = chess.Move.from_uci(message['from'] + message['to'] + promotion)
+            else:
+                move = chess.Move.from_uci(message['from'] + message['to'])
+            en_passant = self.board.is_en_passant(move)
+            castling = self.board.is_castling(move)
+		   self.board.push(move)
+            fen = self.board.fen()
+            # ...
+            await player.ws.send_json(okmove)
+            # ...
+            await rival.ws.send_json(playermove)
+	# ...
+```
+
+Para el cliente que envió el movimiento se le envía un mensaje de respuesta con el comando "OKMOVE", para el siguiente turno del jugador, el rival, "PLAYERMOVE". 
 
 ## Protocolos y la red
 
