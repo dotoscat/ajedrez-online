@@ -822,7 +822,16 @@ El servidor usa una interfaz para linea de comandos. Se configura con parámetro
 
 El cliente al ser un navegador web usa una hoja de estilos proporcionado desde el servidor. El tablero de ajedrez se dibuja usando la etiqueta **canvas** y JavaScript. En el proyecto el tablero está encapsulado en una clase *BoardViewer* que maneja un elemento **canvas**.![1528821290362](1528821290362.png)
 
-## Problemática
+Se usa *flex* para centrar los elementos por la pantalla.
+
+```css
+#game {
+    display: flex;
+    align-items: start;
+    align-content: center;
+    flex-direction: row;
+}
+```
 
 ## Conclusiones
 
