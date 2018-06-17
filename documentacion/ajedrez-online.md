@@ -353,6 +353,55 @@ Para poder dibujar las coordenadas, el área del canvas tiene que ser ligerament
 
 ![1529164041239](1529164041239.png)
 
+### Perspectiva de las negras
+
+![1529230584288](D:\proyectos\ajedrez-asir\documentacion\1529230584288.png)
+
+Para adaptar la interfaz a la perspectiva de las negras el BoardViewer puede tener una propiedad para indicar que la perspectiva de las negras, por ejemplo *blackView*. Cuando está activado entonces se adapta para obtener un *Tile* del *board* y el dibujado.
+
+```javascript
+// x e y son coordenadas del ratón ya transformadas
+getTilePos(x, y) {
+    if (this.blackView){
+        // se invierte según el ancho y alto del tablero
+        return {
+            x: 7 - parseInt(x/this.tileSize),
+            y: 7 - parseInt(y/this.tileSize),
+        };
+    }
+    return {
+        x: parseInt(x/this.tileSize),
+        y: parseInt(y/this.tileSize),
+    };
+}
+```
+
+Para poder dibujar se tiene que invertir la posición final de lo que se quiera dibujar tomando en cuenta que el origen del canvas es arriba e izquierda. Aquí un ejemplo para dibujar las piezas.
+
+```javascript
+drawPieces() {
+    const tileSize = this.tileSize;
+    const ctx = this.drawarea.getContext("2d");
+    const boardTiles = this.board.tiles;
+    for (let y = 0; y < 8; y += 1){
+        for(let x = 0; x < 8; x += 1){
+            const tile = boardTiles[y][x];
+            if (tile.piece === null)
+                continue;
+            if (this.blackView){
+                ctx.fillText(tile.piece.text,
+                            this.boardWidth - x*tileSize - tileSize,
+                            y*tileSize - tileSize/8. + tileSize);
+            }else{
+                ctx.fillText(tile.piece.text,
+                            x*tileSize,
+                            this.boardHeight - y*tileSize - tileSize/8.);
+            }
+        }
+    }
+}
+```
+
 ## Lado Servidor
 
 El lado servidor es un servidor web escrito en Python3. La versión 3.5 o superior es necesario para hacer correr el servidor porque hace uso de las nuevas palabras claves **async** y **await** para la programación asíncrona con *aiohttp*. Se ha elegido Python porque es fácil de usar y de aprender.
