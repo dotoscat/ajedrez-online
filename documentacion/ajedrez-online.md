@@ -513,6 +513,7 @@ async def websocket_handler(request):
             await ws.send_json({'command': 'DATA', 'data': msg.data})
         elif msg.type == aiohttp.WSMsgType.ERROR:
             print('ws connection clossed with exception {}'.format(ws.exception()))
+    # ...
     return
 
 # ...
@@ -522,6 +523,8 @@ app.router.add_get("/ws", websocket_handler)
 ```
 
 ### Websockets vs REST
+
+El motivo por el que se ha elegido websockets sobre una API REST es porque se transmite un estado de forma bidireccional entre el cliente y el servidor mientras que en una API REST es bastante complicado de menajear estado, además de que el cliente siempre tiene que empezar a enviar una petición para poder recibir una respuesta por parte del servidor.
 
 ## Game
 
