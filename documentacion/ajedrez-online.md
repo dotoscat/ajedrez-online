@@ -54,6 +54,8 @@ const promotion = new Promotion(document.getElementById("promotion"));
 // ...
 ```
 
+![1529308617669](D:\proyectos\ajedrez-asir\documentacion\1529308617669.png)
+
 ![1529054747424](1529054747424.png)
 
 ![1529055210806](1529055210806.png)
