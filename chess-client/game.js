@@ -79,6 +79,7 @@ class Game{
         messages.text = mess;
         this.boardView.block = true;
         startGame.show();
+        requestRestart.hide();
     }
 
     dispatchMessage(event){

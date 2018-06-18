@@ -39,6 +39,7 @@ button:active{
 #game {
     display: flex;
     align-items: start;
+    justify-content: center;
     align-content: center;
     flex-direction: row;
 }
