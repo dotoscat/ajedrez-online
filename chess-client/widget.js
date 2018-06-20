@@ -294,7 +294,7 @@ class RequestDialog {
     }
 
     requestNo(){
-        game.restoreBoardViewBlock();
+        game.restoreBoardViewBlockByTurn();
         sendRejectRestart(conn);
         this.hide();
         requestRestart.show();

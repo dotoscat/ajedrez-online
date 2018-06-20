@@ -22,6 +22,7 @@ class Game{
         this._requestRestart = false;
         this.boardViewBlock = null;
         this.lastMessage = null;
+        this.yourTurn = false;
 
         conn.addEventListener('message', this.dispatchMessage.bind(this));
         conn.addEventListener('close', (close) => {
@@ -52,6 +53,10 @@ class Game{
     restoreBoardViewBlock(){
         if(typeof this.boardViewBlock !== 'boolean') return;
         this.boardView.block = this.boardViewBlock;
+    }
+
+    restoreBoardViewBlockByTurn(){
+        this.boardView.block = promotion.isVisible() || !this.yourTurn;
     }
 
     checkGameover(message){
@@ -123,10 +128,12 @@ class Game{
         this.boardView.reset();
         this.boardView.board.setFromFEN(message.fen);
         if (message.color === 'WHITE'){
+            this.yourTurn = true;
             this.boardView.validMoves = message.moves;
             this.boardView.blackSide = false;
             messages.text = "Comienza el juego. Su turno.";
         }else{
+            this.yourTurn = false;
             this.boardView.blackSide = true;
             messages.text = "Esperando turno del jugador."
         }
@@ -142,7 +149,7 @@ class Game{
 
     rejectRestart(){
         this.restoreCurrentMessage();
-        this.restoreBoardViewBlock();
+        this.restoreBoardViewBlockByTurn();
         requestRestart.show();
     }
 
@@ -160,6 +167,7 @@ class Game{
     OKMove(message){
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = true;
+        this.yourTurn = false;
         messages.text = "Esperando turno del jugador.";
         if (message.fen){
             this.boardView.board.setFromFEN(message.fen);
@@ -179,6 +187,7 @@ class Game{
         this.addToMessagesSAN(message.turn, message.san, message.color);
         this.boardView.block = false;
         messages.text = "Su turno.";
+        this.yourTurn = true;
         this.boardView.validMoves = message.moves;
         this.boardView.pushMove(message.from, message.to);
         if (message.fen){
