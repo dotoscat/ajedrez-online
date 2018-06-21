@@ -346,10 +346,10 @@ class BoardViewer {
     getMousePos(evt) {
         const rect = this.drawarea.getBoundingClientRect();
         const computedCSS = window.getComputedStyle(this.drawarea);
-        const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
-        const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
-        const paddingLeft = +computedCSS.paddingLeft.replace(/\D+/, '');
-        const paddingTop = +computedCSS.paddingTop.replace(/\D+/, '');
+        const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/[a-z][a-z]/, '');
+        const borderTopWidth = +computedCSS.borderTopWidth.replace(/[a-z][a-z]/, '');
+        const paddingLeft = +computedCSS.paddingLeft.replace(/[a-z][a-z]/, '');
+        const paddingTop = +computedCSS.paddingTop.replace(/[a-z][a-z]/, '');
         console.debug("border", borderLeftWidth, borderTopWidth);
         //invert y coordinates
         return {
@@ -361,10 +361,10 @@ class BoardViewer {
     getMousePosTopLeft(evt) {
         const rect = this.drawarea.getBoundingClientRect();
         const computedCSS = window.getComputedStyle(this.drawarea);
-        const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/\D+/, '');
-        const borderTopWidth = +computedCSS.borderTopWidth.replace(/\D+/, '');
-        const paddingLeft = +computedCSS.paddingLeft.replace(/\D+/, '');
-        const paddingTop = +computedCSS.paddingTop.replace(/\D+/, '');
+        const borderLeftWidth = +computedCSS.borderLeftWidth.replace(/[a-z][a-z]/, '');
+        const borderTopWidth = +computedCSS.borderTopWidth.replace(/[a-z][a-z]/, '');
+        const paddingLeft = +computedCSS.paddingLeft.replace(/[a-z][a-z]/, '');
+        const paddingTop = +computedCSS.paddingTop.replace(/[a-z][a-z]/, '');
         return {
             x: evt.clientX - rect.left - borderLeftWidth - paddingLeft,
             y: evt.clientY - rect.top - borderTopWidth - paddingTop
