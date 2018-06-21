@@ -19,7 +19,7 @@
 + El servidor lleva la cuenta de los usuarios conectados.
 + Todos los elementos en pantalla son objetos globales, incluso la conexión (y la clase Game)
 + Abrir una nueva pestaña con la misma dirección.
-+ Para centrar los elementos en pantalla usa flask en un contenedor.
++ Para centrar los elementos en pantalla usa flex en un contenedor.
 
 ### Demostración de la partida
 
