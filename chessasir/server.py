@@ -17,11 +17,12 @@ import socket
 import signal
 import argparse
 import logging
+import os.path
 import aiohttp
 from aiohttp import web
 import aiohttp_jinja2
 import jinja2
-from chessasir.game import Game
+from .game import Game
 
 logging.basicConfig(format="%(pathname)s:%(module)s:%(levelname)s:%(message)s", level=logging.DEBUG)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -35,8 +36,9 @@ def main():
     args = parse.parse_args()
     logging.info("Listen from {}:{}".format(args.ip, args.port))
     app = web.Application()
+    resources_dir = os.path.join(os.path.dirname(__file__), "chess-client")
     aiohttp_jinja2.setup(app,
-        loader=jinja2.FileSystemLoader('chess-client'))
+        loader=jinja2.FileSystemLoader(resources_dir))
 
     async def index(request):
         response = aiohttp_jinja2.render_template(
@@ -83,7 +85,8 @@ def main():
 
     app.router.add_get("/", index)
     app.router.add_get("/ws", websocket_handler)
-    app.router.add_static("/", "chess-client")
+    print(__name__, __file__, __package__, resources_dir)
+    app.router.add_static("/", resources_dir)
     web.run_app(app, host=args.ip, port=args.port)
     # server = Server(args.ip, args.port)
     # server.run()
