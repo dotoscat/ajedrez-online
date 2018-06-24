@@ -12,6 +12,9 @@ Instalación
 
     pip install ajedrez-asir
 
+Ejecución
+#########
+
 .. code:: shellscript
 
     ajedrezasirserver
