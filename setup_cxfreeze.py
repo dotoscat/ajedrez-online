@@ -1,3 +1,4 @@
+import os.path
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
@@ -5,16 +6,15 @@ from cx_Freeze import setup, Executable
 buildOptions = dict(
     packages = ['asyncio', 'idna'],
     excludes = ['tkinter'],
-    include_files = ['chess-client', 'LICENSE.txt'])
+    include_files = ['chessasir', 'LICENSE.txt'])
 
 base = 'Console'
-
 executables = [
     Executable('chess_server.py', base=base)
 ]
 
 setup(name='chess-online-asir',
-      version = '1.0',
+      version = '0.1',
       description = 'Un ajedrez en linea',
       options = dict(build_exe = buildOptions),
       executables = executables)
