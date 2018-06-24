@@ -16,15 +16,15 @@ setup(
     author="Oscar (dotoscat) Triano",
     description="ajedrez online para ASIR",
     url="https://github.com/dotoscat/ajedrez-online",
+    keywords="chess server",
     license="AGPL-3.0",
-    # selectors=[
-    #     "Development Status :: 5 - Production/Stable",
-    #     "Framework :: Flask",
-    #     "Framework :: Pelican",
-    #     "Intended Audience :: Developers",
-    #     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
-    #     "Programming Language :: JavaScript",
-    #     "Programming Language :: Python :: 3 :: Only",
-    #     "Topic :: Desktop Environment",
-    # ],
+    selectors=[
+        "Development Status :: 3 - Alpha"
+        "Framework :: AsyncIO",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+        "Programming Language :: JavaScript",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Games/Entertainment :: Board Games"
+    ],
 )
